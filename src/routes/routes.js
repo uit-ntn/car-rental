@@ -1,12 +1,14 @@
 import Home from "../pages/Home";
+import Login from "../pages/Login";
+import Admin from "../pages/Admin";
 
 const publicRoutes = [
     { path: '/', page: Home },
-    { path: '/', page }
+    { path: '/login', page: Login }
 ]
 
 const privateRoutes = [
-    { path: '/', page: Admin }
+    { path: '/admin', page: Admin }
 ]
 
-export default { privateRoutes, publicRoutes };
+export { privateRoutes, publicRoutes };
