@@ -1,0 +1,42 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    z-index: 1000;
+    text-align: center;
+    height: 100px;
+}
+
+.header .logo-container p {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.navigation {
+    display: flex;
+    justify-content: space-around;
+
+}
+
+.navigation a {
+    text-decoration: none;
+    font-size: 14px;
+    padding: 10px;
+    font-weight: bold;
+    color: black;
+    margin: 0 5px;
+
+}
+.navigation .line{
+   
+    border: 1px solid black;
+    margin: 0 5px;
+    
+}
