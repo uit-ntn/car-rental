@@ -37,6 +37,7 @@
     font-size: 3.5rem;
     margin: 10px;
     -webkit-text-stroke: 1px rgb(15, 13, 13);
+    font-weight: bolder;
 }
 
 .banner-container .line {
@@ -51,11 +52,53 @@
     color: white;
     margin: 10px;
     -webkit-text-stroke: 1px rgb(23, 22, 22);
+    font-weight: bolder;
 }
 
 .banner-container h5 span {
 
     color: rgb(15, 225, 120);
     -webkit-text-stroke: 1px rgb(16, 16, 16);
+
+}
+
+.promo-section {
+    
+}
+
+.promo-section h2 {
+    text-align: center;
+    margin: 12px;
+    font-size: 2.5rem;
+}
+
+.promo-section h5 {
+    text-align: center;
+    margin: 12px;
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.promo-section ul {
+    display: flex;
+    height: 250px;
+    width: 350px;
+    list-style: none;
+    justify-content: space-between;
+    width: 80%;
+    border-radius: 1px solid black;
+    border: 1px;
+}
+
+.promo-section ul li {
+    height: 250px;
+    width: 350px;
+    margin: 10px;
+
+}
+
+.promo-section ul li img {
+    height: 100%;
+    width: 100%;
 
 }
