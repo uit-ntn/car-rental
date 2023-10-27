@@ -39,7 +39,7 @@ function Login() {
                                     <br /> <br />
                                     <a href="">quên mật khẩu?</a>
                                     <br /> <br />
-                                    <button value="đăng nhập">Đăng nhập</button>
+                                    <button id="btnlogin">Đăng nhập</button>
                                     <br /> <br />
                                     <label id="last" htmlFor="">
                                         bạn chưa là thành viên?{" "}
