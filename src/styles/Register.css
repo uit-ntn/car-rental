@@ -1,18 +1,24 @@
-body {
+/* body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}  */
+.register-page{
+    text-align: center;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
 }
-.register-page{
-    text-align: center;
-}
-form {
+#formRegister {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     border-radius: 25px;
     background-color: whitesmoke;
     margin-bottom: 20px;
+    width: 35%;
 }
 
 
@@ -24,7 +30,7 @@ form {
     font-size: 20px;
 }
 
-button {
+#btndk {
     margin-bottom: 20px;
     border-radius: 25px;
     background-color: #5fcf86;
