@@ -8,6 +8,8 @@
   justify-content: center;
   align-items: center;
   height: 50vh;
+  border-radius: 25px;
+  padding: 0px;
 }
 
 table {
@@ -15,25 +17,35 @@ table {
   border-collapse: collapse;
   background-color: whitesmoke;
   border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 th,
 td {
   text-align: center;
   vertical-align: middle;
-  padding: 20px;
+  margin: 10px;
 }
 
 input {
   width: 70%;
   font-size: 17px;
   border-radius: 10px;
-  font-style: Arial;
-  padding: 5px;
+  font-style: oblique;
 }
 
 button {
+  /* width: 100px;
+  height: 30px;
+  border-radius: 25px; */
+  margin-bottom: 20px;
+  border-radius: 25px;
+  background-color: #5fcf86;
+  color: #fff;
   width: 100px;
   height: 30px;
-  border-radius: 25px;
+  font-size: 14px;
+}
+#last {
+  padding-bottom: 50px;
 }
