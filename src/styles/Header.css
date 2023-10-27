@@ -11,7 +11,9 @@
     width: 100%;
     z-index: 1000;
     text-align: center;
-    height: 100px;
+    height: 60px;
+    background-color: whitesmoke;
+    border-radius: 20px;
 }
 
 .header .logo-container p {

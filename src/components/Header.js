@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 function Header() {
     return (
         <>
@@ -7,11 +8,11 @@ function Header() {
                     <p>CAR RENTAL</p>
                 </div>
                 <div className="navigation">
-                    <a href="/about">Về Car Rental</a>
-                    <a href="/owner/register">Trở thành chủ xe</a>
+                    <Link to="/about">Về Car Rental</Link> 
+                    <Link to="/owner/register">Trở thành chủ xe</Link> 
                     <div className="line"></div>
-                    <a className="login-btn" href="/register">Đăng ký</a>
-                    <a className="login-btn" href="/login">Đăng nhập</a>
+                    <Link to="/register" className="login-btn">Đăng ký</Link> 
+                    <Link to="/login" className="login-btn">Đăng nhập</Link>
                 </div>
             </div>
         </>

@@ -1,9 +1,10 @@
-// ProductCard.js
 import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/ProductCard.css";
+import starIcon from "../assets/img/star.png";
+import ggmapIcon from "../assets/img/google-map-icon.png";
 
-const ProductCard = ({ id, image, name, address }) => (
+const ProductCard = ({ id, image, name, address, price, star, trip }) => (
   <div className="product-card-box">
     <div className="product-fix-img">
       <Link to={`/product/${id}`}>
@@ -11,11 +12,35 @@ const ProductCard = ({ id, image, name, address }) => (
       </Link>
     </div>
     <div className="product-card-actions">
-      <button className="transmission">Số tự động</button>
-      <button className="delivery">Giao xe tận nơi</button>
+      <Link to={`/product/${id}`} className="transmission">
+        Số tự động
+      </Link>
+      <Link to={`/product/${id}`} className="delivery">
+        Giao xe tận nơi
+      </Link>
+      <div className="address-box">
+        <span className="ggmap-fix-icon">
+          <img src={ggmapIcon} alt="" />
+        </span>{" "}
+        {address}
+      </div>
     </div>
     <p className="desc-name">{name}</p>
-    <div className="address">{address}</div>
+
+    <div className="line"></div>
+    <div className="info-price">
+      <div className="info">
+        <span className="star">
+          {star}
+          <span className="fix-icon">
+            <img src={starIcon} alt="" />
+          </span>
+        </span>
+
+        <span className="trip">{trip} chuyến</span>
+      </div>
+      <div className="price">{price} USD</div>
+    </div>
   </div>
 );
 

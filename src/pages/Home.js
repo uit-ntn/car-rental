@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import CarList from "../components/CarList";
+import Slider from "../components/Slider";
 import "../styles/Home.css";
 function Home() {
     const [cars, setCars] = useState([]);
@@ -46,26 +47,7 @@ function Home() {
                     <div className="promo-section">
                         <h2>Chương trình khuyến mãi</h2>
                         <h5>Nhận nhiều ưu đãi từ car-rental</h5>
-                        <ul>
-                            <li>
-                                <img src="../img/promo-img1" alt=""></img>
-                            </li>
-                            <li>
-                                <img src="../img/promo-img1" alt=""></img>
-                            </li>
-                            <li>
-                                <img src="../img/promo-img1" alt=""></img>
-                            </li>
-                            <li>
-                                <img src="../img/promo-img1" alt=""></img>
-                            </li>
-                            <li>
-                                <img src="../img/promo-img1" alt=""></img>
-                            </li>
-                            <li>
-                                <img src="../img/promo-img1" alt=""></img>
-                            </li>
-                        </ul>
+                        <Slider></Slider>
                     </div>
 
                     {/*service-section */}
@@ -73,12 +55,24 @@ function Home() {
 
                     {/*featured-car-section */}
                     <div className="featured-car-section">
-                        <h2>xe dành cho bạn</h2>
+                        <h2>Xe Dành Cho Bạn</h2>
                         <CarList cars={cars}></CarList>
                     </div>
-                  
+
                     {/*instruction section*/}
                     <div className="instruction section"></div>
+                    {/* explore-section */}
+                    <div className="explore-section">
+                        <div className="explore-fix-img">
+                            <img src={require('../assets/img/explore-img.png')}></img>
+                        </div>
+                        <div className="explore-item">
+                            <h2>Bạn muốn biết thêm về Car Rental</h2>
+                            <p>Car Rental kết nối khách hàng có nhu cầu thuê xe với hàng ngàn chủ xe ô tô ở TPHCM, Hà Nội & các tỉnh thành khác.
+                                Chúng tôi hướng đến việc xây dựng cộng đồng người dùng ô tô văn minh & uy tín tại Việt Nam</p>
+                            <button>Tìm hiểu thêm</button>
+                        </div>
+                    </div>
 
                 </div>
             </Layout>
