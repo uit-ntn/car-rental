@@ -1,78 +1,111 @@
 import React, { useState } from "react";
-import "../styles/Register.css";
-import Header from "../components/Header";
+import Layout from "../components/Layout.js";
 
 function Register() {
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordStrength, setPasswordStrength] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [agreedToPolicy, setAgreedToPolicy] = useState(false);
 
+
+  // hàm kiểm tra độ mạnh của mật khẩu
   const checkPasswordStrength = (value) => {
     setPassword(value);
 
-    // Kiểm tra tính mạnh của mật khẩu ở đây và cập nhật setPasswordStrength
     if (value.length < 8) {
-      setPasswordStrength("Mật khẩu quá ngắn");
+      setPasswordStrength("Password is too short");
     } else if (!/[a-z]/.test(value) || !/[A-Z]/.test(value) || !/[0-9]/.test(value)) {
-      setPasswordStrength("Mật khẩu phải chứa ít nhất một chữ hoa, một chữ thường và một số");
+      setPasswordStrength("Password must contain at least one uppercase letter, one lowercase letter, and one number");
     } else {
-      setPasswordStrength("Mật khẩu mạnh");
+      setPasswordStrength("Strong password");
     }
   };
 
   const handleRegister = () => {
-    // Kiểm tra xác nhận mật khẩu ở đây
-    if (password !== confirmPassword) {
-      alert("Xác nhận mật khẩu không khớp.");
+    if (!agreedToPolicy) {
+      alert("You must agree to our policy to register.");
       return;
     }
 
-    // Điều kiện khác (ví dụ: gửi dữ liệu đăng kí)
+    if (password !== confirmPassword) {
+      alert("Password confirmation does not match.");
+      return;
+    }
+
+  
+    fetch('api/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        // Đăng ký thành công : chuyển hướng trang.
+      } else {
+        alert("Đăng ký thất bại: " + data.message);
+      }
+    })
+    .catch((error) => {
+      console.error('Lỗi khi gửi dữ liệu đăng ký:', error);
+    });
   };
 
   return (
-    <div>
-      <Header></Header>
-      {/* ------------------------------------------ */}
-      <div className="register-page">
-        <form action="" id="formRegister">
-          <label htmlFor="">
-            <h1>Đăng ký</h1>
-          </label>
-          <hr />
-          <label htmlFor="">Số điện thoại</label> <br />
-          <input id="text" type="text" required /> <br />
-          <label htmlFor="">Tên hiển thị</label> <br />
-          <input id="text" type="text" required /> <br />
-          <label htmlFor="">Mật khẩu</label> <br />
-          <input
-            id="text"
-            type="password"
-            required
-            onChange={(e) => checkPasswordStrength(e.target.value)}
-          />
-          <p>{passwordStrength}</p> {/* Hiển thị tính mạnh của mật khẩu */}
-          <label htmlFor="">Xác nhận mật khẩu</label> <br />
-          <input
-            id="text"
-            type="password"
-            required
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-          <br />
-
-          <label htmlFor="">Mã giới thiệu (nếu có)</label> <br />
-          <input id="text" type="text" /> <br />
-          <input id="checkboxdongy" type="checkbox" />Tôi đồng ý với chính sách của Mioto.{" "}<a href=""><b>Chi tiết</b></a>
-          <br />
-          <br />
-          <button id="btndk" onClick={handleRegister}>
-            Đăng ký
+    <Layout>
+      <div>
+        <h2>Register</h2>
+        <form>
+          <div>
+            <label htmlFor="username">Username or Email:</label>
+            <input
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => checkPasswordStrength(e.target.value)}
+            />
+            <p>{passwordStrength}</p>
+          </div>
+          <div>
+            <label htmlFor="confirmPassword">Confirm Password:</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>
+              <input
+                type="checkbox"
+                checked={agreedToPolicy}
+                onChange={() => setAgreedToPolicy(!agreedToPolicy)}
+              />
+              I agree to our policy
+            </label>
+          </div>
+          <button type="button" onClick={handleRegister}>
+            Register
           </button>
         </form>
       </div>
-    </div>
-
+    </Layout>
   );
 }
 

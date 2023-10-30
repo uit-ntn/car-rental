@@ -1,0 +1,18 @@
+$color1: #3498db;
+$color2: #e74c3c;
+$mixed-color: mix($color1, $color2, 50%);
+
+@mixin box-shadow($x, $y, $blur, $color) {
+    box-shadow: $x $y $blur $color;
+}
+
+$base-font-size: 16px;
+
+@mixin font-size($size) {
+    font-size: $size / $base-font-size;
+}
+
+@mixin gradient($start-color, $end-color) {
+    background: linear-gradient($start-color, $end-color);
+  }
+  
