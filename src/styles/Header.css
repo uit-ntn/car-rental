@@ -11,14 +11,21 @@
     width: 100%;
     z-index: 1000;
     text-align: center;
-    height: 60px;
-    background-color: whitesmoke;
-    border-radius: 20px;
+    height: 80px;
+    background-color : rgb(64,180,140);
+    border-radius: 1px;
+    margin-bottom: 30px;
 }
 
-.header .logo-container p {
-    font-size: 20px;
+.header .logo-container {
+    text-decoration: none;
+}
+
+.header .logo-container a {
+    font-size: 30px;
     font-weight: bold;
+    text-decoration: none;
+    color: black;
 }
 
 .navigation {
@@ -29,16 +36,17 @@
 
 .navigation a {
     text-decoration: none;
-    font-size: 14px;
+    font-size: 20px;
     padding: 10px;
     font-weight: bold;
     color: black;
     margin: 0 5px;
 
 }
-.navigation .line{
-   
+
+.navigation .line {
+
     border: 1px solid black;
     margin: 0 5px;
-    
+
 }

@@ -1,4 +1,4 @@
-* {
+/* * {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   box-sizing: border-box;
 }
@@ -37,7 +37,7 @@ input {
 #btnlogin {
   /* width: 100px;
   height: 30px;
-  border-radius: 25px; */
+  border-radius: 25px;
   margin-bottom: 20px;
   border-radius: 25px;
   background-color: #5fcf86;
@@ -48,4 +48,4 @@ input {
 }
 #last {
   padding-bottom: 50px;
-}
+} */
