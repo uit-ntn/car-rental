@@ -64,7 +64,7 @@ function Home() {
                     {/* explore-section */}
                     <div className="explore-section">
                         <div className="explore-fix-img">
-                            <img src={require('../assets/img/explore-img.png')}></img>
+                            <img src={require('../assets/img/explore-img.png')} alt=""></img>
                         </div>
                         <div className="explore-item">
                             <h2>Bạn muốn biết thêm về Car Rental</h2>

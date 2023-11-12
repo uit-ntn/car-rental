@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {Link} from "react-router-dom";
 import Layout from "../components/Layout.js";
 import '../styles/Register.css';
 function Register() {
@@ -60,10 +61,10 @@ function Register() {
   return (
     <Layout>
       <div className="register-container">
-        <h2>Register</h2>
         <form>
+          <h2>Register</h2>
           <div>
-            <p htmlFor="username">Username or Email:</p>
+            <p htmlFor="username">Tên đăng nhập</p>
             <input
               type="text"
               id="username"
@@ -72,7 +73,7 @@ function Register() {
             />
           </div>
           <div>
-            <p htmlFor="password">Password:</p>
+            <p htmlFor="password">Mật khẩu:</p>
             <input
               type="password"
               id="password"
@@ -82,10 +83,11 @@ function Register() {
             <p className="check-password">{passwordStrength}</p>
           </div>
           <div>
-            <p htmlFor="confirmPassword">Confirm Password:</p>
+            <p htmlFor="confirmPassword">Xác nhận lại mật khẩu:</p>
             <input
               type="password"
               id="confirmPassword"
+              name="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
@@ -101,12 +103,13 @@ function Register() {
             </p>
 
           </div>
-          <div className="line"></div>
           <div className="register-btn">
             <button type="button" onClick={handleRegister}>
-              Register
+              Đăng ký
             </button>
           </div>
+          <div className="line"></div>
+          <div className="have-an-account">Bạn đã có tài khoản <span><Link to="/login">Đăng nhập</Link></span></div>
         </form>
       </div>
     </Layout>

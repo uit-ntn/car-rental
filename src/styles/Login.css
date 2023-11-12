@@ -1,51 +1,67 @@
-/* * {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+* {
+  padding: 0;
+  margin: 0;
   box-sizing: border-box;
 }
 
-.login-page {
+.login-container {
+  margin: auto;
+  min-height: 500px;
+  width: 400px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 50vh;
-  border-radius: 25px;
+  flex-direction: column;
+  background-color: rgb(122, 147, 186);
+  border-radius: 20px;
+  padding: 20px;
+
+}
+
+.login-container h2 {
+  margin: 20px auto 40px auto;
+}
+
+.login-container>div {
+  margin: 10px;
+  padding: 5px;
+}
+
+.login-container>div>p {
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 5px solid black;
+}
+
+.login-container .user-input>,
+.login-container .password-input {
+  margin: 5px 0;
+}
+
+.login-container .user-input input,
+.login-container .password-input input {
+  width: 100%;
+  margin: 5px auto;
+  height: 30px;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.login-container .line {
+  width: 95%;
+  border: 1px solid black;
   padding: 0px;
 }
 
-table {
-  width: 400px;
-  border-collapse: collapse;
-  background-color: whitesmoke;
-  border-radius: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
-
-th,
-td {
+.login-container .handle-login-input{
   text-align: center;
-  vertical-align: middle;
-  margin: 10px;
 }
-
-input {
-  width: 70%;
-  font-size: 17px;
-  border-radius: 10px;
-  font-style: oblique;
-}
-
-#btnlogin {
-  /* width: 100px;
-  height: 30px;
-  border-radius: 25px;
+.login-container .handle-login-input button {
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 5px;
   margin-bottom: 20px;
-  border-radius: 25px;
-  background-color: #5fcf86;
-  color: #fff;
-  width: 100px;
-  height: 30px;
-  font-size: 14px;
 }
-#last {
-  padding-bottom: 50px;
-} */
+.login-container .handle-login-input h5{
+  text-align: center;
+  font-size: 20px;
+  font-weight: 100;
+}
