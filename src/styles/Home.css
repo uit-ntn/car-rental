@@ -51,7 +51,7 @@
     font-size: 2rem;
     color: white;
     margin: 10px;
-    -webkit-text-stroke: 1px rgb(23, 22, 22);
+    -webkit-text-stroke: 1px rgb(13, 12, 12);
     font-weight: bolder;
 }
 
@@ -126,7 +126,7 @@
 .explore-section .explore-fix-img{
     height: 450px;
     width: 600px;
-    padding: 40px;
+    margin: 0 40px;
 }
 .explore-item{
     padding: 40px;

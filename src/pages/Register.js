@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import {Link} from "react-router-dom";
 import Layout from "../components/Layout.js";
-
+import '../styles/Register.css';
 function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -33,7 +34,7 @@ function Register() {
       return;
     }
 
-  
+
     fetch('api/users', {
       method: 'POST',
       headers: {
@@ -44,26 +45,26 @@ function Register() {
         password: password,
       }),
     })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        // Đăng ký thành công : chuyển hướng trang.
-      } else {
-        alert("Đăng ký thất bại: " + data.message);
-      }
-    })
-    .catch((error) => {
-      console.error('Lỗi khi gửi dữ liệu đăng ký:', error);
-    });
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          // Đăng ký thành công : chuyển hướng trang.
+        } else {
+          alert("Đăng ký thất bại: " + data.message);
+        }
+      })
+      .catch((error) => {
+        console.error('Lỗi khi gửi dữ liệu đăng ký:', error);
+      });
   };
 
   return (
     <Layout>
-      <div>
-        <h2>Register</h2>
+      <div className="register-container">
         <form>
+          <h2>Register</h2>
           <div>
-            <label htmlFor="username">Username or Email:</label>
+            <p htmlFor="username">Tên đăng nhập</p>
             <input
               type="text"
               id="username"
@@ -72,37 +73,43 @@ function Register() {
             />
           </div>
           <div>
-            <label htmlFor="password">Password:</label>
+            <p htmlFor="password">Mật khẩu:</p>
             <input
               type="password"
               id="password"
               value={password}
               onChange={(e) => checkPasswordStrength(e.target.value)}
             />
-            <p>{passwordStrength}</p>
+            <p className="check-password">{passwordStrength}</p>
           </div>
           <div>
-            <label htmlFor="confirmPassword">Confirm Password:</label>
+            <p htmlFor="confirmPassword">Xác nhận lại mật khẩu:</p>
             <input
               type="password"
               id="confirmPassword"
+              name="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
-          <div>
-            <label>
-              <input
-                type="checkbox"
-                checked={agreedToPolicy}
-                onChange={() => setAgreedToPolicy(!agreedToPolicy)}
-              />
-              I agree to our policy
-            </label>
+          <div className="agree-privacy">
+            <input
+              type="checkbox"
+              checked={agreedToPolicy}
+              onChange={() => setAgreedToPolicy(!agreedToPolicy)}
+            />
+            <p>
+              I agree to car rental's policy
+            </p>
+
           </div>
-          <button type="button" onClick={handleRegister}>
-            Register
-          </button>
+          <div className="register-btn">
+            <button type="button" onClick={handleRegister}>
+              Đăng ký
+            </button>
+          </div>
+          <div className="line"></div>
+          <div className="have-an-account">Bạn đã có tài khoản <span><Link to="/login">Đăng nhập</Link></span></div>
         </form>
       </div>
     </Layout>

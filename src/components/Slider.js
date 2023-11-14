@@ -12,13 +12,13 @@ function Slider() {
 
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const nextSlide = () => {
-        setCurrentIndex((currentIndex + 1) % images.length);
-    };
+    // const nextSlide = () => {
+    //     setCurrentIndex((currentIndex + 1) % images.length);
+    // };
 
-    const prevSlide = () => {
-        setCurrentIndex((currentIndex - 1 + images.length) % images.length);
-    };
+    // const prevSlide = () => {
+    //     setCurrentIndex((currentIndex - 1 + images.length) % images.length);
+    // };
 
     return (
         <div className="slider">

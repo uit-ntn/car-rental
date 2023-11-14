@@ -1,0 +1,87 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+
+.register-container {
+    width: 400px;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid black;
+    margin: auto;
+    background-color: rgb(122, 147, 186);
+    border-radius: 20px;
+}
+
+.register-container p {
+    font-weight: bold;
+}
+
+.register-container h2 {
+    text-align: center;
+    margin-bottom: 50px;
+    color: aliceblue;
+}
+
+.register-container p {
+    font-size: 20px;
+    margin: 5px 20px;
+}
+
+.register-container .check-password {
+    font-size: 20px;
+    font-weight: lighter;
+    font-style: italic;
+}
+
+.register-container input {
+    width: 90%;
+    margin: 5px 20px;
+    height: 30px;
+    padding: 5px;
+    font-size: 20px;
+    border-radius: 5px;
+}
+
+.register-container .agree-privacy {
+    display: flex;
+    justify-content: center;
+}
+
+.agree-privacy input {
+    width: 20px;
+    height: 20px;
+    margin: 5px;
+}
+
+.register-container form .register-btn {
+    width: 100%;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.register-container .line {
+    width: 80%;
+    border: 1px solid black;
+    opacity: calc(0.5);
+    margin: 20px auto 0 auto;
+
+}
+
+.register-container form button {
+    border: 1px solid black;
+    border-radius: 5px;
+    font-size: 20px;
+    padding: 5px;
+}
+
+.register-container form .have-an-account {
+    text-align: center;
+    padding: 5px;
+    margin-top: 20px;
+    font-size: 20px;
+}
