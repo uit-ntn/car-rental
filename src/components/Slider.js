@@ -24,14 +24,16 @@ function Slider() {
         <div className="slider">
             {/* <button onClick={prevSlide}></button> */}
             <div className="image-container">
-                {images.map((image, index) => (
-                    <img
-                        key={index}
-                        src={image}
-                        alt={`Image ${index + 1}`}
-                        className={index === currentIndex ? 'active' : ''}
-                    />
-                ))}
+                {
+                    images.map((image, index) => (
+                        <img
+                            key={index}
+                            src={image}
+                            alt={`Image ${index + 1}`}
+                            className={index === currentIndex ? 'active' : ''
+                            }
+                        />
+                    ))}
             </div>
             {/* <button onClick={nextSlide}></button> */}
         </div>

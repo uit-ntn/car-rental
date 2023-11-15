@@ -1,16 +1,22 @@
-import React, { useState } from "react";
-import {Link} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 import Layout from "../components/Layout.js";
 import '../styles/Register.css';
 function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const [passwordStrength, setPasswordStrength] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [agreedToPolicy, setAgreedToPolicy] = useState(false);
-
-
-  // hàm kiểm tra độ mạnh của mật khẩu
+  const navigate = useNavigate();
+  useEffect(() => {
+    const isLoggedIn = Cookies.get("isLoggedIn");
+    if (isLoggedIn === "true") {
+      navigate('/');
+    }
+  }, []);
   const checkPasswordStrength = (value) => {
     setPassword(value);
 
@@ -23,40 +29,71 @@ function Register() {
     }
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (!agreedToPolicy) {
-      alert("You must agree to our policy to register.");
+      alert("Bạn phải đồng ý với chính sách của chúng tôi để đăng ký.");
       return;
     }
 
     if (password !== confirmPassword) {
-      alert("Password confirmation does not match.");
+      alert("Xác nhận mật khẩu không khớp.");
       return;
     }
 
-
-    fetch('api/users', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: username,
-        password: password,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          // Đăng ký thành công : chuyển hướng trang.
-        } else {
-          alert("Đăng ký thất bại: " + data.message);
-        }
-      })
-      .catch((error) => {
-        console.error('Lỗi khi gửi dữ liệu đăng ký:', error);
+    try {
+      const response = await fetch('https://6539dce6e3b530c8d9e8c413.mockapi.io/car-rental/user', {
+        method: 'GET',
       });
+
+      if (!response.ok) {
+        throw new Error('Lỗi kiểm tra tên đăng nhập và email.');
+      }
+
+      const data = await response.json();
+
+      const isUsernameExists = data.some(user => user.username === username);
+      const isEmailExists = data.some(user => user.email === email);
+
+      if (isUsernameExists) {
+        alert("Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.");
+        return;
+      }
+
+      if (isEmailExists) {
+        alert("Email đã tồn tại. Vui lòng sử dụng email khác.");
+        return;
+      }
+      const registrationResponse = await fetch('https://6539dce6e3b530c8d9e8c413.mockapi.io/car-rental/user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+          email: email,
+        }),
+      });
+
+      if (!registrationResponse.ok) {
+        throw new Error('Lỗi khi đăng ký tài khoản.');
+      }
+
+      const registrationData = await registrationResponse.json();
+
+      if (registrationData.success) {
+        alert("Đăng ký thành công!");
+        navigate('/login');
+      } else {
+        alert("Đăng ký thất bại: " + registrationData.message);
+      }
+
+    } catch (error) {
+      console.error('Lỗi khi kiểm tra tên đăng nhập và email:', error);
+    }
   };
+
+
 
   return (
     <Layout>
@@ -70,6 +107,16 @@ function Register() {
               id="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+          <div>
+            <p htmlFor="email">Email:</p>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div>

@@ -7,7 +7,7 @@
 
 .register-container {
     width: 400px;
-    height: 500px;
+    min-height: 500px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -23,8 +23,8 @@
 
 .register-container h2 {
     text-align: center;
-    margin-bottom: 50px;
-    color: aliceblue;
+    margin-bottom: 40px;
+    margin-top: 10px;
 }
 
 .register-container p {
@@ -83,5 +83,7 @@
     text-align: center;
     padding: 5px;
     margin-top: 20px;
+    margin-bottom: 10px;
     font-size: 20px;
+    
 }
