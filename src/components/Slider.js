@@ -12,26 +12,28 @@ function Slider() {
 
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const nextSlide = () => {
-        setCurrentIndex((currentIndex + 1) % images.length);
-    };
+    // const nextSlide = () => {
+    //     setCurrentIndex((currentIndex + 1) % images.length);
+    // };
 
-    const prevSlide = () => {
-        setCurrentIndex((currentIndex - 1 + images.length) % images.length);
-    };
+    // const prevSlide = () => {
+    //     setCurrentIndex((currentIndex - 1 + images.length) % images.length);
+    // };
 
     return (
         <div className="slider">
             {/* <button onClick={prevSlide}></button> */}
             <div className="image-container">
-                {images.map((image, index) => (
-                    <img
-                        key={index}
-                        src={image}
-                        alt={`Image ${index + 1}`}
-                        className={index === currentIndex ? 'active' : ''}
-                    />
-                ))}
+                {
+                    images.map((image, index) => (
+                        <img
+                            key={index}
+                            src={image}
+                            alt={`Image ${index + 1}`}
+                            className={index === currentIndex ? 'active' : ''
+                            }
+                        />
+                    ))}
             </div>
             {/* <button onClick={nextSlide}></button> */}
         </div>

@@ -7,7 +7,7 @@
 
 .register-container {
     width: 400px;
-    height: 500px;
+    min-height: 500px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -23,8 +23,8 @@
 
 .register-container h2 {
     text-align: center;
-    margin-bottom: 50px;
-    color: aliceblue;
+    margin-bottom: 40px;
+    margin-top: 10px;
 }
 
 .register-container p {
@@ -44,6 +44,7 @@
     height: 30px;
     padding: 5px;
     font-size: 20px;
+    border-radius: 5px;
 }
 
 .register-container .agree-privacy {
@@ -62,16 +63,27 @@
     text-align: center;
     margin-top: 30px;
 }
-.register-container .line{
+
+.register-container .line {
     width: 80%;
     border: 1px solid black;
     opacity: calc(0.5);
     margin: 20px auto 0 auto;
-    
+
 }
+
 .register-container form button {
-    width: 20%;
-    height: 30px;
     border: 1px solid black;
     border-radius: 5px;
+    font-size: 20px;
+    padding: 5px;
+}
+
+.register-container form .have-an-account {
+    text-align: center;
+    padding: 5px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 20px;
+    
 }
