@@ -5,7 +5,6 @@ import Slider from "../components/Slider";
 import "../styles/Home.css";
 function Home() {
     const [cars, setCars] = useState([]);
-
     useEffect(() => {
         async function fetchData() {
             try {
