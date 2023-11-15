@@ -7,15 +7,15 @@ import ggmapIcon from "../assets/img/google-map-icon.png";
 const ProductCard = ({ id, image, name, address, price, star, trip }) => (
   <div className="product-card-box">
     <div className="product-fix-img">
-      <Link to={`/product/${id}`}>
+      <Link to={`/detail/${id}`}>
         <img src={image} alt="" />
       </Link>
     </div>
     <div className="product-card-actions">
-      <Link to={`/product/${id}`} className="transmission">
+      <Link to={`/detail/${id}`} className="transmission">
         Số tự động
       </Link>
-      <Link to={`/product/${id}`} className="delivery">
+      <Link to={`/detail/${id}`} className="delivery">
         Giao xe tận nơi
       </Link>
       <div className="address-box">

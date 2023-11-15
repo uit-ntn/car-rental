@@ -11,8 +11,11 @@ function Login() {
   const [error, setError] = useState("");
   const [forgotPassword, setForgotPassword] = useState(false);
   const setForgotPasswordMode = (value) => {
-    clearErrors(); // Clear errors when switching between modes
+    clearErrors();
     setForgotPassword(value);
+  };
+  const clearErrors = () => {
+    setError("");
   };
   const apiLogin = "https://6539dce6e3b530c8d9e8c413.mockapi.io/car-rental/user";
   const history = useNavigate();
@@ -57,20 +60,20 @@ function Login() {
       setError("Vui lòng nhập địa chỉ email.");
       return;
     }
-  
+
     const recoveryData = {
       email: email,
     };
-  
+
     try {
-      const response = await fetch("https://6539dce6e3b530c8d9e8c413.mockapi.io/car-rental/recover-password", {
+      const response = await fetch("https://6539dce6e3b530c8d9e8c413.mockapi.io/car-rental/user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(recoveryData),
       });
-  
+
       if (response.ok) {
         const recoveredPassword = await response.json();
         alert(`Mật khẩu của bạn là: ${recoveredPassword.password}`);
@@ -82,7 +85,7 @@ function Login() {
       setError("Lỗi kết nối: " + error.message);
     }
   };
-  
+
 
   return (
     <Layout>
@@ -134,9 +137,9 @@ function Login() {
                     <Link to="/register">Đăng ký ngay</Link>
                   </span>
                 </h5>
-                  <p className="forgot-password" onClick={() => setForgotPasswordMode(true)}>
-                    Quên mật khẩu?
-                  </p>
+                <p className="forgot-password" onClick={() => setForgotPasswordMode(true)}>
+                  Quên mật khẩu?
+                </p>
               </div>
             </>
           ) : (
