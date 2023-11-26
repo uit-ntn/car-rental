@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import Layout from "../components/Layout.js";
+import { checkUsernameExists, checkEmailExists, registerUser } from "../apis/authApi.js";
 import '../styles/Register.css';
+
 function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -11,21 +13,23 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [agreedToPolicy, setAgreedToPolicy] = useState(false);
   const navigate = useNavigate();
+
   useEffect(() => {
     const isLoggedIn = Cookies.get("isLoggedIn");
     if (isLoggedIn === "true") {
       navigate('/');
     }
-  }, []);
+  }, [navigate]); 
+
   const checkPasswordStrength = (value) => {
     setPassword(value);
 
     if (value.length < 8) {
-      setPasswordStrength("Password is too short");
+      setPasswordStrength("Mật khẩu quá ngắn");
     } else if (!/[a-z]/.test(value) || !/[A-Z]/.test(value) || !/[0-9]/.test(value)) {
-      setPasswordStrength("Password must contain at least one uppercase letter, one lowercase letter, and one number");
+      setPasswordStrength("Mật khẩu phải chứa ít nhất một chữ cái viết hoa, một chữ cái viết thường và một số");
     } else {
-      setPasswordStrength("Strong password");
+      setPasswordStrength("Mật khẩu mạnh");
     }
   };
 
@@ -41,18 +45,8 @@ function Register() {
     }
 
     try {
-      const response = await fetch('https://6539dce6e3b530c8d9e8c413.mockapi.io/car-rental/user', {
-        method: 'GET',
-      });
-
-      if (!response.ok) {
-        throw new Error('Lỗi kiểm tra tên đăng nhập và email.');
-      }
-
-      const data = await response.json();
-
-      const isUsernameExists = data.some(user => user.username === username);
-      const isEmailExists = data.some(user => user.email === email);
+      const isUsernameExists = await checkUsernameExists(username);
+      const isEmailExists = await checkEmailExists(email);
 
       if (isUsernameExists) {
         alert("Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.");
@@ -63,23 +57,12 @@ function Register() {
         alert("Email đã tồn tại. Vui lòng sử dụng email khác.");
         return;
       }
-      const registrationResponse = await fetch('https://6539dce6e3b530c8d9e8c413.mockapi.io/car-rental/user', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: username,
-          password: password,
-          email: email,
-        }),
+
+      const registrationData = await registerUser({
+        username: username,
+        password: password,
+        email: email,
       });
-
-      if (!registrationResponse.ok) {
-        throw new Error('Lỗi khi đăng ký tài khoản.');
-      }
-
-      const registrationData = await registrationResponse.json();
 
       if (registrationData.success) {
         alert("Đăng ký thành công!");
@@ -87,9 +70,8 @@ function Register() {
       } else {
         alert("Đăng ký thất bại: " + registrationData.message);
       }
-
     } catch (error) {
-      console.error('Lỗi khi kiểm tra tên đăng nhập và email:', error);
+      console.error('Lỗi khi đăng ký:', error);
     }
   };
 

@@ -2,46 +2,53 @@ import React, { useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import CarList from "../components/CarList";
 import Slider from "../components/Slider";
+import SearchBar from "../components/SearchBar";
 import "../styles/Home.css";
+
 function Home() {
     const [cars, setCars] = useState([]);
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await fetch("https://6539dce6e3b530c8d9e8c413.mockapi.io/car-rental/car");
+                const response = await fetch('https://6539dce6e3b530c8d9e8c413.mockapi.io/car-rental/car');
                 if (!response.ok) {
-                    throw new Error("Network response was not ok");
+                    throw new Error('Network response was not ok');
                 }
 
                 const data = await response.json();
                 setCars(data);
             } catch (error) {
-                console.error("Error fetching data:", error);
+                alert('Error fetching data:', error);
             }
         }
-
         fetchData();
     }, []);
+
+
+    
+
     return (
         <>
             <Layout>
                 <div className="home-content">
-
                     {/*banner section*/}
                     <div className="banner-container">
                         <div className="background">
                             <h1>Car Rental - Cùng Bạn Đến</h1>
                             <h1>Mọi Hành Trình</h1>
                             <div className="line"></div>
-                            <h5>Trải nghiệm sự khác biệt từ <span>hơn 8000</span> xe gia đình đời mới khắp Việt Nam</h5>
+                            <h5>
+                                Trải nghiệm sự khác biệt từ <span>hơn 8000</span> xe gia đình đời
+                                mới khắp Việt Nam
+                            </h5>
                         </div>
-
                     </div>
 
                     {/*search-options section*/}
-                    <div className="search-options">
+                    <SearchBar> </SearchBar>
 
-                    </div>
+
+                    
                     {/* promo-section */}
                     <div className="promo-section">
                         <h2>Chương trình khuyến mãi</h2>
@@ -72,10 +79,10 @@ function Home() {
                             <button>Tìm hiểu thêm</button>
                         </div>
                     </div>
-
                 </div>
             </Layout>
         </>
-    )
+    );
 }
+
 export default Home;

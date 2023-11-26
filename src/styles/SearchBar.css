@@ -1,0 +1,30 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.search-options {
+    margin: 80px auto;
+    width: 60%;
+}
+
+.search-options-toggle {
+    text-align: center;
+}
+
+.search-options-toggle button {
+    height: 60px;
+    width: 180px;
+    font-size: 20px;
+    font-weight: bold;
+    color: grey;
+}
+
+.search-input.self-driving,
+.car-with-driver {
+    width: 1000px;
+    border-radius: 20px;
+    border: 1px solid black;
+    padding: 20px;
+}

@@ -3,6 +3,17 @@ import { Link, useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
 import Cookies from "js-cookie";
 import "../styles/Login.css";
+import { loginUser, recoverPassword, checkUsernameExists } from "../apis/authApi";
+import useAuthentication from "../hooks/useAuthentication";
+
+async function doesUserExist(username) {
+  try {
+    return await checkUsernameExists(username);
+  } catch (error) {
+    console.error("Lỗi khi kiểm tra tên người dùng:", error);
+    return false;
+  }
+}
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -10,20 +21,32 @@ function Login() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [forgotPassword, setForgotPassword] = useState(false);
+
   const setForgotPasswordMode = (value) => {
     clearErrors();
     setForgotPassword(value);
   };
+
   const clearErrors = () => {
     setError("");
   };
-  const apiLogin = "https://6539dce6e3b530c8d9e8c413.mockapi.io/car-rental/user";
+
   const history = useNavigate();
+  const { login } = useAuthentication();
 
   const handleLoginClick = async (event) => {
     event.preventDefault();
+
     if (!username || !password) {
       setError("Vui lòng nhập đầy đủ thông tin.");
+      return;
+    }
+
+    // Kiểm tra xem tên người dùng có tồn tại hay không
+    const userExists = await doesUserExist(username);
+
+    if (!userExists) {
+      setError("Tên đăng nhập không tồn tại.");
       return;
     }
 
@@ -33,26 +56,21 @@ function Login() {
     };
 
     try {
-      const response = await fetch(apiLogin, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestData),
-      });
+      const isSuccess = await loginUser(requestData);
 
-      if (response.ok) {
+      if (isSuccess) {
+        login(requestData);
         Cookies.set("isLoggedIn", "true", { expires: 1 });
         Cookies.set("username", username, { expires: 1 });
         history(-1);
       } else {
-        setError("Lỗi đăng nhập. Vui lòng kiểm tra tên đăng nhập và mật khẩu.");
-        console.log(error);
+        setError("Đăng nhập không thành công. Vui lòng kiểm tra lại thông tin đăng nhập.");
       }
     } catch (error) {
-      setError("Lỗi kết nối: " + error.message);
+      setError(error.message);
     }
   };
+
 
   const handlePasswordRecovery = async (event) => {
     event.preventDefault();
@@ -66,26 +84,12 @@ function Login() {
     };
 
     try {
-      const response = await fetch("https://6539dce6e3b530c8d9e8c413.mockapi.io/car-rental/user", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(recoveryData),
-      });
-
-      if (response.ok) {
-        const recoveredPassword = await response.json();
-        alert(`Mật khẩu của bạn là: ${recoveredPassword.password}`);
-      } else {
-        setError("Lỗi yêu cầu lấy lại mật khẩu. Vui lòng thử lại.");
-        console.log(error);
-      }
+      const recoveredPassword = await recoverPassword(recoveryData);
+      alert(`Mật khẩu của bạn là: ${recoveredPassword}`);
     } catch (error) {
-      setError("Lỗi kết nối: " + error.message);
+      setError(error.message);
     }
   };
-
 
   return (
     <Layout>
