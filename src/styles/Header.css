@@ -107,3 +107,8 @@
 .dropdown-content button {
   font-size: 20px;
 }
+.header .user-login{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

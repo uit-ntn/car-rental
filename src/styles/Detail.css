@@ -1,50 +1,75 @@
-
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
 .detail-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin: auto;
-  }
-  
-  .car-avatar {
-    display: grid;
-    grid-template-columns: 1fr 1fr; 
-    gap : 20px;
-    grid-template-areas:
-     
-      "main other-1"
-      "main other-2"
-      "main other-3";
-  }
-  
-  .main-avatar-fix {
-    grid-area: main;
-    
-  }
-  
-  .car-avatar-1-fix {
-    grid-area: other-1;
-  }
-  
-  .car-avatar-2-fix {
-    grid-area: other-2;
-  }
-  
-  .car-avatar-3-fix {
-    grid-area: other-3;
-  }
-  
-  .car-avatar-1-fix,
-  .car-avatar-2-fix,
-  .car-avatar-3-fix {
-    width: 200px;
-    height: 150px; 
-  }
-  
-  .car-avatar-1-fix img,
-  .car-avatar-2-fix img,
-  .car-avatar-3-fix img {
-    width: 100%;
-    height: 100%;
-  }
-  
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 50px;
+  grid-template-areas:
+    "avatar rent-box"
+    "descreption descreption";
+}
+
+.car-avatar {
+  grid-area: avatar;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  grid-template-areas:
+
+    "main other-1 buy"
+    "main other-2 buy"
+    "main other-3 buy";
+}
+
+.main-avatar-fix {
+  grid-area: main;
+  width: 600px;
+  height: 470px;
+  border: 1px solid black;
+  border-radius: 5px;
+
+}
+.main-avatar-fix img{
+  width: 100%;
+  height: 100%;
+}
+
+.car-avatar-1-fix {
+  grid-area: other-1;
+}
+
+.car-avatar-2-fix {
+  grid-area: other-2;
+}
+
+.car-avatar-3-fix {
+  grid-area: other-3;
+}
+
+.car-avatar-1-fix,
+.car-avatar-2-fix,
+.car-avatar-3-fix {
+  width: 200px;
+  height: 150px;
+}
+
+.car-avatar-1-fix img,
+.car-avatar-2-fix img,
+.car-avatar-3-fix img {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  border: 1px solid black;
+}
+
+.detail-container .rent-box {
+  grid-area: rent-box;
+  background-color: #f7fbff;
+}
+.rent-box h2{
+  font-size: 50px;
+}

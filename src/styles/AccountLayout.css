@@ -1,0 +1,15 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.account-layout-container .main-content {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    grid-template-areas:
+        "sidebar main-content"
+        "sidebar others-content";
+    margin: 50px;
+    gap: 50px;
+}

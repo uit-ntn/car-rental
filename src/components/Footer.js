@@ -17,20 +17,20 @@ function Footer() {
                 </li>
                 <li className="footer-path">
                     <div className="privacy">
-                        <h5>chính sách và quy định</h5>
-                        <p>quy chế hoạt động</p>
+                        <h5>Chính sách và quy định</h5>
+                        <p>Quy chế hoạt động</p>
                         <p>Bảo mật thông tin</p>
                         <p>Giải quyết tranh chấp</p>
                     </div>
                     <div className="explore">
-                        <h5>tìm hiểu thêm</h5>
+                        <h5>Tìm hiểu thêm</h5>
                         <p>Hướng dẫn chung</p>
                         <p>Hướng dẫn đặt xe</p>
                         <p>Hướng dẫn thanh toán</p>
                         <p>Hỏi và trả lời</p>
                     </div>
                     <div className="about">
-                        <h5>về Car Rental</h5>
+                        <h5>Về Car Rental</h5>
                         <p>Car Rental blog</p>
                         <p>Tuyển dụng</p>
                     </div>
