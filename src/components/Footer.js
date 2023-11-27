@@ -1,5 +1,7 @@
 import React from "react";
-import "../styles/Footer.css"
+import { Link } from "react-router-dom";
+import "../styles/Footer.css";
+
 function Footer() {
     return (
         <div className="footer">
@@ -18,25 +20,26 @@ function Footer() {
                 <li className="footer-path">
                     <div className="privacy">
                         <h5>Chính sách và quy định</h5>
-                        <p>Quy chế hoạt động</p>
-                        <p>Bảo mật thông tin</p>
-                        <p>Giải quyết tranh chấp</p>
+                        <Link to="/privacy">Quy chế hoạt động</Link>
+                        <Link to="/privacy">Bảo mật thông tin</Link>
+                        <Link to="/privacy">Giải quyết tranh chấp</Link>
                     </div>
                     <div className="explore">
                         <h5>Tìm hiểu thêm</h5>
-                        <p>Hướng dẫn chung</p>
-                        <p>Hướng dẫn đặt xe</p>
-                        <p>Hướng dẫn thanh toán</p>
-                        <p>Hỏi và trả lời</p>
+                        <Link to="/explore">Hướng dẫn chung</Link>
+                        <Link to="/explore">Hướng dẫn đặt xe</Link>
+                        <Link to="/expore">Hướng dẫn thanh toán</Link>
+                        <Link to="/explore">Hỏi và trả lời</Link>
                     </div>
                     <div className="about">
                         <h5>Về Car Rental</h5>
-                        <p>Car Rental blog</p>
-                        <p>Tuyển dụng</p>
+                        <Link to="/about">Car Rental blog</Link>
+                        <Link to="/recuit">Tuyển dụng</Link>
                     </div>
                 </li>
             </ul>
         </div>
-    )
+    );
 }
+
 export default Footer;
