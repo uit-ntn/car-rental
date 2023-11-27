@@ -39,7 +39,8 @@ const Detail = () => {
 
   const calculateTotalPrice = () => {
     const pricePerDay = carData.price;
-    return pricePerDay * totalDays;
+    return pricePerDay * totalDays
+    //+ khuyến mãi ;
   };
 
   const RentBtnClick = () => {
@@ -99,7 +100,7 @@ const Detail = () => {
                 <span>{totalDays}</span>
               </div>
               <div>
-                Tổng tiền: {calculateTotalPrice()}K
+                Tổng tiền: {calculateTotalPrice()}K 
               </div>
             </div>
             <button onClick={RentBtnClick}>
