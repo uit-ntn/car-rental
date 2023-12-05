@@ -1,0 +1,94 @@
+* {
+    padding: 0;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+.account-container {
+    padding: 30px;
+    border: 1px solid black;
+    border-radius: 5px;
+    display: grid;
+    grid-template-areas: "account-header account-header account-header"
+        "avt-box user-info user-info";
+}
+
+.account-header {
+    grid-area: account-header;
+    display: flex;
+    justify-content: space-between;
+}
+
+.account-update-btn {
+    padding: 5px;
+    background-color: black;
+    color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+
+.account-info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.account-info-item input {
+    margin: 20px auto;
+    align-self: center;
+    align-content: center;
+}
+
+.account-info-value input {
+    padding: 5px;
+    width: 200px;
+}
+
+.account-avt-box {
+    grid-area: avt-box;
+    margin: 20px 0;
+    border: 1px solid;
+    width: 300px;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.account-avt-box .account-avt-fix {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: auto;
+    flex-direction: column;
+}
+
+
+.account-avt-box .account-avt-fix img {
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+    border: 1px solid black;
+}
+
+.account-avt-box .user-fullname {
+    text-align: center;
+    margin: 20px 0;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.account-avt-box .account-avt-fix input[type="file"] {
+    text-align: center;
+}
+
+.account-info-user {
+    grid-area: user-info;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 0 20px;
+    margin: 20px;
+}

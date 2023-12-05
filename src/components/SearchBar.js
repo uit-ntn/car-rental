@@ -6,66 +6,48 @@ export default function SearchBar() {
     const [isSelfDrivingSelected, setIsSelfDrivingSelected] = useState(true);
     const [pickupDate, setPickupDate] = useState('');
     const [returnDate, setReturnDate] = useState('');
-    const [isSearchAllowed, setIsSearchAllowed] = useState(false);
     const [searchResults, setSearchResults] = useState();
-    const [isDriverSelected, setIsDriverSelected] = useState(false);
+    const [selectedButton, setSelectedButton] = useState("self-driving");
 
     const handlePickupDateChange = (event) => {
         const newPickupDate = event.target.value;
         setPickupDate(newPickupDate);
         validateDateRange(newPickupDate, returnDate);
-        updateSearchAllowed();
     };
 
     const handleReturnDateChange = (event) => {
         const newReturnDate = event.target.value;
         setReturnDate(newReturnDate);
         validateDateRange(pickupDate, newReturnDate);
-        updateSearchAllowed();
     };
 
-    // Kiểm tra khoảng thời gian hợp lệ
     const validateDateRange = (start, end) => {
-        if (start && end && new Date(end) > new Date(start)) {
-            console.log('Khoảng thời gian hợp lệ');
-            return true;
-        } else {
-            console.log('Khoảng thời gian không hợp lệ');
-            return false;
-        }
+        return start && end && new Date(end) > new Date(start);
     };
 
-    // Cập nhật khả năng tìm kiếm
-    const updateSearchAllowed = () => {
-        setIsSearchAllowed(hasRequiredInput());
-    };
-
-    // Yêu cầu nhập đầy đủ thông tin
-    const hasRequiredInput = () => {
-        return pickupDate && returnDate;
-    };
-
-    // Chuyển đổi giữa lựa chọn tự lái và có tài xế
     const handleToggle = (isSelfDriving) => {
         setIsSelfDrivingSelected(isSelfDriving);
-        setIsDriverSelected(!isSelfDriving);
-        setIsSearchAllowed(false);
+        setSelectedButton(isSelfDriving ? "self-driving" : "with-driver");
     };
 
-    // Xử lý tìm kiếm dựa trên lựa chọn đã chọn
     const handleSearch = () => {
-        if (isSearchAllowed) {
-            // Địa chỉ API
+        if (hasRequiredInput()) {
             const apiUrl = "https://6539dce6e3b530c8d9e8c413.mockapi.io/car-rental/car";
+            const queryParams = `?isSelfDriving=${isSelfDrivingSelected ? 1 : 0}`;
 
-            // Xây dựng tham số truy vấn dựa trên thông tin người dùng nhập
-            const queryParams = `?pickupDate=${pickupDate}&returnDate=${returnDate}&isSelfDriving=${isSelfDrivingSelected ? 1 : 0}`;
+            if (isSelfDrivingSelected) {
+                queryParams += `&pickupDate=${pickupDate}&returnDate=${returnDate}`;
+            } else {
+                const pickupPoint = document.getElementsByName("pick-up-point")[0].value;
+                const destinationPoint = document.getElementsByName("destination-point")[0].value;
+                queryParams += `&pickupPoint=${pickupPoint}&destinationPoint=${destinationPoint}`;
+                const isRoundTrip = document.getElementsByName("round-trip")[0].checked;
+                queryParams += `&isRoundTrip=${isRoundTrip ? 1 : 0}`;
+            }
 
-            // Thực hiện cuộc gọi API
             fetch(apiUrl + queryParams)
                 .then((response) => response.json())
                 .then((data) => {
-                    // Cập nhật trạng thái với kết quả lấy được
                     setSearchResults(data);
                 })
                 .catch((error) => console.error("Lỗi khi lấy dữ liệu:", error));
@@ -74,24 +56,47 @@ export default function SearchBar() {
         }
     };
 
+    const hasRequiredInput = () => {
+        if (isSelfDrivingSelected) {
+            return pickupDate && returnDate;
+        } else {
+            const pickupPoint = document.getElementsByName("pick-up-point")[0].value;
+            const destinationPoint = document.getElementsByName("destination-point")[0].value;
+            return pickupDate && returnDate && pickupPoint && destinationPoint;
+        }
+    };
+
     return (
         <div>
             <div className="search-options">
                 <div className="search-options-toggle">
-                    <button onClick={() => handleToggle(true)}>Xe tự lái</button>
-                    <button onClick={() => handleToggle(false)}>Xe có tài xế</button>
+                    <button
+                        onClick={() => handleToggle(true)}
+                        className={selectedButton === "self-driving" ? "selected" : ""}
+                    >
+                        Xe tự lái
+                    </button>
+                    <button
+                        onClick={() => handleToggle(false)}
+                        className={selectedButton === "with-driver" ? "selected" : ""}
+                    >
+                        Xe có tài xế
+                    </button>
                 </div>
 
-                {isSelfDrivingSelected && (
-                    <div className="search-input self-driving">
-                        <div className="location-input">
-                            <p>Địa điểm nhận xe</p>
-                            <input
-                                type="text"
-                                name="location"
-                                placeholder="Nhập địa điểm"
-                            ></input>
-                        </div>
+                {(isSelfDrivingSelected || !isSelfDrivingSelected) && (
+                    <div className={`search-input ${isSelfDrivingSelected ? 'self-driving' : 'car-with-driver'}`}>
+                        {isSelfDrivingSelected && (
+                            <div className="location-input">
+                                <p>Địa điểm nhận xe</p>
+                                <input
+                                    type="text"
+                                    name="location"
+                                    placeholder="Nhập địa điểm"
+                                />
+                            </div>
+                        )}
+
                         <div className="rental-period-input-box">
                             <h3>THỜI GIAN THUÊ</h3>
                             <div className="rental-period-input">
@@ -102,7 +107,7 @@ export default function SearchBar() {
                                         name="pickupDate"
                                         value={pickupDate}
                                         onChange={handlePickupDateChange}
-                                    ></input>
+                                    />
                                 </div>
                                 <div>
                                     <p>Thời gian trả xe</p>
@@ -111,81 +116,48 @@ export default function SearchBar() {
                                         name="returnDate"
                                         value={returnDate}
                                         onChange={handleReturnDateChange}
-                                    ></input>
+                                    />
                                 </div>
                             </div>
                         </div>
-                        <div className="search-btn">
-                            <button onClick={handleSearch}>Tìm xe</button>
-                        </div>
-                    </div>
-                )}
-
-                {isDriverSelected && (
-                    <div className="car-with-driver">
-                        <div className="route-input">
-                            <div className="pick-up-box">
-                                <div className="pick-up-point">
-                                    <p>Điểm đón</p>
-                                    <input
-                                        type="text"
-                                        name="pick-up-point"
-                                        placeholder="Nhập địa điểm cụ thể"
-                                    ></input>
-                                </div>
-                                <div className="destination-point">
-                                    <p>Điểm đến</p>
-                                    <input
-                                        type="text"
-                                        name="destination-point"
-                                        placeholder="Nhập địa điểm cụ thể"
-                                    ></input>
-                                </div>
-                            </div>
-                            <div className="is-round-trip">
-                                <p>Có khứ hồi</p>
-                                <input type="checkbox" name="round-trip"></input>
-                            </div>
-                            <div className="rental-period-input-box">
-                                <h3>THỜI GIAN THUÊ</h3>
-                                <div className="rental-period-input">
-                                    <div>
-                                        <p>Thời gian nhận xe</p>
+                        {!isSelfDrivingSelected && (
+                            <div className="route-input">
+                                <div className="pick-up-box">
+                                    <div className="pick-up-point">
+                                        <p>Điểm đón</p>
                                         <input
-                                            type="date"
-                                            name="pickupDate"
-                                            value={pickupDate}
-                                            onChange={handlePickupDateChange}
-                                        ></input>
+                                            type="text"
+                                            name="pick-up-point"
+                                            placeholder="Nhập địa điểm cụ thể"
+                                        />
                                     </div>
-                                    <div>
-                                        <p>Thời gian trả xe</p>
+                                    <div className="destination-point">
+                                        <p>Điểm đến</p>
                                         <input
-                                            type="date"
-                                            name="returnDate"
-                                            value={returnDate}
-                                            onChange={handleReturnDateChange}
+                                            type="text"
+                                            name="destination-point"
+                                            placeholder="Nhập địa điểm cụ thể"
                                         />
                                     </div>
                                 </div>
+                                <div className="is-round-trip">
+                                    <p>Có khứ hồi</p>
+                                    <input type="checkbox" name="round-trip" />
+                                </div>
                             </div>
-                        </div>
+                        )}
                         <div className="search-btn">
                             <button onClick={handleSearch}>Tìm xe</button>
                         </div>
                     </div>
                 )}
             </div>
-            {
-                searchResults && (
-
-                    <div className="result-search">
-                        <h3>Kết quả tìm kiếm</h3>
-                        <CarList cars={searchResults} />
-                    </div>
-                )
-            }
+            {searchResults && (
+                <div className="result-search">
+                    <h3>Kết quả tìm kiếm</h3>
+                    <CarList cars={searchResults} />
+                </div>
+            )}
         </div>
     );
 }
-

@@ -26,10 +26,10 @@ function Footer() {
                     </div>
                     <div className="explore">
                         <h5>Tìm hiểu thêm</h5>
-                        <Link to="/explore">Hướng dẫn chung</Link>
-                        <Link to="/explore">Hướng dẫn đặt xe</Link>
-                        <Link to="/expore">Hướng dẫn thanh toán</Link>
-                        <Link to="/explore">Hỏi và trả lời</Link>
+                        <Link to="/instructions">Hướng dẫn chung</Link>
+                        <Link to="/instructions">Hướng dẫn đặt xe</Link>
+                        <Link to="/instructions">Hướng dẫn thanh toán</Link>
+                        <Link to="/instructions">Hỏi và trả lời</Link>
                     </div>
                     <div className="about">
                         <h5>Về Car Rental</h5>

@@ -1,60 +1,61 @@
-*{
+* {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
+
 .detail-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 100px 1fr;
+  gap: 100px;
   margin: 50px;
   grid-template-areas:
-    "avatar rent-box"
-    "descreption descreption";
+    "avatar avatar avatar"
+    "description description rent-box"
+    "feature feature feature"
+    "other-amenities other-amenities other-amenities";
 }
 
+
+/* car avatar section */
 .car-avatar {
   grid-area: avatar;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px;
+  grid-template-columns: 1fr 500px;
+  grid-template-rows: 200px 200px;
+  gap: 0 10px;
   grid-template-areas:
+    "main other"
+    "main other"
+}
 
-    "main other-1 buy"
-    "main other-2 buy"
-    "main other-3 buy";
+.other-avatar {
+  grid-area: other;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .main-avatar-fix {
   grid-area: main;
-  width: 600px;
-  height: 470px;
+  width: 95%;
+  height: 500px;
   border: 1px solid black;
   border-radius: 5px;
-
 }
-.main-avatar-fix img{
+
+.main-avatar-fix img {
   width: 100%;
   height: 100%;
 }
-
-.car-avatar-1-fix {
-  grid-area: other-1;
-}
-
-.car-avatar-2-fix {
-  grid-area: other-2;
-}
-
-.car-avatar-3-fix {
-  grid-area: other-3;
-}
-
 .car-avatar-1-fix,
 .car-avatar-2-fix,
 .car-avatar-3-fix {
-  width: 200px;
-  height: 150px;
+  width: 45%;
+  margin: 10px;
+  height: 235px;
 }
 
 .car-avatar-1-fix img,
@@ -68,8 +69,161 @@
 
 .detail-container .rent-box {
   grid-area: rent-box;
-  background-color: #f7fbff;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 30px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
-.rent-box h2{
-  font-size: 50px;
+
+/* car description section */
+.car-description {
+  grid-area: description;
+}
+
+.car-description h3 {
+  font-weight: bold;
+  font-size: 30px;
+}
+
+.car-description p {
+  font-size: 20px;
+  margin: 20px 0;
+}
+
+/* rent box section */
+.rent-box h2 {
+  font-size: 40px;
+}
+
+.rent-box .date-time-form {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.rent-box .date-time-form div {
+  border: 2px solid gray;
+  padding: 5px;
+  background-color: aqua;
+}
+
+.rent-box .date-time-form p {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.rent-box .date-time-form input {
+  width: 200px;
+  padding: 5px;
+  font-size: 20px;
+  margin: 5px 0;
+}
+
+.rent-box .location {
+  padding: 10px 5px;
+  border: 2px solid black;
+  border-radius: 5px;
+  background-color: aqua;
+}
+
+.rent-box .price-form-container {
+  background-color: aqua;
+  margin: 20px 0;
+  padding: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.rent-box .price-form-container .price-items {
+  display: flex;
+  justify-content: space-between;
+}
+
+.rent-box .price-form-container .rent-btn {
+  text-align: center;
+}
+
+.rent-box .price-form-container button {
+  margin: auto;
+}
+
+.rent-box .rent-actions {
+  display: flex;
+  justify-content: space-around;
+}
+
+.rent-box .rent-actions button {
+  height: 40px;
+  padding: 5px;
+  font-size: 25px;
+  background-color: aquamarine;
+  border-radius: 5px;
+}
+
+/* feature section */
+.car-feature-container {
+  height: 100%;
+  min-width: 100%;
+  grid-area: feature;
+}
+
+.car-feature-container hr {
+  margin: 20px;
+}
+
+.car-feature-container h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 40px;
+}
+
+.car-feature-box {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.car-feature-box .car-feature-icon-fix {
+  width: 100px;
+  height: 100px;
+}
+
+.car-feature-box .car-feature-icon-fix img {
+  width: 100%;
+  height: 100%;
+}
+
+.car-feature-box .car-feature-item {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  grid-template-rows: 50px 1fr;
+  grid-template-areas: "feature-icon feature-title"
+    "feature-icon feature-content";
+  gap: 5px;
+}
+
+.car-feature-box .car-feature-icon-fix {
+  grid-area: feature-icon;
+}
+
+.car-feature-box .car-feature-item h5 {
+  grid-area: feature-title;
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+.car-feature-box .car-feature-item p {
+  grid-area: feature-content;
+  font-size: 20px;
+}
+
+/*car-other-amenities section*/
+.car-other-amenities {
+  grid-area: other-amenities;
+  margin: 100px;
+}
+
+.car-other-amenities h2 {
+  text-align: center;
+  font-size: 40px;
+  font-weight: bold;
 }

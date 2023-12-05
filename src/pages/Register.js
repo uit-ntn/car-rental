@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import Layout from "../components/Layout.js";
-import { checkUsernameExists, checkEmailExists, registerUser } from "../apis/authApi.js";
+import Layout from "../components/Layout";
+import { checkUsernameExists, checkEmailExists, registerUser } from "../apis/authApi";
 import '../styles/Register.css';
 
 function Register() {
@@ -59,23 +59,21 @@ function Register() {
       }
 
       const registrationData = await registerUser({
-        username: username,
-        password: password,
-        email: email,
+        username,
+        password,
+        email,
       });
 
       if (registrationData.success) {
         alert("Đăng ký thành công!");
         navigate('/login');
       } else {
-        alert("Đăng ký thất bại: " + registrationData.message);
+        alert("Đăng ký không thành công!");
       }
     } catch (error) {
       console.error('Lỗi khi đăng ký:', error);
     }
   };
-
-
 
   return (
     <Layout>
@@ -83,7 +81,7 @@ function Register() {
         <form>
           <h2>Register</h2>
           <div>
-            <p htmlFor="username">Tên đăng nhập</p>
+            <label htmlFor="username">Tên đăng nhập</label>
             <input
               type="text"
               id="username"
@@ -92,7 +90,7 @@ function Register() {
             />
           </div>
           <div>
-            <p htmlFor="email">Email:</p>
+            <label htmlFor="email">Email:</label>
             <input
               type="email"
               id="email"
@@ -102,7 +100,7 @@ function Register() {
             />
           </div>
           <div>
-            <p htmlFor="password">Mật khẩu:</p>
+            <label htmlFor="password">Mật khẩu:</label>
             <input
               type="password"
               id="password"
@@ -112,7 +110,7 @@ function Register() {
             <p className="check-password">{passwordStrength}</p>
           </div>
           <div>
-            <p htmlFor="confirmPassword">Xác nhận lại mật khẩu:</p>
+            <label htmlFor="confirmPassword">Xác nhận lại mật khẩu:</label>
             <input
               type="password"
               id="confirmPassword"
@@ -130,7 +128,6 @@ function Register() {
             <p>
               I agree to car rental's policy
             </p>
-
           </div>
           <div className="register-btn">
             <button type="button" onClick={handleRegister}>
@@ -138,7 +135,9 @@ function Register() {
             </button>
           </div>
           <div className="line"></div>
-          <div className="have-an-account">Bạn đã có tài khoản <span><Link to="/login">Đăng nhập</Link></span></div>
+          <div className="have-an-account">
+            Bạn đã có tài khoản <span><Link to="/login">Đăng nhập</Link></span>
+          </div>
         </form>
       </div>
     </Layout>
