@@ -8,18 +8,17 @@
     margin-top: 50px;
     min-height: 200px;
     border-top: 1px solid gray;
-    background-color: rgb(64,180,140);
+    background-color: rgb(64, 180, 140);
+    padding: 20px;
 }
 
-.footer-info{
-    margin: 0 20px;
+.footer-info {
     display: flex;
     flex-direction: column;
-
 }
+
 .footer .phone-contact,
-.footer .email-contact
-{
+.footer .email-contact {
     margin: 20px 0;
 }
 
@@ -28,7 +27,6 @@
     display: flex;
     list-style: none;
     justify-content: space-between;
-    margin: 20px;
 }
 
 .footer-path {
@@ -44,8 +42,10 @@
     justify-content: flex-start;
 }
 
-.footer-path div>* {
+.footer-path div > * {
     padding: 10px;
+    text-decoration: none;
+    color: black;
 }
 
 .footer-path div h5 {

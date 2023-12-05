@@ -15,34 +15,40 @@
 }
 
 .search-options-toggle button {
-    height: 60px;
-    width: 180px;
+    height: 40px;
+    width: 150px;
     font-size: 20px;
     font-weight: bold;
+    background-color: transparent;
     color: grey;
+}
+
+.search-options-toggle button.selected {
+    background-color: black;
+    color: white;
 }
 
 .search-input.self-driving,
 .car-with-driver {
     margin: auto;
-    width: 800px;
+    width: 600px;
     border-radius: 20px;
     border: 1px solid black;
     padding: 20px 20px 0 20px;
-    background-color: whitesmoke;
+    background-color: #9ce1ed;
 }
 
 .search-input.self-driving .location-input p {
-    font-size: 30px;
+    font-size: 25px;
     font-weight: bold;
 }
 
 .search-input.self-driving .location-input input {
-    width: 760px;
-    height: 50px;
-    font-size: 25px;
-    padding: 20px;
-    margin: 10px 0;
+    width: 560px;
+    height: 25px;
+    font-size: 15px;
+    padding: 5px;
+    margin: 5px 0;
 }
 
 .search-options .search-btn {
@@ -59,11 +65,20 @@
     color: white;
     border-radius: 5px;
     border: #5fcf86;
+    transition: background-color 0.3s ease;
+
+}
+.search-options .search-btn button:hover{
+    transform: scale(1.1);
+    background-color: rgb(0, 14, 72);
+    color: white;
+    font-weight: bold;
+    
 }
 
 .rental-period-input-box h3 {
     text-align: center;
-    margin: 20px;
+    margin: 10px;
 
 }
 
@@ -73,13 +88,13 @@
 }
 
 .rental-period-input-box h3 {
-    font-size: 30px;
+    font-size: 20px;
 }
 
 .rental-period-input-box input {
-    width: 350px;
-    height: 50px;
-    font-size: 25px;
+    width: 250px;
+    height: 30px;
+    font-size: 20px;
     padding: 5px;
 }
 
@@ -94,36 +109,42 @@
 }
 
 .car-with-driver .pick-up-box {
+    margin: 20px 0;
     display: flex;
     justify-content: space-between;
 }
 
 .pick-up-box .destination-point input,
 .pick-up-box .pick-up-point input {
-    width: 350px;
-    height: 50px;
-    font-size: 25px;
+    width: 250px;
+    height: 30px;
+    font-size: 15px;
     padding: 10px;
     margin: 10px 0;
 }
+
 .pick-up-box .destination-point p,
 .pick-up-box .pick-up-point p {
-    font-size: 30px;
+    font-size: 25px;
     font-weight: bold;
 }
-.route-input .is-round-trip{
-    margin : 20px 0;
+
+.route-input .is-round-trip {
+    margin: 10px 0;
     display: flex;
 }
+
 .route-input .is-round-trip input {
-    margin: 0 20px;
+    margin: 0 10px;
     width: 20px;
     height: 20px;
 }
+
 .route-input .is-round-trip p {
     font-size: 20px;
 }
-.result-search h3{
+
+.result-search h3 {
     text-align: center;
     font-weight: bold;
     font-size: 40px;

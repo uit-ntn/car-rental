@@ -70,19 +70,21 @@ export const registerUser = async (userData) => {
 // hàm đăng nhập
 export const loginUser = async (requestData) => {
   try {
-    const response = await fetch(BASE_URL, {
-      method: "POST",
+    const url = `${BASE_URL}?username=${requestData.username}&password=${requestData.password}`;
+    
+    const response = await fetch(url, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(requestData),
     });
 
     if (response.ok) {
       const userData = await response.json();
 
-      // Lưu ID vào cookies sau khi đăng nhập thành công
-      Cookies.set("userId", userData.id);
+      // Lưu ID và username vào cookies sau khi đăng nhập thành công
+      Cookies.set("userId", userData.userId);
+      Cookies.set("username", userData.username, { sameSite: 'strict', secure: true });
 
       return true;
     } else {
@@ -93,6 +95,7 @@ export const loginUser = async (requestData) => {
     throw new Error(`Lỗi kết nối: ${error.message}`);
   }
 };
+
 export const recoverPassword = async (recoveryData) => {
   try {
     const response = await fetch(BASE_URL, {

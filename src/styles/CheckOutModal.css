@@ -1,0 +1,102 @@
+.checkout-modal-overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+
+/*checkout content section*/
+.checkout-modal-content {
+    max-height: 90vh;
+    overflow-y: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 500px;
+}
+
+.checkout-modal-content .checkout-modal-title {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 30px;
+}
+
+.checkout-modal-section {
+    margin: 20px 0;
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.checkout-modal-section h3 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.checkout-modal-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.checkout-modal-section input {
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+/*payment method section*/
+.checkout-payment-method {
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+.checkout-payment-method select,
+.checkout-payment-method option {
+    padding: 5px;
+}
+
+.checkout-payment-method h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.payment-cardnumber-input,
+.payment-option {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.payment-cardnumber-input input {
+    padding: 5px;
+}
+
+.payment-option .payment-notify {
+    font-style: italic;
+    margin: auto;
+    font-weight: bold;
+}
+
+
+/*checkout action section*/
+.checkout-actions {
+    display: flex;
+    justify-content: space-around;
+}
+.checkout-actions button{
+    background-color :aqua;
+    font-size: 20px;
+    padding: 5px;
+    border-radius: 5px;
+    width: 200px;
+}

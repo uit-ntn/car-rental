@@ -39,7 +39,7 @@ const ProductCard = ({ id, image, name, address, price, star, trip }) => (
 
         <span className="trip">{trip} chuyến</span>
       </div>
-      <div className="price">{price} USD</div>
+      <div className="price">{price}k VND</div>
     </div>
   </div>
 );
