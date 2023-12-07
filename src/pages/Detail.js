@@ -171,7 +171,7 @@ useEffect(() => {
                 <span>{totalPrice} VNĐ</span>
               </div>
             </div>
-            <div className="rent-actions price-items">
+            <div className="rent-actions price-items">n
               <button onClick={addToCart}>Thêm vào giỏ hàng</button>
               <button onClick={rentBtnClick}>Chọn thuê</button>
             </div>

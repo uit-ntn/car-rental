@@ -6,10 +6,12 @@
 
 .account-layout-container .main-content {
     display: grid;
-    grid-template-columns: 400px 1fr;
+    grid-template-columns: 300px 1fr;
     grid-template-areas:
-        "sidebar main-content"
-        "sidebar others-content";
-    margin: 50px;
-    gap: 50px;
+        "sidebar main-content";
+    gap: 0 20px;
+}
+
+.account-layout-container .content {
+    grid-area: main-content;
 }
