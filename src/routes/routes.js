@@ -10,7 +10,11 @@ import Instructions from "../pages/Instructions";
 import Cart from "../pages/Cart";
 import ResetPW from "../pages/ResetPW";
 import Transaction from "../pages/Transaction";
-
+import Dashboard from "../pages/Dashboard";
+import Bookings from "../pages/Bookings";
+import SellCar from "../pages/SellCar";
+import Settings from "../pages/Settings";
+import { Navigate } from "react-router-dom";
 const publicRoutes = [
   { path: '/', page: Home },
   { path: '/login', page: Login },
@@ -22,11 +26,21 @@ const publicRoutes = [
 
 const privateRoutes = [
   { path: '/cart/:userId', page: Cart },
-  { path: '/admin', page: Admin },
   { path: '/owner/register/:userId', page: Owner_Register },
   { path: '/account/:userId', page: Account },
-  {path : `resetpw`,page : ResetPW},
-  {path:`transaction`,page : Transaction}
-];
+  { path: `resetpw`, page: ResetPW },
+  { path: `transaction`, page: Transaction }]
 
-export { privateRoutes, publicRoutes };
+  const RedirectDashboard = () => {
+    return <Navigate to="/admin/dashboard" />;
+  };
+  const adminRoutes = [
+    { path: '/admin', element: <RedirectDashboard /> },
+    { path: '/admin/dashboard', page: Dashboard },
+    { path: '/admin/bookings', page: Bookings },
+    { path: '/admin/sell-car', page: SellCar },
+    { path: '/admin/settings', page: Settings },
+  ];
+  
+
+export { privateRoutes, publicRoutes, adminRoutes };

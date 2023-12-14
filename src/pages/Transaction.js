@@ -4,7 +4,6 @@ import AccountLayout from "../components/AccountLayout";
 function Transaction() {
     return (
         <AccountLayout>
-
         </AccountLayout>
     )
 }
