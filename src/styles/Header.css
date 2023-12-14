@@ -12,10 +12,9 @@
   z-index: 1000;
   text-align: center;
   height: 100px;
-  background-color: rgb(64, 180, 140);
+  background-color: #01d293;
   border: 1px solid black;
   border-radius: 1px;
-  margin-bottom: 30px;
 }
 
 /*logo section*/

@@ -81,7 +81,7 @@ function Register() {
         <form>
           <h2>Register</h2>
           <div>
-            <label htmlFor="username">Tên đăng nhập</label>
+            <p htmlFor="username">Tên đăng nhập</p>
             <input
               type="text"
               id="username"
@@ -90,7 +90,7 @@ function Register() {
             />
           </div>
           <div>
-            <label htmlFor="email">Email:</label>
+            <p htmlFor="email">Email:</p>
             <input
               type="email"
               id="email"
@@ -100,7 +100,7 @@ function Register() {
             />
           </div>
           <div>
-            <label htmlFor="password">Mật khẩu:</label>
+            <p htmlFor="password">Mật khẩu:</p>
             <input
               type="password"
               id="password"
@@ -110,7 +110,7 @@ function Register() {
             <p className="check-password">{passwordStrength}</p>
           </div>
           <div>
-            <label htmlFor="confirmPassword">Xác nhận lại mật khẩu:</label>
+            <p htmlFor="confirmPassword">Xác nhận lại mật khẩu:</p>
             <input
               type="password"
               id="confirmPassword"

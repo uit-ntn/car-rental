@@ -5,10 +5,9 @@
 }
 
 .footer {
-    margin-top: 50px;
     min-height: 200px;
     border-top: 1px solid gray;
-    background-color: rgb(64, 180, 140);
+    background-color:#01d293;
     padding: 20px;
 }
 

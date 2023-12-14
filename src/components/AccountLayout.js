@@ -12,7 +12,6 @@ function AccountLayout({ children }) {
                 <div>{children}</div>
             </div>
         </div>
-        <Footer></Footer>
     </div>
     )
 }
