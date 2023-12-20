@@ -67,7 +67,6 @@ function Home() {
             <CarList cars={cars}></CarList>
           </div>
 
-<<<<<<< HEAD
           {/*instruction section*/}
           <div className="instruction-section">
             <div className="instruction-section-title">
@@ -89,7 +88,6 @@ function Home() {
                   <p>
                     <span>1</span>Đặt xe trên web Car Rental
                   </p>
-=======
 
 
                     {/* promo-section */}
@@ -169,7 +167,6 @@ function Home() {
                             </button>
                         </div>
                     </div>
->>>>>>> c7a82b555faa54a227a006c35242855fc4cde98d
                 </div>
               </li>
               <li>
