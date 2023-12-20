@@ -1,11 +1,15 @@
 import Header from "./Header";
 import Footer from "./Footer";
-import "../styles/Header.css"
+import NotifyModal from "../components/NotifyModal";
+
 function Layout({ children }) {
     return (
         <>
             <Header></Header>
             <span>{children}</span>
+            <div className="notify-section">
+                <NotifyModal></NotifyModal>
+            </div>
             <Footer></Footer>
         </>
     )

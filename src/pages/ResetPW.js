@@ -7,6 +7,7 @@ function ResetPW() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const ResetPWAPI = "";
 
   const handlePasswordChange = async (event) => {
     event.preventDefault();
@@ -16,7 +17,7 @@ function ResetPW() {
     }
 
     try {
-      const response = await fetch("", {
+      const response = await fetch(ResetPWAPI, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -45,7 +46,7 @@ function ResetPW() {
           <h3>Thay đổi mật khẩu</h3>
         </div>
         <div className="resetpw-input">
-          <label htmlFor="oldPassword">Nhập mật khẩu cũ</label>
+          <p htmlFor="oldPassword">Nhập mật khẩu cũ</p>
           <input
             type="password"
             id="oldPassword"
@@ -56,7 +57,7 @@ function ResetPW() {
           />
         </div>
         <div className="resetpw-input">
-          <label htmlFor="newPassword">Nhập mật khẩu mới</label>
+          <p htmlFor="newPassword">Nhập mật khẩu mới</p>
           <input
             type="password"
             id="newPassword"
@@ -67,7 +68,7 @@ function ResetPW() {
           />
         </div>
         <div className="resetpw-input">
-          <label htmlFor="confirmNewPassword">Nhập lại mật khẩu mới</label>
+          <p htmlFor="confirmNewPassword">Nhập lại mật khẩu mới</p>
           <input
             type="password"
             id="confirmNewPassword"

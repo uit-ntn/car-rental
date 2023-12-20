@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
 import Cookies from "js-cookie";
-import "../styles/Login.css";
 import { loginUser, recoverPassword, checkUsernameExists } from "../apis/authApi";
-import useAuthentication from "../hooks/useAuthentication";
+import { useAuth } from '../hooks/useAuthentication';
+import "../styles/Login.css"
 
 async function doesUserExist(username) {
   try {
@@ -16,11 +16,20 @@ async function doesUserExist(username) {
 }
 
 function Login() {
+  const { isLoggedIn, login } = useAuth();
+  const history = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [forgotPassword, setForgotPassword] = useState(false);
+
+  useEffect(() => {
+    // Nếu đã đăng nhập, chuyển hướng người dùng đến trang chính
+    if (isLoggedIn) {
+      history("/");
+    }
+  }, [isLoggedIn, history]);
 
   const setForgotPasswordMode = (value) => {
     clearErrors();
@@ -30,9 +39,6 @@ function Login() {
   const clearErrors = () => {
     setError("");
   };
-
-  const history = useNavigate();
-  const { login } = useAuthentication();
 
   const handleLoginClick = async (event) => {
     event.preventDefault();
@@ -62,7 +68,7 @@ function Login() {
         login(requestData);
         Cookies.set("isLoggedIn", "true", { expires: 1 });
         Cookies.set("username", username, { expires: 1 });
-        history(-1);
+        history("/");
       } else {
         setError("Đăng nhập không thành công. Vui lòng kiểm tra lại thông tin đăng nhập.");
       }
@@ -70,7 +76,6 @@ function Login() {
       setError(error.message);
     }
   };
-
 
   const handlePasswordRecovery = async (event) => {
     event.preventDefault();

@@ -1,3 +1,56 @@
 *{
-    
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.instructions-wrap {
+    font-family: 'Arial', sans-serif;
+}
+
+.instructions-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.instructions-header img {
+    width: 100px; 
+    height: auto;
+    margin-right: 15px;
+}
+
+.instructions-header h1 {
+    font-size: 1.5em;
+}
+
+.tabs {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.tabs button {
+    background-color: #4CAF50; /* Green background color */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.instructions-tab-content {
+    display: none;
+}
+
+.instructions-tab-content h2 {
+    color: #333;
+}
+
+.instructions-tab-content h3 {
+    color: #4CAF50;
+}
+
+.instructions-tab-content p {
+    line-height: 1.5;
+    color: #666;
 }

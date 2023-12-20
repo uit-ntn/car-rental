@@ -4,12 +4,25 @@
     box-sizing: border-box;
 }
 
+
 .account-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+
+/*info section*/
+.account-info-section {
     padding: 30px;
     border: 1px solid black;
     border-radius: 5px;
     display: grid;
-    grid-template-areas: "account-header account-header account-header"
+    gap: 0 20px;
+    grid-template-columns: 300px 1fr 1fr;
+    grid-template-areas:
+        "account-header account-header account-header"
         "avt-box user-info user-info";
 }
 
@@ -17,6 +30,15 @@
     grid-area: account-header;
     display: flex;
     justify-content: space-between;
+    border-bottom: 1px solid black;
+    padding-bottom: 20px;
+
+}
+
+.account-header button {
+    margin: 0 10px;
+    font-size: 20px;
+    padding: 5px 10px;
 }
 
 .account-update-btn {
@@ -52,6 +74,9 @@
     width: 300px;
     padding: 20px;
     border-radius: 5px;
+    background-color: #EEEEEE;
+    max-height: 300px;
+    align-self: center;
 }
 
 .account-avt-box .account-avt-fix {
@@ -91,4 +116,13 @@
     justify-content: space-evenly;
     padding: 0 20px;
     margin: 20px;
+    background-color: #EEEEEE;
+}
+
+
+/*driving lincese section*/
+.driving-license-container {
+    border:  1px solid black;
+    padding: 20px;
+    margin: 50px 0 ;
 }

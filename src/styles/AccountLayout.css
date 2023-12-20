@@ -9,9 +9,13 @@
     grid-template-columns: 300px 1fr;
     grid-template-areas:
         "sidebar main-content";
-    gap: 0 20px;
+    gap: 0 50px;
+    margin: 50px;
 }
 
+.account-layout-container .account-sidebar{
+    grid-area: sidebar;
+}
 .account-layout-container .content {
     grid-area: main-content;
 }

@@ -5,7 +5,6 @@ import Slider from "../components/Slider";
 import SearchBar from "../components/SearchBar";
 import "../styles/Home.css";
 import { Link } from "react-router-dom";
-import { queries } from "@testing-library/react";
 
 function Home() {
     const [cars, setCars] = useState([]);
@@ -63,7 +62,7 @@ function Home() {
 
                     {/*featured-car-section */}
                     <div className="featured-car-section">
-                        <h2>Xe Dành Cho Bạn</h2>
+                        <h2>Danh sách các xe</h2>
                         <CarList cars={cars}></CarList>
                     </div>
 

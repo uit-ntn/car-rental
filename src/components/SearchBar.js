@@ -8,6 +8,8 @@ export default function SearchBar() {
     const [returnDate, setReturnDate] = useState('');
     const [searchResults, setSearchResults] = useState();
     const [selectedButton, setSelectedButton] = useState("self-driving");
+    const [isFormValid, setIsFormValid] = useState(false);
+    const apiUrl = "https://6539dce6e3b530c8d9e8c413.mockapi.io/car-rental/car";
 
     const handlePickupDateChange = (event) => {
         const newPickupDate = event.target.value;
@@ -22,18 +24,20 @@ export default function SearchBar() {
     };
 
     const validateDateRange = (start, end) => {
-        return start && end && new Date(end) > new Date(start);
+        setIsFormValid(start && end && new Date(end) > new Date(start));
     };
 
     const handleToggle = (isSelfDriving) => {
         setIsSelfDrivingSelected(isSelfDriving);
         setSelectedButton(isSelfDriving ? "self-driving" : "with-driver");
+        setPickupDate('');
+        setReturnDate('');
+        setIsFormValid(false);
     };
 
     const handleSearch = () => {
-        if (hasRequiredInput()) {
-            const apiUrl = "https://6539dce6e3b530c8d9e8c413.mockapi.io/car-rental/car";
-            const queryParams = `?isSelfDriving=${isSelfDrivingSelected ? 1 : 0}`;
+        if (isFormValid) {
+            let queryParams = `?isSelfDriving=${isSelfDrivingSelected ? 1 : 0}`;
 
             if (isSelfDrivingSelected) {
                 queryParams += `&pickupDate=${pickupDate}&returnDate=${returnDate}`;
@@ -53,16 +57,6 @@ export default function SearchBar() {
                 .catch((error) => console.error("Lỗi khi lấy dữ liệu:", error));
         } else {
             alert("Vui lòng nhập đủ thông tin và chọn ngày hợp lệ");
-        }
-    };
-
-    const hasRequiredInput = () => {
-        if (isSelfDrivingSelected) {
-            return pickupDate && returnDate;
-        } else {
-            const pickupPoint = document.getElementsByName("pick-up-point")[0].value;
-            const destinationPoint = document.getElementsByName("destination-point")[0].value;
-            return pickupDate && returnDate && pickupPoint && destinationPoint;
         }
     };
 
