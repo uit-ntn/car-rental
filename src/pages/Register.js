@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 import Layout from "../components/Layout";
 import { checkUsernameExists, checkEmailExists, registerUser } from "../apis/authApi";
+import { useAuth } from "../hooks/useAuthentication";
 import '../styles/Register.css';
 
 function Register() {
@@ -13,13 +13,14 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [agreedToPolicy, setAgreedToPolicy] = useState(false);
   const navigate = useNavigate();
+  const { isLoggedIn } = useAuth();
 
   useEffect(() => {
-    const isLoggedIn = Cookies.get("isLoggedIn");
-    if (isLoggedIn === "true") {
+    // Nếu đã đăng nhập, chuyển hướng người dùng đến trang chính
+    if (isLoggedIn) {
       navigate('/');
     }
-  }, [navigate]); 
+  }, [isLoggedIn, navigate]);
 
   const checkPasswordStrength = (value) => {
     setPassword(value);

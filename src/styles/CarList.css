@@ -12,3 +12,24 @@
     margin: auto;
     list-style: none;
 }
+
+.filter-container {
+    margin: 20px auto;
+    text-align: center;
+}
+
+.filter-container label {
+    margin: 0 20px;
+    font-weight: bold;
+}
+
+.filter-container label select {
+    margin: 0 20px;
+    padding: 5px;
+}
+
+.filter-no-found{
+    text-align: center;
+    margin: 50px 0;
+    color: red;
+}

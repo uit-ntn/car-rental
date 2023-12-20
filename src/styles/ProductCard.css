@@ -35,8 +35,12 @@
 
 .product-card-actions .delivery,
 .product-card-actions .transmission {
+<<<<<<< HEAD
     padding: 0px 10px;
     margin: 0 5px;
+=======
+    padding: 5px 10px;
+>>>>>>> c7a82b555faa54a227a006c35242855fc4cde98d
     font-size: 15px;
     text-decoration: none;
     border-radius: 10px;
@@ -44,6 +48,10 @@
     font-weight: bold;
     text-align: center;
     background-color: aqua;
+<<<<<<< HEAD
+=======
+
+>>>>>>> c7a82b555faa54a227a006c35242855fc4cde98d
 }
 
 

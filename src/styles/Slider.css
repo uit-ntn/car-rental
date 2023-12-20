@@ -4,21 +4,13 @@
 }
 
 .slider {
-
-}
-
-.slider button {
-    width: 20px;
-    height: 20px;
-    background-color: blanchedalmond;
+    margin: 30px auto;
 }
 
 .slider .image-container {
-    width: 350px;
-    height: 250px;
-    display: flex;
+    width: 70%;
+    height: 500px;
     margin: auto;
-    justify-content: space-evenly;
 }
 
 .slider .image-container img {
@@ -26,4 +18,5 @@
     height: 100%;
     margin: 5px;
     border-radius: 5px;
+    border: 1px solid black;
 }

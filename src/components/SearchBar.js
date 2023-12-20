@@ -3,12 +3,14 @@ import CarList from "../components/CarList";
 import "../styles/SearchBar.css";
 
 export default function SearchBar() {
-  const [isSelfDrivingSelected, setIsSelfDrivingSelected] = useState(true);
-  const [pickupDate, setPickupDate] = useState("");
-  const [returnDate, setReturnDate] = useState("");
-  const [searchResults, setSearchResults] = useState();
-  const [selectedButton, setSelectedButton] = useState("self-driving");
-  const [location, setLocation] = useState('');
+    const [isSelfDrivingSelected, setIsSelfDrivingSelected] = useState(true);
+    const [pickupDate, setPickupDate] = useState('');
+    const [returnDate, setReturnDate] = useState('');
+    const [searchResults, setSearchResults] = useState();
+    const [selectedButton, setSelectedButton] = useState("self-driving");
+    const [isFormValid, setIsFormValid] = useState(false);
+    const [location, setLocation] = useState('');
+    const apiUrl = "http://127.0.0.1:8000/api/cars";
 
   const handlePickupDateChange = (event) => {
     const newPickupDate = event.target.value;
@@ -27,50 +29,41 @@ export default function SearchBar() {
     setLocation(newLocation);
   };
 
-  const validateDateRange = (start, end) => {
-    return start && end && new Date(end) > new Date(start);
-  };
+    const validateDateRange = (start, end) => {
+       setIsFormValid(start && end && new Date(end) > new Date(start));
+    };
 
-  const handleToggle = (isSelfDriving) => {
-    setIsSelfDrivingSelected(isSelfDriving);
-    setSelectedButton(isSelfDriving ? "self-driving" : "with-driver");
-  };
+    const handleToggle = (isSelfDriving) => {
+        setIsSelfDrivingSelected(isSelfDriving);
+        setSelectedButton(isSelfDriving ? "self-driving" : "with-driver");
+        setPickupDate('');
+        setReturnDate('');
+        setIsFormValid(false);
+    };
 
-  const handleSearch = () => {
-    if (hasRequiredInput()) {
-      const apiUrl = "http://127.0.0.1:8000/api/cars";
-       
-      console.log(pickupDate, returnDate, location);
-      fetch(apiUrl, {
-        method: "GET",
-      })
-        .then((res) => {
-          if (!res.ok) {  
-            console.log("Error!");
-            throw new Error(res.message);
+    const handleSearch = () => {
+        if (isFormValid) {
+            let queryParams = `?isSelfDriving=${isSelfDrivingSelected ? 1 : 0}`;
+            if (isSelfDrivingSelected) {
+              queryParams += `&pickupDate=${pickupDate}&returnDate=${returnDate}`;
+          } else {
+              const pickupPoint = document.getElementsByName("pick-up-point")[0].value;
+              const destinationPoint = document.getElementsByName("destination-point")[0].value;
+              queryParams += `&pickupPoint=${pickupPoint}&destinationPoint=${destinationPoint}`;
+              const isRoundTrip = document.getElementsByName("round-trip")[0].checked;
+              queryParams += `&isRoundTrip=${isRoundTrip ? 1 : 0}`;
           }
-          return res.json();
-        })
-        .then((data) => {
-          console.log(data.data);
-          setSearchResults(data.data);
-        })
-        .catch((error) => console.error("Lỗi khi lấy dữ liệu:", error));
-    } else {
-      alert("Vui lòng nhập đủ thông tin và chọn ngày hợp lệ");
-    }
-  };
-
-  const hasRequiredInput = () => {
-    if (isSelfDrivingSelected) {
-      return pickupDate && returnDate;
-    } else {
-      const pickupPoint = document.getElementsByName("pick-up-point")[0].value;
-      const destinationPoint =
-        document.getElementsByName("destination-point")[0].value;
-      return pickupDate && returnDate && pickupPoint && destinationPoint;
-    }
-  };
+            
+            fetch(apiUrl + queryParams)
+                .then((response) => response.json())
+                .then((data) => {
+                    setSearchResults(data);
+                })
+                .catch((error) => console.error("Lỗi khi lấy dữ liệu:", error));
+        } else {
+            alert("Vui lòng nhập đủ thông tin và chọn ngày hợp lệ");
+        }
+    };
 
   return (
     <div>

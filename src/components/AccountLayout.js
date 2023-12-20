@@ -1,18 +1,32 @@
+import React from "react";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuthentication";
+
 import Header from "./Header";
-import Footer from "./Footer";
 import SideBar from "./SideBar";
-import "../styles/AccountLayout.css"
+import "../styles/AccountLayout.css";
 
 function AccountLayout({ children }) {
-    return (<div className="account-layout-container">
-        <Header></Header>
-        <div className="main-content">
-            <SideBar></SideBar>
-            <div className="content">
-                <div>{children}</div>
-            </div>
+  const { isLoggedIn } = useAuth();
+
+  // Kiểm tra xem người dùng đã đăng nhập chưa
+  if (!isLoggedIn) {
+    return <Navigate to="/login" />;
+  }
+
+  return (
+    <div className="account-layout-container">
+      <Header />
+      <div className="main-content">
+        <div className="account-sidebar">
+          <SideBar />
         </div>
+        <div className="content">
+          <div>{children}</div>
+        </div>
+      </div>
     </div>
-    )
+  );
 }
+
 export default AccountLayout;
