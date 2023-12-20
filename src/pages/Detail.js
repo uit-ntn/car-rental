@@ -17,12 +17,27 @@ function Detail() {
 
   // Lấy dữ liệu của xe từ ID
   useEffect(() => {
+    window.scrollTo(0, 0);
+
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://6539dce6e3b530c8d9e8c413.mockapi.io/car-rental/car/${id}`);
-        const data = await response.json();
-        setCarData(data);
-        setLoading(false);
+        const apiUrl = `http://127.0.0.1:8000/api/car/${id}`;
+
+        fetch(apiUrl, {
+          method: "GET",
+        })
+          .then((res) => {
+            if (!res.ok) {
+              console.log("Error!");
+              throw new Error(res.message);
+            }
+            return res.json();
+          })
+          .then((data) => {
+            console.log(data.data);
+            setCarData(data.data);
+            setLoading(false);
+          });
       } catch (error) {
         setError("Lỗi khi lấy dữ liệu");
         setLoading(false);
@@ -52,22 +67,21 @@ function Detail() {
     calculateTotalDays();
   }, [startDate, endDate]);
 
- // re-render tổng tiền khi ngày tháng thay đổi
-useEffect(() => {
-  const calculateTotalPrice = () => {
-    if (carData) {
-      const pricePerDay = carData.price;
-      const calculatedTotalPrice = pricePerDay * totalDays * 1000 + carData.insuranceFees * totalDays;
-      return calculatedTotalPrice; // Return the calculated total price
-    }
-    return 0; // Return 0 if carData is not available
-  };
+  // re-render tổng tiền khi ngày tháng thay đổi
+  useEffect(() => {
+    const calculateTotalPrice = () => {
+      if (carData) {
+        const pricePerDay = carData.price;
+        const calculatedTotalPrice =
+          pricePerDay * totalDays * 1000 + carData.insuranceFees * totalDays;
+        return calculatedTotalPrice; // Return the calculated total price
+      }
+      return 0; // Return 0 if carData is not available
+    };
 
-  const totalPrice = calculateTotalPrice(); // Calculate total price
-  setTotalPrice(totalPrice); // Update the state once
-
-}, [carData, totalDays]);
-
+    const totalPrice = calculateTotalPrice(); // Calculate total price
+    setTotalPrice(totalPrice); // Update the state once
+  }, [carData, totalDays]);
 
   // hàm thanh toán
   const rentBtnClick = (e) => {
@@ -78,25 +92,28 @@ useEffect(() => {
 
   const addToCart = async (event) => {
     event.preventDefault();
-    try {  
-      const response = await fetch("https://656d757bbcc5618d3c23335e.mockapi.io/car-rental/cart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          fuelType: carData.fuelType,
-          avatar: carData.avatar,
-          price: carData.price,
-          fuelConsumption: carData.fuelConsumption,
-          transmission: carData.transmission,
-          seats: carData.seats,
-          insuranceFees: carData.insuranceFees,
-          address: carData.address,
-          name :carData.name
-        }),
-      });
-  
+    try {
+      const response = await fetch(
+        "https://656d757bbcc5618d3c23335e.mockapi.io/car-rental/cart",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            fuelType: carData.fuelType,
+            avatar: carData.avatar,
+            price: carData.price,
+            fuelConsumption: carData.fuelConsumption,
+            transmission: carData.transmission,
+            seats: carData.seats,
+            insuranceFees: carData.insuranceFees,
+            address: carData.address,
+            name: carData.name,
+          }),
+        }
+      );
+
       if (response.ok) {
         console.log("Added to Cart:", carData);
       } else {
@@ -106,7 +123,6 @@ useEffect(() => {
       console.error("Error adding to cart:", error);
     }
   };
-  
 
   return (
     <Layout>
@@ -117,17 +133,33 @@ useEffect(() => {
         {carData && (
           <div className="car-avatar">
             <div className="main-avatar-fix">
-              <img className="main-avatar" src={carData.image} alt={carData.name} />
+              <img
+                className="main-avatar"
+                src={require(`../assets/imageCars/${carData.LEFT_IMG}.jpg`)}
+                alt={carData.LEFT_IMG}
+              />
             </div>
             <div className="other-avatar">
               <div className="car-avatar-1-fix">
-                <img className="car-avatar-1" src={carData.image} alt={carData.name} />
+                <img
+                  className="car-avatar-1"
+                  src={require(`../assets/imageCars/${carData.FRONT_IMG}.jpg`)}
+                  alt={carData.FRONT_IMG}
+                />
               </div>
               <div className="car-avatar-2-fix">
-                <img className="car-avatar-2" src={carData.image} alt={carData.name} />
+                <img
+                  className="car-avatar-2"
+                  src={require(`../assets/imageCars/${carData.BACK_IMG}.jpg`)}
+                  alt={carData.BACK_IMG}
+                />
               </div>
               <div className="car-avatar-3-fix">
-                <img className="car-avatar-3" src={carData.image} alt={carData.name} />
+                <img
+                  className="car-avatar-3"
+                  src={require(`../assets/imageCars/${carData.RIGHT_IMG}.jpg`)}
+                  alt={carData.RIGHT_IMG}
+                />
               </div>
             </div>
           </div>
@@ -142,11 +174,19 @@ useEffect(() => {
             <div className="date-time-form">
               <div className="date-time-input">
                 <p>Ngày nhận</p>
-                <input type="date" name="" onChange={(e) => setStartDate(e.target.value)} />
+                <input
+                  type="date"
+                  name=""
+                  onChange={(e) => setStartDate(e.target.value)}
+                />
               </div>
               <div className="date-time-input">
                 <p>Ngày trả</p>
-                <input type="date" name="" onChange={(e) => setEndDate(e.target.value)} />
+                <input
+                  type="date"
+                  name=""
+                  onChange={(e) => setEndDate(e.target.value)}
+                />
               </div>
             </div>
             <div className="location">
@@ -192,7 +232,7 @@ useEffect(() => {
         <div className="car-description">
           <h3>Mô tả</h3>
           <p>
-            Nếu cần tìm một chiếc xe nổi bật nhất của Hyundai thì đó phải là Hyundai Kona. Trong đó phiên bản Kona 1.6 Turbo cao cấp đang khiến các đối thủ phải dè chừng khi mang trên mình phong cách thiết kế hoàn toàn mới cùng những công nghệ hiện đại nhất mà Hyundai trang bị cho chiếc xe. Kona 1.6 Turbo với vẻ ngoài cứng cáp, mạnh mẽ thu hút mọi anh nhìn với kích thước tổng thể lần lượt dài x rộng x cao là 4.165 x 1.800 x 1.565 (mm). Cùng phong cách thiết kế hoàn toàn mới của Hyundai mang đậm phong cách thể thao nhưng vẫn giữ được vẻ thanh lịch vốn có của một chiếc SUV đô thị.
+            {carData.DESCRIPTION}.
           </p>
         </div>
 
@@ -210,24 +250,41 @@ useEffect(() => {
             </div>
             <div className="car-feature-item">
               <div className="car-feature-icon-fix">
-                <img src={require("../assets/img/transmission-icon.png")} alt="" />
+                <img
+                  src={require("../assets/img/transmission-icon.png")}
+                  alt=""
+                />
               </div>
               <h5>Truyền động</h5>
-              <p>{carData && carData.transmission ? carData.transmission : "chưa rõ"}</p>
+              <p>
+                {carData && carData.transmission
+                  ? carData.transmission
+                  : "chưa rõ"}
+              </p>
             </div>
             <div className="car-feature-item">
               <div className="car-feature-icon-fix">
                 <img src={require("../assets/img/fuel-type-icon.png")} alt="" />
               </div>
               <h5>Nhiên liệu sử dụng</h5>
-              <p>{carData && carData.fuelType ? carData.fuelType : "chưa rõ"}</p>
+              <p>
+                {carData && carData.fuelType ? carData.fuelType : "chưa rõ"}
+              </p>
             </div>
             <div className="car-feature-item">
               <div className="car-feature-icon-fix">
-                <img src={require("../assets/img/fuel-consumption-icon.png")} alt="" />
+                <img
+                  src={require("../assets/img/fuel-consumption-icon.png")}
+                  alt=""
+                />
               </div>
               <h5>Nhiêu liệu tiêu hao</h5>
-              <p>{carData && carData.fuelConsumption ? carData.fuelConsumption : "chưa rõ"} lít/100km</p>
+              <p>
+                {carData && carData.fuelConsumption
+                  ? carData.fuelConsumption
+                  : "chưa rõ"}{" "}
+                lít/100km
+              </p>
             </div>
           </div>
           <hr />

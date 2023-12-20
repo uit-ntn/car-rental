@@ -5,8 +5,8 @@
 }
 
 .product-card-box {
-    width: 300px;
-    height: 400 px;
+    width: 320px;
+    height: 400px;
     padding: 16px 5px;
     border: 1px solid black;
     border-radius: 5px;
@@ -28,56 +28,67 @@
 
 .product-card-actions {
     margin: 5px;
-    height: 20px;
     display: flex;
+    justify-content: space-around;
 }
 
 
-.product-card-actions .delivery, .product-card-actions .transmission{
-    padding: 1px 5px;
-    margin: 5px;
-    border-radius: 20px;
-    font-size: 8px;
+.product-card-actions .delivery,
+.product-card-actions .transmission {
+    padding: 0px 10px;
+    margin: 0 5px;
+    font-size: 15px;
     text-decoration: none;
-    width: 200px;
-    border: 1px solid black;
     border-radius: 10px;
-    height: 16px;
-    background-color: rgb(92, 171, 232);
     color: rgb(10, 9, 9);
-    font-weight: lighter;
     font-weight: bold;
     text-align: center;
+    background-color: aqua;
 }
 
 
 
 .product-card-box .address-box {
-    padding: 0 10px 5px 10px;
     font-family: 'Times New Roman', Times, serif;
     height: 20px;
-    width: 100%;
+    width: 30%;
     margin: 5px;
     text-decoration: none;
+    display: flex;
 }
+
 .product-card-box .address-box img {
     width: 20px;
     height: 80%;
 }
 
-.product-card-box .address-box span {
-    width: 30px;
-    height: 100%;
-    font-size: 20px;
-    text-decoration: none;  
-}
+
 
 .product-card-box .desc-name {
     padding: 0 30px;
-    font-weight: bold;
+    font-weight: 900;
     margin-bottom: 5px;
-    font-size: 25px;
+    font-size: 18px;
 }
+
+.product-card-box .available_green {
+    display: block;
+    width: 100px;
+    text-align: center;
+    background-color: rgb(23, 185, 23);
+    padding: 5px;
+    border-radius: 5px;
+}
+.product-card-box .available_red {
+    display: inline-block;
+    width: 100px;
+    height: 15px;
+    text-align: center;
+    background-color: rgb(225, 48, 48);
+    padding: 5px;
+    border-radius: 5px;
+}
+
 
 
 
@@ -92,6 +103,16 @@
     display: flex;
     justify-content: space-between;
     padding: 10px;
+}
+
+.info-price .info {
+    display: flex;
+    justify-content: space-around;
+}
+
+.info-price .star-info {
+    display: flex;
+    justify-content: space-around;
 }
 
 .info-price .star,
