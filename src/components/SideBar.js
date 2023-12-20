@@ -12,17 +12,17 @@ const SideBar = () => {
                     <p><Link to={`/account/${Cookies.get("userId")}`}>Tài khoản của tôi</Link></p>
                 </div>
                 <div>
-                    <p><Link to="/mycars">Xe của tôi</Link></p>
+                    <p><Link to={`/mycars/${Cookies.get("userId")}`}>Xe của tôi</Link></p>
                 </div>
                 <div>
                     <p><Link to = {`/cart/${Cookies.get("userId")}`}>Giỏ hàng</Link></p>
                 </div>
                 <div>
-                    <p><Link to="/myaddress">Địa chỉ của tôi</Link></p>
+                    <p><Link to={`/transaction-history/${Cookies.get("userId")}`}>Lịch sử giao dịch</Link></p>
                 </div>
                 <div>
                     <p>
-                        <Link to={`/resetpw`}>Đổi mật khẩu</Link>
+                        <Link to={`/resetpw/${Cookies.get("userId")}`}>Đổi mật khẩu</Link>
                     </p>
                 </div>
             </div>

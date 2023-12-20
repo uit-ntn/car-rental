@@ -1,43 +1,38 @@
-import React, { useState } from 'react';
-import "../styles/Slider.css";
+import React, { useState, useEffect, useCallback } from 'react';
+import slider1 from '../assets/img/slider1.jpg';
+import slider2 from '../assets/img/slider2.jpg';
+import slider3 from '../assets/img/slider3.jpg';
+import slider4 from '../assets/img/slider4.jpg';
+import '../styles/Slider.css';
 
 function Slider() {
-    const images = [
-        require('../assets/img/slider1.jpg'),
-        require('../assets/img/slider2.jpg'),
-        require('../assets/img/slider3.jpg'),
-        require('../assets/img/slider4.jpg'),
-    ];
+  const images = [slider1, slider2, slider3, slider4];
 
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const nextSlide = useCallback(() => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+  }, [images.length]);
 
-    const [currentIndex, setCurrentIndex] = useState(0);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      nextSlide();
+    }, 2000);
 
-    // const nextSlide = () => {
-    //     setCurrentIndex((currentIndex + 1) % images.length);
-    // };
-
-    // const prevSlide = () => {
-    //     setCurrentIndex((currentIndex - 1 + images.length) % images.length);
-    // };
-
-    return (
-        <div className="slider">
-            {/* <button onClick={prevSlide}></button> */}
-            <div className="image-container">
-                {
-                    images.map((image, index) => (
-                        <img
-                            key={index}
-                            src={image}
-                            alt={`Image ${index + 1}`}
-                            className={index === currentIndex ? 'active' : ''
-                            }
-                        />
-                    ))}
-            </div>
-            {/* <button onClick={nextSlide}></button> */}
-        </div>
-    );
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [nextSlide]); 
+  return (
+    <div className="slider">
+      <div className="image-container">
+        <img
+          src={images[currentIndex]}
+          alt={`Hình ${currentIndex + 1}`}
+          className="active"
+        />
+      </div>
+    </div>
+  );
 }
 
 export default Slider;

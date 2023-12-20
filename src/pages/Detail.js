@@ -52,21 +52,21 @@ function Detail() {
     calculateTotalDays();
   }, [startDate, endDate]);
 
- // re-render tổng tiền khi ngày tháng thay đổi
-useEffect(() => {
-  const calculateTotalPrice = () => {
-    if (carData) {
-      const pricePerDay = carData.price;
-      const calculatedTotalPrice = pricePerDay * totalDays * 1000 + carData.insuranceFees * totalDays;
-      return calculatedTotalPrice; // Return the calculated total price
-    }
-    return 0; // Return 0 if carData is not available
-  };
+  // re-render tổng tiền khi ngày tháng thay đổi
+  useEffect(() => {
+    const calculateTotalPrice = () => {
+      if (carData) {
+        const pricePerDay = carData.price;
+        const calculatedTotalPrice = pricePerDay * totalDays * 1000 + carData.insuranceFees * totalDays;
+        return calculatedTotalPrice;
+      }
+      return 0;
+    };
 
-  const totalPrice = calculateTotalPrice(); // Calculate total price
-  setTotalPrice(totalPrice); // Update the state once
+    const totalPrice = calculateTotalPrice();
+    setTotalPrice(totalPrice);
 
-}, [carData, totalDays]);
+  }, [carData, totalDays]);
 
 
   // hàm thanh toán
@@ -78,7 +78,7 @@ useEffect(() => {
 
   const addToCart = async (event) => {
     event.preventDefault();
-    try {  
+    try {
       const response = await fetch("https://656d757bbcc5618d3c23335e.mockapi.io/car-rental/cart", {
         method: "POST",
         headers: {
@@ -93,10 +93,10 @@ useEffect(() => {
           seats: carData.seats,
           insuranceFees: carData.insuranceFees,
           address: carData.address,
-          name :carData.name
+          name: carData.name
         }),
       });
-  
+
       if (response.ok) {
         console.log("Added to Cart:", carData);
       } else {
@@ -106,7 +106,7 @@ useEffect(() => {
       console.error("Error adding to cart:", error);
     }
   };
-  
+
 
   return (
     <Layout>
@@ -155,7 +155,7 @@ useEffect(() => {
             </div>
             <div className="price-form-container">
               <div className="price-items">
-                <p>Đơn giá thuê</p>
+                <p>Đơn giá thuê : </p>
                 <span>{carData.price}k/ngày</span>
               </div>
               <div className="price-items">
@@ -163,11 +163,11 @@ useEffect(() => {
                 <span>{carData.insuranceFees} vnd/ngày</span>
               </div>
               <div className="price-items">
-                <p>Số ngày thuê</p>
+                <p>Số ngày thuê : </p>
                 <span>{totalDays}</span>
               </div>
               <div className="price-items">
-                <p>Tổng tiền:</p>
+                <p>Tổng tiền :</p>
                 <span>{totalPrice} VNĐ</span>
               </div>
             </div>
@@ -231,19 +231,66 @@ useEffect(() => {
             </div>
           </div>
           <hr />
-        </div>
 
-        <div className="car-other-amenities">
-          <h2>Các tiện nghi khác</h2>
-          {/* { carData.otherAmenities ? 
-              <ul className="other-amenities-list">
-                {
-  
-                }
-              </ul>
-              :  */}
-          <h3>Chưa có thông tin</h3>
-          {/* } */}
+          { }
+          <div className="">
+            <h3>Các tiện nghi khác</h3>
+            <ul className="other-amenities-list">
+              <li>
+                <i className={`bx bx-bluetooth`}></i> Bluetooth: {carData.BLUETOOTH === "Y" ? "Có" : "Không"}
+              </li>
+              <li>
+                <i className={`bx bx-camera`}></i> Camera 360: {carData.CAMERA_360 === "Y" ? "Có" : "Không"}
+              </li>
+              <li>
+                <i className={`bx bx-camera-reels`}></i> Camera Sides: {carData.CAMERA_SIDES === "Y" ? "Có" : "Không"}
+              </li>
+              <li>
+                <i className={`bx bx-car`}></i> Camera Journey: {carData.CAMERA_JOURNEY === "Y" ? "Có" : "Không"}
+              </li>
+              <li>
+                <i className={`bx bx-receipt`}></i> Camera Back: {carData.CAMERA_BACK === "Y" ? "Có" : "Không"}
+              </li>
+              <li>
+                <i className={`bx bx-tire`}></i> Tire Sensor: {carData.TIRE_SENSOR === "Y" ? "Có" : "Không"}
+              </li>
+              <li>
+                <i className={`bx bx-wind`}></i> Impact Sensor: {carData.IMPACT_SENSOR === "Y" ? "Có" : "Không"}
+              </li>
+              <li>
+                <i className={`bx bx-speed`}></i> Speed Warning: {carData.SPEED_WARNING === "Y" ? "Có" : "Không"}
+              </li>
+              <li>
+                <i className={`bx bx-sun`}></i> Sky Window: {carData.SKY_WINDOW === "Y" ? "Có" : "Không"}
+              </li>
+              <li>
+                <i className={`bx bx-globe`}></i> GPS: {carData.GPS === "Y" ? "Có" : "Không"}
+              </li>
+              <li>
+                <i className={`bx bx-child`}></i> Child Seat: {carData.CHILD_SEAT === "Y" ? "Có" : "Không"}
+              </li>
+              <li>
+                <i className={`bx bx-usb`}></i> USB: {carData.USB === "Y" ? "Có" : "Không"}
+              </li>
+              <li>
+                <i className={`bx bx-tire`}></i> Spare Tire: {carData.SPARE_TIRE === "Y" ? "Có" : "Không"}
+              </li>
+              <li>
+                <i className={`bx bx-dvd`}></i> DVD: {carData.DVD === "Y" ? "Có" : "Không"}
+              </li>
+              <li>
+                <i className={`bx bx-card`}></i> ETC: {carData.ETC === "Y" ? "Có" : "Không"}
+              </li>
+              <li>
+                <i className={`bx bx-shield-x`}></i> Airbag: {carData.AIRBAG === "Y" ? "Có" : "Không"}
+              </li>
+              <li>
+                <i className={`bx bx-package`}></i> Pickup Cover: {carData.PICKUP_COVER === "Y" ? "Có" : "Không"}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="comment-section">
         </div>
       </div>
     </Layout>

@@ -45,9 +45,12 @@ const Cart = () => {
         <ul className="cart-list">
           {cart.length > 0 ? cart.map((item) => (
             <li key={item.id} className="cart-item">
+              <div className="item-status">Trạng thái giao dịch : { item.status ? item.status : "Chưa rõ"} </div>
               <div className="item-info">
                 <div className="item-image">
-                  <img src={item.image} alt="" />
+                  <div className="item-fix-image">
+                  <img src={item.image ? item.image : "https://static.thenounproject.com/png/741653-200.png"} alt="" />
+                  </div>
                   <div>
                     <p className="item-name">Tên xe</p>
                     <span className="item-value">{item.name}</span>

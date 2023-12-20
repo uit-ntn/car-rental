@@ -1,10 +1,14 @@
 import React from "react";
-import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
-import useAuthentication from "../hooks/useAuthentication";
+import { useAuth } from "../hooks/useAuthentication";
+import "../styles/Header.css"
 
 function Header() {
-  const { isLoggedIn, username, login, logout } = useAuthentication();
+  const { isLoggedIn, username, userId, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <div className="header">
@@ -14,16 +18,16 @@ function Header() {
       </div>
       <div className="navigation">
         <Link to="/about">Về Car Rental</Link>
-        <Link to="/owner/register">Trở thành chủ xe</Link>
+        <Link to={`/owner/register/${userId}`}>Trở thành chủ xe</Link>
         <div>
           {isLoggedIn ? (
             <div className="user-dropdown">
               <span className="hello-user">Xin chào {username} </span>
               <div className="dropdown-content">
-                <Link to={`/account/${Cookies.get("user.id")}`}>Tài khoản</Link>
-                <Link to={`/transaction-history/${Cookies.get("user.id")}`}>Lịch sử giao dịch</Link>
-                <Link to={`/cart/${Cookies.get("user.id")}`}>Giỏ hàng</Link>
-                <button onClick={logout}>Đăng xuất</button>
+                <Link to={`/account/${userId}`}>Tài khoản</Link>
+                <Link to={`/transaction-history/${userId}`}>Lịch sử giao dịch</Link>
+                <Link to={`/cart/${userId}`}>Giỏ hàng</Link>
+                <button onClick={handleLogout}>Đăng xuất</button>
               </div>
             </div>
           ) : (
