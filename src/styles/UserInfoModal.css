@@ -1,0 +1,36 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.user-info-modal-container {
+    position: fixed;
+    top: 20%;
+    left: 40%;
+    background-color: white;
+    width: 400px;
+    padding: 20px;
+    border: 1px solid black;
+}
+.user-info-modal-container .user-info-modal-item{
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+
+}
+.user-info-modal-item input{
+    padding: 5px 10px;
+}
+
+.user-info-modal-container .user-info-modal-actions{
+    margin: 20px auto;
+}
+.user-info-modal-btn{
+    display: flex;
+    justify-content: space-around;
+}
+.user-info-modal-btn button{
+    padding: 5px;
+    margin: 20px;
+}

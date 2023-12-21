@@ -1,20 +1,105 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from '../hooks/useAuthentication';
 import { useNavigate } from "react-router-dom";
+import CarInfoModal from "../components/CarInfoModal";
+import UserInfoModal from "../components/UserInfoModal";
+import ContractInfoModal from "../components/ContractInfoModal";
 import "../styles/Admin.css";
 
 function Admin() {
-    const contractAPI = "";
-    const userAPI = "";
-    const carAPI = "";
+    const contractAPI = "https://656d757bbcc5618d3c23335e.mockapi.io/car-rental/contract";
+    const userAPI = "https://6539dce6e3b530c8d9e8c413.mockapi.io/car-rental/user";
+    const carAPI = "https://6539dce6e3b530c8d9e8c413.mockapi.io/car-rental/car";
     const [userData, setUserData] = useState([]);
     const [carData, setCarData] = useState([]);
     const [contractData, setContractData] = useState([]);
-    const [selectedToggle, setSelectedToggle] = useState("dashboard");
+    const [selectedToggle, setSelectedToggle] = useState("users");
+    const [multiDeleteMode, setMultiDeleteMode] = useState(false);
+    const [selectedUserId, setSelectedUserId] = useState(null);
+    const [selected_LINCENSE_PLATE, setSelected_LICENSE_PLATE] = useState(null);
+    const [selectedContractId, setSelectedContractId] = useState(null);
+    const [userInfoModalVisible, setUserInfoModalVisible] = useState(false);
+    const [carInfoModalVisible, setCarInfoModalVisible] = useState(false);
+    const [contractInfoModalVisible, setContractInfoModalVisible] = useState(false);
+
+
+    const handleOpenUserInfoModal = (userId) => {
+        setSelectedUserId(userId);
+        setUserInfoModalVisible(true);
+    };
+    const handleOpenCarInfoModal = (LICENSE_PLATE) => {
+        setSelected_LICENSE_PLATE(LICENSE_PLATE);
+        setCarInfoModalVisible(true);
+    };
+    const handleOpenContractInfoModal = (CONTRACT_ID) => {
+        setSelectedContractId(CONTRACT_ID);
+        setContractInfoModalVisible(true);
+    };
+    const handleMultiDeleteToggle = () => {
+        setMultiDeleteMode(!multiDeleteMode);
+    };
+
+    const handleUserDelete = async (userId) => {
+        try {
+            const response = await fetch(`${userAPI}/${userId}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to delete user with ID: ${userId}`);
+            }
+            setUserData((prevData) => prevData.filter((user) => user.USER_ID !== userId));
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const handleCarDelete = async (LICENSE_PLATE) => {
+        try {
+            const response = await fetch(`${carAPI}/${LICENSE_PLATE}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to delete car with LICENSE_PLATE: ${LICENSE_PLATE}`);
+            }
+            setCarData((prevData) => prevData.filter((car) => car.LICENSE_PLATE !== LICENSE_PLATE));
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const handleMultiDelete = async () => {
+        try {
+            const checkboxes = document.querySelectorAll(`#${selectedToggle}Checkbox:checked`);
+            const selectedIds = Array.from(checkboxes).map((checkbox) =>
+                checkbox.getAttribute('data-id')
+            );
+
+            const promises = selectedIds.map((id) =>
+                fetch(`${userAPI}/${id}`, {
+                    method: 'DELETE',
+                })
+            );
+
+            const responses = await Promise.all(promises);
+
+            if (responses.every((response) => response.ok)) {
+                setUserData((prevData) =>
+                    prevData.filter((user) => !selectedIds.includes(user.USER_ID))
+                );
+            } else {
+                throw new Error('Failed to delete some users');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const fetchData = async (api, setData) => {
         try {
             const response = await fetch(api);
+
             if (!response.ok) {
                 throw new Error(`Failed to fetch data from ${api}`);
             }
@@ -25,12 +110,12 @@ function Admin() {
         }
     };
 
-
     useEffect(() => {
         fetchData(userAPI, setUserData);
         fetchData(carAPI, setCarData);
         fetchData(contractAPI, setContractData);
-
+    }, [userAPI, carAPI, contractAPI]);
+    useEffect(() => {
         const handleSideMenuClick = (item) => {
             const li = item.parentElement;
             document
@@ -56,65 +141,14 @@ function Admin() {
             .querySelector('#content nav .bx.bx-menu')
             .addEventListener('click', handleSidebarToggle);
 
-        const handleSearchButtonClick = (e) => {
-            const searchForm = document.querySelector('#content nav form');
-            const searchButtonIcon = document.querySelector('#content nav form .form-input button .bx');
 
-            if (window.innerWidth < 576) {
-                e.preventDefault();
-                searchForm.classList.toggle('show');
 
-                if (searchForm.classList.contains('show')) {
-                    searchButtonIcon.classList.replace('bx-search', 'bx-x');
-                } else {
-                    searchButtonIcon.classList.replace('bx-x', 'bx-search');
-                }
-            }
-        };
-
-        document
-            .querySelector('#content nav form .form-input button')
-            .addEventListener('click', handleSearchButtonClick);
-
-        const handleModeSwitchChange = () => {
-            const switchMode = document.getElementById('switch-mode');
-            document.body.classList.toggle('dark', switchMode.checked);
-        };
-
-        document.getElementById('switch-mode').addEventListener('change', handleModeSwitchChange);
 
         return () => {
             document
                 .querySelectorAll('#sidebar .side-menu.top li a')
                 .forEach((item) => item.removeEventListener('click', handleSideMenuClick));
             document.querySelector('#content nav .bx.bx-menu').removeEventListener('click', handleSidebarToggle);
-            document.querySelector('#content nav form .form-input button').removeEventListener('click', handleSearchButtonClick);
-            document.getElementById('switch-mode').removeEventListener('change', handleModeSwitchChange);
-        };
-    }, [userAPI, carAPI, contractAPI]);
-
-    useEffect(() => {
-        const handleResize = () => {
-            const searchButtonIcon = document.querySelector('#content nav form .form-input button .bx');
-            const searchForm = document.querySelector('#content nav form');
-            const sidebar = document.getElementById('sidebar');
-
-            if (window.innerWidth < 576) {
-                searchButtonIcon.classList.replace('bx-x', 'bx-search');
-                searchForm.classList.remove('show');
-            }
-
-            if (window.innerWidth < 768) {
-                sidebar.classList.add('hide');
-            } else {
-                sidebar.classList.remove('hide');
-            }
-        };
-
-        window.addEventListener('resize', handleResize);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
         };
     }, []);
 
@@ -135,12 +169,6 @@ function Admin() {
                     <span className="text">Car Rental</span>
                 </a>
                 <ul className="side-menu top">
-                    <li className={selectedToggle === "dashboard" ? "active" : ""}>
-                        <a data-toggle="dashboard">
-                            <i className="bx bxs-dashboard" />
-                            <span className="text">Dashboard</span>
-                        </a>
-                    </li>
                     <li className={selectedToggle === "users" ? "active" : ""}>
                         <a data-toggle="users">
                             <i className="bx bxs-user" />
@@ -183,19 +211,6 @@ function Admin() {
                 {/* NAVBAR */}
                 <nav>
                     <i className="bx bx-menu" />
-                    <form action="#">
-                        <div className="form-input">
-                            <input type="search" placeholder="Search..." />
-                            <button type="submit" className="search-btn">
-                                <i className="bx bx-search" />
-                            </button>
-                        </div>
-                    </form>
-                    <input type="checkbox" id="switch-mode" hidden="" />
-                    <label htmlFor="switch-mode" className="switch-mode" />
-                    <a className="profile">
-                        <img alt="" src="img/people.png" />
-                    </a>
                 </nav>
                 {/* NAVBAR */}
 
@@ -203,7 +218,6 @@ function Admin() {
                 <main>
                     <div className="head-title">
                         <div className="left">
-                            {selectedToggle === "dashboard" && <h1>Dashboard</h1>}
                             {selectedToggle === "users" && <h1>Danh sách người dùng</h1>}
                             {selectedToggle === "cars" && <h1>Danh sách xe</h1>}
                             {selectedToggle === "contracts" && <h1>Danh sách hợp đồng</h1>}
@@ -230,7 +244,7 @@ function Admin() {
                             <i className="bx bxs-dollar-circle" />
                             <span className="text">
                                 <h3>{carData.length}</h3>
-                                <p>Total Sales</p>
+                                <p>Xe</p>
                             </span>
                         </li>
                     </ul>
@@ -240,127 +254,152 @@ function Admin() {
                         <div className="table-data">
                             <div className="order">
                                 <div className="head">
-                                    {selectedToggle === "dashboard" && <h3>Dashboard</h3>}
-                                    {selectedToggle === "users" && <h3>Danh sách người dùng</h3>}
-                                    {selectedToggle === "cars" && <h3>Danh sách xe</h3>}
-                                    {selectedToggle === "contracts" && <h3>Danh sách hợp đồng</h3>}
-                                    {selectedToggle === "owner-register" && <h3>Danh sách xe đăng ký</h3>}
+                                    <h3>{selectedToggle === "dashboard" ? "Dashboard" : `Danh sách ${selectedToggle === "users" ? "người dùng" : selectedToggle === "cars" ? "xe" : selectedToggle === "contracts" ? "hợp đồng" : "xe đăng ký"}`}</h3>
+                                    <div className="head-actions">
+                                        {multiDeleteMode ? (
+                                            <button onClick={handleMultiDeleteToggle}>Hủy</button>
+                                        ) : (
+                                            <div>
+                                                <button>Thêm</button>
+                                                <button onClick={handleMultiDeleteToggle}>Xóa nhiều</button>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
-
-                                {selectedToggle === "dashboard" && (
-                                    <table>
-                                        {/* Dashboard table content */}
-                                        <thead>
+                                <table>
+                                    <thead>
+                                        {selectedToggle === "cars" && (
                                             <tr>
-                                                <th>User</th>
-                                                <th>Date Order</th>
-                                                <th>Status</th>
+                                                <th>NAME</th>
+                                                <th>LICENSE_PLATE</th>
+                                                <th>BRAND</th>
+                                                <th>PRICE_C</th>
+                                                <th>Action</th>
                                             </tr>
-                                        </thead>
-                                        <tbody>
+                                        )}
+                                        {selectedToggle === "users" && (
                                             <tr>
+                                                <th>User ID </th>
+                                                <th>First name</th>
+                                                <th>Last name</th>
+                                                <th>Email</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        )}
+                                        {selectedToggle === "contracts" && (
+                                            <tr>
+                                                <th>USER_ID</th>
+                                                <th>LICENSE_PLATE</th>
+                                                <th>BRAND</th>
+                                                <th>PRICE_C</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        )}
+                                    </thead>
+
+
+                                    <tbody>
+                                        {selectedToggle === "users" && userData.map(user => (
+                                            <tr key={user.id}>
+                                                <td>{user.USER_ID}</td>
+                                                <td>{user.FIRST_NAME}</td>
+                                                <td>{user.LAST_NAME}</td>
+                                                <td>{user.EMAIL}</td>
                                                 <td>
-                                                    <img alt="" src="img/people.png" />
-                                                    <p>John Doe</p>
+                                                    <div className="table-data-actions">
+                                                        <div>
+                                                            {multiDeleteMode && (
+                                                                <input type="checkbox" id={`userCheckbox-${user.id}`} />
+                                                            )}
+                                                            {!multiDeleteMode && (
+                                                                <div>
+                                                                    <button onClick={() => handleOpenUserInfoModal(user.USER_ID)}>Xem</button>
+                                                                    <button onClick={() => handleUserDelete(user.USER_ID)}>Xóa</button>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </div>
                                                 </td>
-                                                <td>01-10-2021</td>
+                                            </tr>
+                                        ))}
+
+                                        {selectedToggle === "cars" && carData.map(car => (
+                                            <tr key={car.id}>
+                                                <td>{car.NAME}</td>
+                                                <td>{car.LICENSE_PLATE}</td>
+                                                <td>{car.BRAND}</td>
+                                                <td>{car.PRICE_C}</td>
                                                 <td>
-                                                    <span className="status completed">Completed</span>
+                                                    <div className="table-data-actions">
+                                                        <div>
+                                                            {multiDeleteMode && (
+                                                                <input type="checkbox" id={`carCheckbox-${car.id}`} />
+                                                            )}
+                                                            {!multiDeleteMode && (
+                                                                <div>
+                                                                    <button onClick={handleOpenCarInfoModal(car.LICENSE_PLATE)}>Xem</button>
+                                                                    <button onClick={() => handleCarDelete(car.LICENSE_PLATE)}>Xóa</button>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </div>
                                                 </td>
                                             </tr>
-                                            {/* Add more rows if needed */}
-                                        </tbody>
-                                    </table>
-                                )}
+                                        ))}
+                                        {selectedToggle === "contracts" && contractData.map(contract => (
+                                            <tr key={contractData.USER_ID}>
+                                                <td>{contract.NAME}</td>
+                                                <td>{contract.LICENSE_PLATE}</td>
+                                                <td>{contract.BRAND}</td>
+                                                <td>{contract.PRICE_C}</td>
+                                                <td>
+                                                    <div className="table-data-actions">
+                                                        <div>
+                                                            {multiDeleteMode && (
+                                                                <input type="checkbox" id={`carCheckbox-${contract.id}`} />
+                                                            )}
+                                                            {!multiDeleteMode && (
+                                                                <div>
+                                                                    <button onClick={handleOpenContractInfoModal()}>Xem</button>
+                                                                    <button onClick={() => handleCarDelete(contract.LICENSE_PLATE)}>Xóa</button>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                    {multiDeleteMode && (
+                                        <tr>
+                                            <td colSpan="3">
+                                                <div>
+                                                    <button onClick={handleMultiDelete}>Xóa tất cả mục đã chọn</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+                                    {userInfoModalVisible && (
+                                        <UserInfoModal USER_ID={selectedUserId} onclose={() => setUserInfoModalVisible(false)} />
+                                    )}
+                                    {
+                                        carInfoModalVisible && (
+                                            <CarInfoModal LICENSE_PLATE={selected_LINCENSE_PLATE} onClose={() => setCarInfoModalVisible(false)}></CarInfoModal>
+                                        )}
+                                    {
+                                        contractInfoModalVisible &&
+                                        <ContractInfoModal CONTRACT_ID={selectedContractId} onclose={() => setContractInfoModalVisible(false)}></ContractInfoModal>
+                                    }
 
-                                {selectedToggle === "users" && (
-                                    <table>
-                                        {/* Users table content */}
-                                        <thead>
-                                            <tr>
-                                                {/* User table headers */}
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                {/* User table rows */}
-                                            </tr>
-                                            {/* Add more rows if needed */}
-                                        </tbody>
-                                    </table>
-                                )}
-
-                                {selectedToggle === "cars" && (
-                                    <table>
-                                        {/* Cars table content */}
-                                        <thead>
-                                            <tr>
-                                                {/* Cars table headers */}
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                {/* Cars table rows */}
-                                            </tr>
-                                            {/* Add more rows if needed */}
-                                        </tbody>
-                                    </table>
-                                )}
-
-                                {selectedToggle === "contracts" && (
-                                    <table>
-                                        {/* Contracts table content */}
-                                        <thead>
-                                            <tr>
-                                                {/* Contracts table headers */}
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                {/* Contracts table rows */}
-                                            </tr>
-                                            {/* Add more rows if needed */}
-                                        </tbody>
-                                    </table>
-                                )}
-                                {selectedToggle === "owner-register" && (
-                                    <table>
-                                        {/* Owner Register table content */}
-                                        <thead>
-                                            <tr>
-                                                {/* Owner Register table headers */}
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                {/* Owner Register table rows */}
-                                            </tr>
-                                            {/* Add more rows if needed */}
-                                        </tbody>
-                                    </table>
-                                )}
-                            </div>
-
-                            <div className="todo">
-                                <div className="head">
-                                    <h3>Biểu đồ doanh thu trong năm {new Date().getFullYear()}</h3>
-                                </div>
-                                <ul className="revenue-chart">
-                                    {Array.from({ length: 12 }, (_, index) => (
-                                        <li key={index} className={index < 3 ? "completed" : "not-completed"}>
-                                            <p>{`Tháng ${index + 1}`}</p>
-                                        </li>
-                                    ))}
-                                </ul>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </main>
                 {/* MAIN */}
-            </section>
+            </section >
             {/* CONTENT */}
         </>
     );
 }
-
 export default Admin;
