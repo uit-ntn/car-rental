@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 const Cart = () => {
   const { userId } = useContext(UserContext);
   const [bookmarks, setBookmarks] = useState("");
+  console.log(bookmarks);
 
   useEffect(() => {
     fetch(`http://127.0.0.1:8000/api/bookmark/${userId}`, {
@@ -16,7 +17,7 @@ const Cart = () => {
       .then((res) => res.json())
       .then((data) => setBookmarks(data.data))
       .catch((e) => console.log(e));
-  });
+  }, []);
 
   const handleDeleteClick = () => {
     fetch(`http://127.0.0.1:8000/api/bookmark/${userId}`, {
@@ -54,7 +55,7 @@ const Cart = () => {
                   <div className="item-details">
                     <div>
                       <p className="item-price">Giá thuê</p>
-                      <span className="item-value">{item.PRICE_C}</span>
+                      <span className="item-value">{item.PRICE_C} vnd/ngày</span>
                     </div>
                     <div>
                       <p className="item-location">Địa điểm nhận xe</p>
@@ -84,12 +85,12 @@ const Cart = () => {
                     >
                       Xem
                     </Link>
-                    {/* <button
+                    <button
                       className="delete-button"
                       onClick={() => handleDeleteClick(item.id)}
                     >
                       Xóa
-                    </button> */}
+                    </button>
                   </div>
                 </div>
               </li>
