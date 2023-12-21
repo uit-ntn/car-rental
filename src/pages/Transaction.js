@@ -1,13 +1,13 @@
 import React from "react";
-import AccountLayout from "../components/AccountLayout";
+import Layout from "../components/Layout";
 
 function Transaction() {
     return (
-        <AccountLayout>
+        <Layout>
             <div className="transction-history-container">
-                
+                Hello
             </div>
-        </AccountLayout>
+        </Layout>
     )
 }
 

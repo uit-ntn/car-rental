@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 
 function Home() {
   const [cars, setCars] = useState([]);
+
   useEffect(() => {
     async function fetchData() {
       const apiUrl = "http://127.0.0.1:8000/api/cars";
@@ -23,14 +24,16 @@ function Home() {
           return res.json();
         })
         .then((data) => {
-            const sortedCars = [...data.data].sort((a, b) => b.STAR - a.STAR);
+          const sortedCars = [...data.data].sort((a, b) => b.STAR - a.STAR);
           setCars(sortedCars.slice(0, 8));
         })
         .catch((error) => console.error("Lỗi khi lấy dữ liệu:", error));
     }
     fetchData();
+    console.log(localStorage.getItem('isLoggedIn'));
   }, []);
 
+  
   return (
     <>
       <Layout>
@@ -88,85 +91,6 @@ function Home() {
                   <p>
                     <span>1</span>Đặt xe trên web Car Rental
                   </p>
-
-
-                    {/* promo-section */}
-                    <div className="promo-section">
-                        <h2>Chương trình khuyến mãi</h2>
-                        <h5>Nhận nhiều ưu đãi từ car-rental</h5>
-                        <Slider></Slider>
-                    </div>
-
-                    {/*service-section */}
-                    <div className="service-section"></div>
-
-                    {/*featured-car-section */}
-                    <div className="featured-car-section">
-                        <h2>Danh sách các xe</h2>
-                        <CarList cars={cars}></CarList>
-                    </div>
-
-                    {/*instruction section*/}
-                    <div className="instruction-section">
-                        <div className="instruction-section-title">
-                            <h3>Hướng dẫn thuê xe</h3>
-                            <p>Chỉ với 4 bước đơn giản để trải nghiệm thuê xe Mioto một cách nhanh chóng</p>
-                        </div>
-                        <ul className="tutorial-container">
-                            <li>
-                                <div className="tutorial-item">
-                                    <div className="tutorial-fix-img">
-                                        <img src={require("../assets/img/tutorial-img-1.png")} alt=""></img>
-                                    </div>
-                                    <p><span>1</span>Đặt xe trên
-                                        web Car Rental</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className="tutorial-item">
-                                    <div className="tutorial-fix-img">
-                                        <img src={require("../assets/img/tutorial-img-2.png")} alt=" "></img>
-                                    </div>
-                                    <p><span>2</span>Nhận xe</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className="tutorial-item">
-                                    <div className="tutorial-fix-img">
-                                        <img src={require("../assets/img/tutorial-img-3.png")} alt=""></img>
-                                    </div>
-                                    <p><span>3</span>Bắt đầu hành trình</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className="tutorial-item">
-                                    <div className="tutorial-fix-img">
-                                        <img src={require("../assets/img/tutorial-img-4.png")} alt=""></img>
-                                    </div>
-                                    <p><span>4</span>Trả xe và kết thúc chuyến đi</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-
-
-
-                    {/* explore-section */}
-                    <div className="explore-section">
-                        <div className="explore-fix-img">
-                            <img src={require('../assets/img/explore-img.png')} alt=""></img>
-                        </div>
-                        <div className="explore-item">
-                            <h2>Bạn muốn biết thêm về Car Rental</h2>
-                            <p>Car Rental kết nối khách hàng có nhu cầu thuê xe với hàng ngàn chủ xe ô tô ở TPHCM, Hà Nội & các tỉnh thành khác.
-                                Chúng tôi hướng đến việc xây dựng cộng đồng nngười dùng ô tô văn minh & uy tín tại Việt Nam</p>
-                            <button>
-                                <Link to="/about">
-                                    Tìm hiểu thêm
-                                </Link>
-                            </button>
-                        </div>
-                    </div>
                 </div>
               </li>
               <li>

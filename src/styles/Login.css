@@ -86,3 +86,8 @@
   cursor: pointer;
   font-weight: bold;
 }
+
+.dangky_btn {
+  font-size: larger;
+  color: rgb(1, 98, 74);
+}

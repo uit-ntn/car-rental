@@ -1,38 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
-import { checkUsernameExists, checkEmailExists, registerUser } from "../apis/authApi";
-import { useAuth } from "../hooks/useAuthentication";
-import '../styles/Register.css';
+
+import "../styles/Register.css";
+import UserContext from "../hooks/userProvider";
 
 function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [passwordStrength, setPasswordStrength] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [agreedToPolicy, setAgreedToPolicy] = useState(false);
   const navigate = useNavigate();
-  const { isLoggedIn } = useAuth();
+  const { userId, setUserId } = useContext(UserContext);
 
   useEffect(() => {
     // Nếu đã đăng nhập, chuyển hướng người dùng đến trang chính
-    if (isLoggedIn) {
-      navigate('/');
+    if (userId) {
+      navigate("/");
     }
-  }, [isLoggedIn, navigate]);
-
-  const checkPasswordStrength = (value) => {
-    setPassword(value);
-
-    if (value.length < 8) {
-      setPasswordStrength("Mật khẩu quá ngắn");
-    } else if (!/[a-z]/.test(value) || !/[A-Z]/.test(value) || !/[0-9]/.test(value)) {
-      setPasswordStrength("Mật khẩu phải chứa ít nhất một chữ cái viết hoa, một chữ cái viết thường và một số");
-    } else {
-      setPasswordStrength("Mật khẩu mạnh");
-    }
-  };
+  }, [userId, navigate]);
 
   const handleRegister = async () => {
     if (!agreedToPolicy) {
@@ -45,35 +32,28 @@ function Register() {
       return;
     }
 
-    try {
-      const isUsernameExists = await checkUsernameExists(username);
-      const isEmailExists = await checkEmailExists(email);
-
-      if (isUsernameExists) {
-        alert("Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.");
-        return;
-      }
-
-      if (isEmailExists) {
-        alert("Email đã tồn tại. Vui lòng sử dụng email khác.");
-        return;
-      }
-
-      const registrationData = await registerUser({
-        username,
-        password,
-        email,
-      });
-
-      if (registrationData.success) {
-        alert("Đăng ký thành công!");
-        navigate('/login');
-      } else {
-        alert("Đăng ký không thành công!");
-      }
-    } catch (error) {
-      console.error('Lỗi khi đăng ký:', error);
-    }
+    await fetch("http://127.0.0.1:8000/api/user/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        FIRST_NAME: username,
+        LAST_NAME: username,
+        EMAIL: email,
+        PASSWORD: password,
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        if(data) {
+           localStorage.setItem('isLoggedIn', JSON.stringify(data.data.USER_ID));
+           setUserId(data.data.USER_ID);
+        }
+        console.log(data);})
+      .catch((e) => console.log(e));
   };
 
   return (
@@ -106,9 +86,8 @@ function Register() {
               type="password"
               id="password"
               value={password}
-              onChange={(e) => checkPasswordStrength(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
             />
-            <p className="check-password">{passwordStrength}</p>
           </div>
           <div>
             <p htmlFor="confirmPassword">Xác nhận lại mật khẩu:</p>
@@ -126,9 +105,7 @@ function Register() {
               checked={agreedToPolicy}
               onChange={() => setAgreedToPolicy(!agreedToPolicy)}
             />
-            <p>
-              I agree to car rental's policy
-            </p>
+            <p>I agree to car rental's policy</p>
           </div>
           <div className="register-btn">
             <button type="button" onClick={handleRegister}>
@@ -137,7 +114,10 @@ function Register() {
           </div>
           <div className="line"></div>
           <div className="have-an-account">
-            Bạn đã có tài khoản <span><Link to="/login">Đăng nhập</Link></span>
+            Bạn đã có tài khoản{" "}
+            <span>
+              <Link className="dangnhap_btn" to="/login">Đăng nhập</Link>
+            </span>
           </div>
         </form>
       </div>

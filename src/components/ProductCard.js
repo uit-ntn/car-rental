@@ -51,7 +51,7 @@ const ProductCard = ({
 
           <span className="trip">{trip} chuyến</span>
         </div>
-        <div className="price">{price?.toLocaleString()} VND/h</div>
+        <div className="price">{price?.toLocaleString()} VND/ngày</div>
       </div>
       <p className={` ${available ? "available_green" : "available_red"}`}>
         Available
