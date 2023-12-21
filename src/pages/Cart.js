@@ -19,22 +19,29 @@ const Cart = () => {
       .catch((e) => console.log(e));
   }, []);
 
-  const handleDeleteClick = () => {
-    fetch(`http://127.0.0.1:8000/api/bookmark/${userId}`, {
+  const handleDeleteClick = (LICENSE_PLATE) => {
+    fetch(`http://127.0.0.1:8000/api/del_bookmark`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         USER_ID: userId,
-        LICENSE_PLATE: bookmarks.LICENSE_PLATE,
+        LICENSE_PLATE: LICENSE_PLATE,
       }),
     })
       .then((res) => {
         console.log(res);
-        res.json();
+        return res.json();
       })
-      .then((data) => setBookmarks(data.data))
+      .then((data) => {
+        const updatedBookmarks = bookmarks.filter(
+          (bookmark) =>
+            bookmark.USER_ID !== userId &&
+            bookmark.LICENSE_PLATE !== LICENSE_PLATE
+        );
+        setBookmarks(updatedBookmarks);
+      })
       .catch((e) => console.log(e));
   };
 
@@ -55,7 +62,9 @@ const Cart = () => {
                   <div className="item-details">
                     <div>
                       <p className="item-price">Giá thuê</p>
-                      <span className="item-value">{item.PRICE_C} vnd/ngày</span>
+                      <span className="item-value">
+                        {item.PRICE_C} vnd/ngày
+                      </span>
                     </div>
                     <div>
                       <p className="item-location">Địa điểm nhận xe</p>
@@ -87,7 +96,7 @@ const Cart = () => {
                     </Link>
                     <button
                       className="delete-button"
-                      onClick={() => handleDeleteClick(item.id)}
+                      onClick={() => handleDeleteClick(item.LICENSE_PLATE)}
                     >
                       Xóa
                     </button>
