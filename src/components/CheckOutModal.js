@@ -40,13 +40,13 @@ function CheckOutModal({
       }),
     })
       .then((res) => {
+        console.log(res);
         return res.json();
       })
       .then((data) => {
-        if(data.exception) {
+        if (data.exception) {
           alert(data.exception);
-        }
-        else alert("Thuê xe thành công!")
+        } else alert("Thuê xe thành công!");
       })
       .catch((e) => alert(e.message));
   };

@@ -3,11 +3,11 @@ import CarList from "../components/CarList";
 import "../styles/SearchBar.css";
 
 export default function SearchBar() {
-  const [isSelfDrivingSelected, setIsSelfDrivingSelected] = useState(true);
+  const [isSelfDrivingSelected] = useState(true);
   const [pickupDate, setPickupDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
   const [searchResults, setSearchResults] = useState();
-  const [selectedButton, setSelectedButton] = useState("self-driving");
+  const [selectedButton] = useState("self-driving");
   const [isFormValid, setIsFormValid] = useState(false);
   const [location, setLocation] = useState("");
 
@@ -31,6 +31,11 @@ export default function SearchBar() {
   };
 
   const validateDateRange = (start, end) => {
+    console.log(start);
+    console.log(start &&
+      end &&
+      new Date(end) > new Date(start) &&
+      new Date(start) >= new Date());
     setIsFormValid(
       start &&
         end &&
@@ -39,13 +44,13 @@ export default function SearchBar() {
     );
   };
 
-  const handleToggle = (isSelfDriving) => {
-    setIsSelfDrivingSelected(isSelfDriving);
-    setSelectedButton(isSelfDriving ? "self-driving" : "with-driver");
-    setPickupDate("");
-    setReturnDate("");
-    setIsFormValid(false);
-  };
+  // const handleToggle = (isSelfDriving) => {
+  //   setIsSelfDrivingSelected(isSelfDriving);
+  //   setSelectedButton(isSelfDriving ? "self-driving" : "with-driver");
+  //   setPickupDate("");
+  //   setReturnDate("");
+  //   setIsFormValid(false);
+  // };
 
   const handleSearch = () => {
     if (isFormValid) {
@@ -64,13 +69,12 @@ export default function SearchBar() {
   };
 
   
-
   return (
     <div>
       <div className="search-options">
         <div className="search-options-toggle">
           <button
-            onClick={() => handleToggle(true)}
+            // onClick={() => handleToggle(true)}
             className={selectedButton === "self-driving" ? "selected" : ""}
           >
             Tìm kiếm xe mong muốn

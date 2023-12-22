@@ -37,7 +37,6 @@ const Cart = () => {
       .then((data) => {
         const updatedBookmarks = bookmarks.filter(
           (bookmark) =>
-            bookmark.USER_ID !== userId &&
             bookmark.LICENSE_PLATE !== LICENSE_PLATE
         );
         setBookmarks(updatedBookmarks);

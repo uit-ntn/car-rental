@@ -38,9 +38,9 @@ function Header() {
             <div className="user-dropdown">
               <span className="hello-user">Xin chào {userData.LAST_NAME} </span>
               <div className="dropdown-content">
-                {/* <Link to={`/transaction/${userId}`}>
-                  Lịch sử giao dịch
-                </Link> */}
+                <Link to={`/transaction/${userId}`}>
+                  Thông tin thuê xe
+                </Link>
                 <Link to={`/bookmark/${userId}`}>Bookmark</Link>
                 <button onClick={handleLogout}>Đăng xuất</button>
               </div>
