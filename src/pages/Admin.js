@@ -12,7 +12,7 @@ function Admin() {
     const carAPI = "https://6539dce6e3b530c8d9e8c413.mockapi.io/car-rental/car";
     const [userData, setUserData] = useState([]);
     const [carData, setCarData] = useState([]);
-    const [contractData, setContractData] = useState([]);
+    const [contractData, setContractData] = useState([]); 
     const [selectedToggle, setSelectedToggle] = useState("users");
     const [multiDeleteMode, setMultiDeleteMode] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState(null);

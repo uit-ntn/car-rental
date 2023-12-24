@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import AccountLayout from "../components/AccountLayout";
+import ProfileCard from "../components/ProfileCard";
 import "../styles/Account.css";
 
 const Account = () => {
@@ -8,15 +9,12 @@ const Account = () => {
   const [userData, setUserData] = useState({});
   const [selectedAvatar, setSelectedAvatar] = useState(null);
   const [updateMode, setUpdateMode] = useState(false);
-
-  // Driving license state
   const [licenseData, setLicenseData] = useState({
     licenseNumber: "",
     licenseName: "",
-    licenseImage: null, // New state for storing license image
+    licenseImage: null,
   }); const [editLicenseMode, setEditLicenseMode] = useState(false);
 
-  // Fetch user data and driving license data
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -30,9 +28,6 @@ const Account = () => {
           }
           const userData = await userResponse.json();
           setUserData(userData);
-
-          // Fetch driving license data
-          // Placeholder for actual API call
           const licenseResponse = await fetch(`https://example.com/api/license`);
           if (!licenseResponse.ok) {
             throw new Error(`HTTP Error! Status: ${licenseResponse.status}`);
@@ -160,15 +155,12 @@ const Account = () => {
             </div>
 
             <div className="account-avt-box">
-              <div className="account-avt-fix">
-                <img className="account-avatar" alt="" src={userData.avatar} />
-              </div>
-              <div className="user-fullname">{userData.firstName + " " + userData.lastName}</div>
-              {updateMode && (
-                <div className="account-info-item">
-                  <input type="file" accept="image/*" onChange={handleAvatarChange} />
-                </div>
-              )}
+              <ProfileCard
+                IMG={userData.avatar}
+                FIRST_NAME={userData.FIRST_NAME}
+                LAST_NAME={userData.LAST_NAME}
+                DOB = {userData.DOB}
+              ></ProfileCard>
             </div>
 
             <div className="account-info-user">
