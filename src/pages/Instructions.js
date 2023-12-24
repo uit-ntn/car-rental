@@ -13,38 +13,17 @@ const Instructions = () => {
         <Layout>
             <div className="instructions-wrap">
                 <div className="instructions-header">
-                    <img src="./5-Pham-chat-hang-dau-cua-nhung-nguoi-lai-xe-tai-tuyet-voi.jpg" alt="" />
                     <h1>Hướng dẫn &amp; Quy chế</h1>
                 </div>
                 <div className="instructions-container">
                     <div className="tabs">
-                        <button onClick={() => showTab('tab1')}>Hướng dẫn chung</button>
-                        <button onClick={() => showTab('tab2')}>Hướng dẫn đặt xe</button>
+                        <button onClick={() => showTab('tab2')}>Nguyên tắc chung</button>
                         <button onClick={() => showTab('tab3')}>Hướng dẫn thanh toán</button>
                         <button onClick={() => showTab('tab4')}>Quy chế hoạt động</button>
                     </div>
+
+
                     <div className="instructions-content">
-                        <div className="instructions-tab-content" style={{ display: activeTab === 'tab1' ? 'block' : 'none' }}>
-                            <div className="header1">
-                                <button onClick={() => showTab('Tab1')}>Chủ Xe</button>
-                                <button onClick={() => showTab('Tab2')}>Khách thuê</button>
-                            </div>
-                            <div className="body">
-                                <br />
-                                <div className="instructions-content-con" id="Tab1">
-                                    <h3>Quy trình cho thuê xe</h3>
-                                    <p>
-                                        ...
-                                    </p>
-                                </div>
-                                <div className="instructions-content-con" id="Tab2">
-                                    <h3>Quy trình thuê xe</h3>
-                                    <p>
-                                        ...
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
                         <div className="instructions-tab-content" style={{ display: activeTab === 'tab2' ? 'block' : 'none' }}>
                             <h3>Nguyên tắc chung</h3>
                             <b>Trách nhiệm và trung thực</b>
@@ -85,20 +64,23 @@ const Instructions = () => {
                                 điều luật hiện
                                 hành có liên quan trong thời gian thuê xe.</p>
                         </div>
+
+
+                        
                         <div className="instructions-tab-content" style={{ display: activeTab === 'tab3' ? 'block' : 'none' }}>
                             <h2>Hướng dẫn thanh toán</h2>
-                            <h3>1. thanh toán qua thẻ của tôi</h3>
-                            <img id="anh" src="./thanh toan qua the.png" alt="" />
+                            <h3>1. Thanh toán trực tiếp</h3>
+                            <h4>Thanh toán khi nhận được xe</h4>
                             <br /> <br />
-                            <h3>2. Thanh toán trực tiếp - ví điện tử</h3>
-                            <img id="anh" src="./thanhtoantructiep.png" alt="" />
+                            <h3>2. Thanh toán ví điện tử (đang phát triển)</h3>
                             <br /> <br />
-                            <h3>3. Thanh toán qua thẻ tín dụng/thẻ ghi nợ VISA, MASTER</h3>
-                            <img id="anh" src="./thetindungVISa.png" alt="" />
+                            <h3>3. Thanh toán qua thẻ tín dụng/thẻ ghi nợ VISA, MASTER (đang phát triển)</h3>
                             <br /> <br />
-                            <h3>4. Thanh toán qua thẻ ATM đã đăng kí thanh toán trực tuyến</h3>
-                            <img id="anh" src="./QuaTheATM.png" alt="" />
+                            <h3>4. Thanh toán qua thẻ ATM đã đăng kí thanh toán trực tuyến (đang phát triển)</h3>
                         </div>
+
+
+
                         <div className="instructions-tab-content" style={{ display: activeTab === 'tab4' ? 'block' : 'none' }}>
                             <h2>Quy chế hoạt động</h2>
                             <h3>Nguyên tắc chung</h3>
