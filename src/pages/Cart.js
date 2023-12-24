@@ -45,7 +45,6 @@ const Cart = () => {
         <ul className="cart-list">
           {cart.length > 0 ? cart.map((item) => (
             <li key={item.id} className="cart-item">
-              <div className="item-status">Trạng thái giao dịch : { item.status ? item.status : "Chưa rõ"} </div>
               <div className="item-info">
                 <div className="item-image">
                   <div className="item-fix-image">
