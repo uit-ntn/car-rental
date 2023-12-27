@@ -11,24 +11,23 @@ import ResetPW from "../pages/ResetPW";
 import Transaction from "../pages/Transaction";
 import Admin from "../pages/Admin";
 const publicRoutes = [
-  { path: '/', page: Home },
-  { path: '/login', page: Login },
-  { path: '/about', page: About },
-  { path: '/register', page: Register },
-  { path: '/detail/:id', page: Detail },
-  { path: '/instructions', page: Instructions },
+  { path: "/", page: Home },
+  { path: "/login", page: Login },
+  { path: "/about", page: About },
+  { path: "/register", page: Register },
+  { path: "/detail/:id", page: Detail },
+  { path: "/instructions", page: Instructions },
+  { path: "/bookmark/:userId", page: Cart },
+  { path: "/transaction/:userId", page: Transaction },
 ];
 
 const privateRoutes = [
-  { path: '/cart/:userId', page: Cart },
-  { path: '/owner/register/:userId', page: Owner_Register },
-  { path: '/account/:userId', page: Account },
-  { path: `resetpw/:userId`, page: ResetPW },
-  { path: `transaction/:userId`, page: Transaction }]
-
-  const adminRoutes = [
-    { path: '/admin', page: Admin },
-  ]
   
+  { path: "/owner/register/:userId", page: Owner_Register },
+  { path: "/account/:userId", page: Account },
+  { path: `resetpw/:userId`, page: ResetPW },
+];
+
+const adminRoutes = [{ path: "/admin", page: Admin }];
 
 export { privateRoutes, publicRoutes, adminRoutes };

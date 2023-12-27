@@ -1,99 +1,62 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
-import Cookies from "js-cookie";
-import { loginUser, recoverPassword, checkUsernameExists } from "../apis/authApi";
-import { useAuth } from '../hooks/useAuthentication';
 import "../styles/Login.css"
-
-async function doesUserExist(username) {
-  try {
-    return await checkUsernameExists(username);
-  } catch (error) {
-    console.error("Lỗi khi kiểm tra tên người dùng:", error);
-    return false;
-  }
-}
+import UserContext from "../hooks/userProvider";
 
 function Login() {
-  const { isLoggedIn, login } = useAuth();
   const history = useNavigate();
-  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [forgotPassword, setForgotPassword] = useState(false);
+  const { userId, setUserId } = useContext(UserContext);
 
   useEffect(() => {
     // Nếu đã đăng nhập, chuyển hướng người dùng đến trang chính
-    if (isLoggedIn) {
+    if (userId) {
       history("/");
     }
-  }, [isLoggedIn, history]);
+  }, [userId, history]);
 
-  const setForgotPasswordMode = (value) => {
-    clearErrors();
-    setForgotPassword(value);
-  };
+  // const setForgotPasswordMode = (value) => {
+  //   clearErrors();
+  //   setForgotPassword(value);
+  // };
 
-  const clearErrors = () => {
-    setError("");
-  };
+  // const clearErrors = () => {
+  //   setError("");
+  // };
 
   const handleLoginClick = async (event) => {
     event.preventDefault();
 
-    if (!username || !password) {
+    if (!email || !password) {
       setError("Vui lòng nhập đầy đủ thông tin.");
       return;
     }
 
     // Kiểm tra xem tên người dùng có tồn tại hay không
-    const userExists = await doesUserExist(username);
-
-    if (!userExists) {
-      setError("Tên đăng nhập không tồn tại.");
-      return;
-    }
-
-    const requestData = {
-      username: username,
-      password: password,
-    };
-
-    try {
-      const isSuccess = await loginUser(requestData);
-
-      if (isSuccess) {
-        login(requestData);
-        Cookies.set("isLoggedIn", "true", { expires: 1 });
-        Cookies.set("username", username, { expires: 1 });
-        history("/");
-      } else {
-        setError("Đăng nhập không thành công. Vui lòng kiểm tra lại thông tin đăng nhập.");
-      }
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-
-  const handlePasswordRecovery = async (event) => {
-    event.preventDefault();
-    if (!email) {
-      setError("Vui lòng nhập địa chỉ email.");
-      return;
-    }
-
-    const recoveryData = {
-      email: email,
-    };
-
-    try {
-      const recoveredPassword = await recoverPassword(recoveryData);
-      alert(`Mật khẩu của bạn là: ${recoveredPassword}`);
-    } catch (error) {
-      setError(error.message);
-    }
+    await fetch("http://127.0.0.1:8000/api/user/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        if(data) {
+          localStorage.setItem('isLoggedIn', JSON.stringify(data.data.USER_ID));
+          setUserId(data.data.USER_ID);
+        }
+        console.log(data);})
+      .catch((e) => console.log(e));
   };
 
   return (
@@ -101,12 +64,12 @@ function Login() {
       <form className="login-container">
         <h2>{forgotPassword ? "Quên mật khẩu" : "Đăng nhập"}</h2>
         <div className="user-input">
-          <p>Tên đăng nhập</p>
+          <p>Email</p>
           <input
             type="text"
-            name="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         {forgotPassword && (
@@ -134,7 +97,7 @@ function Login() {
         <div className="handle-login-input">
           {!forgotPassword ? (
             <>
-              <button onClick={handleLoginClick} onMouseEnter={clearErrors}>
+              <button onClick={handleLoginClick}>
                 Đăng nhập
               </button>
               <p>{error && <span className="error-message">{error}</span>}</p>
@@ -143,17 +106,14 @@ function Login() {
                 <h5>
                   Bạn chưa có tài khoản?{" "}
                   <span>
-                    <Link to="/register">Đăng ký ngay</Link>
+                    <Link className="dangky_btn" to="/register">Đăng ký ngay</Link>
                   </span>
                 </h5>
-                <p className="forgot-password" onClick={() => setForgotPasswordMode(true)}>
-                  Quên mật khẩu?
-                </p>
               </div>
             </>
           ) : (
             <>
-              <button onClick={handlePasswordRecovery} onMouseEnter={clearErrors}>
+              <button >
                 Lấy lại mật khẩu
               </button>
               <p>{error && <span className="error-message">{error}</span>}</p>
@@ -161,7 +121,7 @@ function Login() {
               <div className="have-an-acount">
                 <h5>
                   Quay lại đăng nhập?{" "}
-                  <span className="back-login" onClick={() => setForgotPasswordMode(false)}>
+                  <span className="back-login">
                     Đăng nhập
                   </span>
                 </h5>

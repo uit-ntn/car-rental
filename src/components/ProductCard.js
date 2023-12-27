@@ -4,50 +4,60 @@ import "../styles/ProductCard.css";
 import starIcon from "../assets/img/star.png";
 import ggmapIcon from "../assets/img/google-map-icon.png";
 
-const ProductCard = ({ id, image, name, address, price, star, trip }) => (
+const ProductCard = ({
+  id,
+  image,
+  name,
+  address,
+  price,
+  star,
+  trip,
+  available,
+}) => {
+  const imagePath = require(`../assets/imageCars/${image}.jpg`);
 
-  <div className="product-card-box">
-    <div className="product-fix-img">
-      <Link to={`/detail/${id}`}>
-        <img src={image} alt="" />
-      </Link>
-    </div>
-    <div className="product-card-actions">
-      <p className="transmission">
-        <Link to={`/detail/${id}`} >
-        </Link>
-        Số tự động
-      </p>
-      <p className="delivery">
+  return (
+    <div className="product-card-box">
+      <div className="product-fix-img">
         <Link to={`/detail/${id}`}>
+          <img src={imagePath} alt="" />
         </Link>
-        Giao xe tận nơi
+      </div>
+      <div className="product-card-actions">
+        <Link to={`/detail/${id}`} className="transmission">
+          Số tự động
+        </Link>
+        <Link to={`/detail/${id}`} className="delivery">
+          Giao xe tận nơi
+        </Link>
+        <div className="address-box">
+          <span className="ggmap-fix-icon">
+            <img src={ggmapIcon} alt="" />
+          </span>{" "}
+          {address}
+        </div>
+      </div>
+      <p className="desc-name">{name}</p>
+
+      <div className="line"></div>
+      <div className="info-price">
+        <div className="info">
+          <span className="star">
+            {star}
+            <span className="fix-icon">
+              <img src={starIcon} alt="" />
+            </span>
+          </span>
+
+          <span className="trip">{trip} chuyến</span>
+        </div>
+        <div className="price">{price?.toLocaleString()} VND/ngày</div>
+      </div>
+      <p className={` ${available ? "available_green" : "available_red"}`}>
+        Available
       </p>
     </div>
-
-    <div className="address-box">
-      <div className="ggmap-fix-icon">
-        <img src={ggmapIcon} alt="" />
-      </div>{" "}
-      {address}
-    </div>
-
-    <p className="desc-name">{name}</p>
-
-    <div className="line"></div>
-    <div className="info-price">
-      <div className="info">
-        <div className="star-info">
-          <p>{star}</p>
-          <div className="fix-icon">
-            <img src={starIcon} alt="" />
-          </div>
-        </div>
-        <span className="trip">{trip} chuyến</span>
-      </div>
-      <div className="price">{price}k VND</div>
-    </div>
-  </div>
-);
+  );
+};
 
 export default ProductCard;

@@ -15,8 +15,8 @@
     "description description rent-box"
     "feature feature feature"
     "other-amenities other-amenities other-amenities";
+  overflow: hidden;
 }
-
 
 /* car avatar section */
 .car-avatar {
@@ -37,7 +37,6 @@
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  border:  2px solid black;
   height: 500px;
 }
 
@@ -45,7 +44,6 @@
   grid-area: main;
   width: 95%;
   height: 500px;
-  border: 2px solid black;
   border-radius: 5px;
 }
 
@@ -68,12 +66,10 @@
   width: 100%;
   height: 100%;
   border-radius: 5px;
-  border: 2px solid black;
 }
 
 .detail-container .rent-box {
   grid-area: rent-box;
-  border: 1px solid black;
   border-radius: 5px;
   padding: 30px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -83,8 +79,7 @@
 .car-description {
   grid-area: description;
   padding: 20px;
-  border: 1px solid black;
-  background-color: #EEEEEE;
+  background-color: #eeeeee;
 }
 
 .car-description h3 {
@@ -94,12 +89,17 @@
 
 .car-description p {
   font-size: 20px;
-  margin: 20px 0;
+  margin: 10px 0;
+}
+
+.car-description h1 {
+  font-size: 50px;
+  margin: 10px 0;
 }
 
 /* rent box section */
 .rent-box {
-  background-color: #00FFC8
+  background-color: #00ffc8;
 }
 
 .rent-box h2 {
@@ -151,7 +151,7 @@
   margin: 10px 0;
 }
 
-.rent-box .price-form-container .price-items p{
+.rent-box .price-form-container .price-items p {
   font-weight: bold;
 }
 
@@ -172,13 +172,19 @@
   height: 40px;
   padding: 5px;
   font-size: 25px;
-  background-color: white;
-  border-radius: 5px;
+  background-color: rgb(0, 0, 0);
+  border-radius: 10px;
+  color: white;
 }
 
+.rent-box .rent-actions button:hover {
+  cursor: pointer;
+  background-color: rgb(255, 254, 254);
+  color: rgb(0, 0, 0);
+}
 /* feature section */
 .car-feature-container {
-  height: 100%;
+  min-height: 100%;
   min-width: 100%;
   grid-area: feature;
 }
@@ -212,7 +218,8 @@
   display: grid;
   grid-template-columns: 100px 1fr;
   grid-template-rows: 50px 1fr;
-  grid-template-areas: "feature-icon feature-title"
+  grid-template-areas:
+    "feature-icon feature-title"
     "feature-icon feature-content";
   gap: 5px;
 }
@@ -242,7 +249,36 @@
   font-size: 40px;
   font-weight: bold;
 }
-.car-other-amenities h3{
+.car-other-amenities h3 {
   font-size: 20px;
   color: red;
 }
+
+.other-amenities {
+  height: 1000px;
+}
+
+.other-amenities-container {
+  margin-bottom: 20px;
+}
+
+.other-amenities-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.other-amenities-list li {
+  flex: 1 1 calc(33.33% - 20px);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+@media (max-width: 767px) {
+  .other-amenities-list li {
+    flex: 1 1 100%;
+  }
+}
+

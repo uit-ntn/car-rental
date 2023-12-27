@@ -1,14 +1,29 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../hooks/useAuthentication";
-import "../styles/Header.css"
+import "../styles/Header.css";
+import UserContext from "../hooks/userProvider";
 
 function Header() {
-  const { isLoggedIn, username, userId, logout } = useAuth();
+  const { userId, setUserId } = useContext(UserContext);
+  const [userData, setUserData] = useState(null);
 
   const handleLogout = () => {
-    logout();
+    setUserId(null);
+    setUserData(null);
+    localStorage.removeItem("isLoggedIn");
   };
+
+  useEffect(() => {
+    if (userId) {
+      fetch(`http://127.0.0.1:8000/api/user/${userId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          setUserData(data.data);
+        })
+        .catch((e) => console.log(e));
+    }
+  }, [userId]);
 
   return (
     <div className="header">
@@ -18,15 +33,15 @@ function Header() {
       </div>
       <div className="navigation">
         <Link to="/about">Về Car Rental</Link>
-        <Link to={`/owner/register/${userId}`}>Trở thành chủ xe</Link>
         <div>
-          {isLoggedIn ? (
+          {userData ? (
             <div className="user-dropdown">
-              <span className="hello-user">Xin chào {username} </span>
+              <span className="hello-user">Xin chào {userData.LAST_NAME} </span>
               <div className="dropdown-content">
-                <Link to={`/account/${userId}`}>Tài khoản</Link>
-                <Link to={`/transaction-history/${userId}`}>Lịch sử giao dịch</Link>
-                <Link to={`/cart/${userId}`}>Giỏ hàng</Link>
+                <Link to={`/transaction/${userId}`}>
+                  Thông tin thuê xe
+                </Link>
+                <Link to={`/bookmark/${userId}`}>Bookmark</Link>
                 <button onClick={handleLogout}>Đăng xuất</button>
               </div>
             </div>
