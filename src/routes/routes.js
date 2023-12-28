@@ -15,14 +15,14 @@ const publicRoutes = [
   { path: "/login", page: Login },
   { path: "/about", page: About },
   { path: "/register", page: Register },
-  { path: "/detail/:id", page: Detail },
   { path: "/instructions", page: Instructions },
   { path: "/bookmark/:userId", page: Cart },
-  { path: "/transaction/:userId", page: Transaction },
+  { path: "/detail/:id", page: Detail },
 ];
 
 const privateRoutes = [
   
+  { path: "/transaction/:userId", page: Transaction },
   { path: "/owner/register/:userId", page: Owner_Register },
   { path: "/account/:userId", page: Account },
   { path: `resetpw/:userId`, page: ResetPW },
