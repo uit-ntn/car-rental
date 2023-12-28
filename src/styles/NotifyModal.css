@@ -60,18 +60,18 @@
 .modal {
     display: none;
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    padding: 20px;
     border: 1px solid #ccc;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     border: 1px solid black;
-    width: 50vw;
+    width: 60%;
+    top: 5%;
+    left: 20%;
+    height: 80%;
 
 }
+
+.modal-content {}
 
 .modal.show {
     display: block;
@@ -83,14 +83,57 @@
     font-size: 30px;
 }
 
-.modal-footer{
+.modal-footer {
     text-align: center;
     border-top: 1px solid black;
     margin-top: 20px;
     padding: 10px 0;
 }
-.modal-footer button{
+
+.modal-footer button {
 
     padding: 5px;
     font-size: 20px;
+    text-align: center;
+    margin: auto;
+}
+
+.body {
+    margin-top: 20px;
+    background: #FFF5EE;
+}
+
+.card {
+    box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+}
+
+.avatar.sm {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: .818125rem;
+}
+
+.table-nowrap .table td,
+.table-nowrap .table th {
+    white-space: nowrap;
+}
+
+
+
+.table>:not(caption)>*>* {
+    padding: 0.75rem 1.25rem;
+    border-bottom-width: 1px;
+}
+
+table th {
+    font-weight: 600;
+    background-color: #eeecfd !important;
+}
+
+.fa-arrow-up {
+    color: #00CED1;
+}
+
+.fa-arrow-down {
+    color: #FF00FF;
 }

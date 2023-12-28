@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from '../hooks/useAuthentication';
 import { useNavigate } from "react-router-dom";
-import CarInfoModal from "../components/CarInfoModal";
-import UserInfoModal from "../components/UserInfoModal";
-import ContractInfoModal from "../components/ContractInfoModal";
+import AddData from "../components/AddData";
 import "../styles/Admin.css";
 
 function Admin() {
@@ -14,30 +12,195 @@ function Admin() {
     const [carData, setCarData] = useState([]);
     const [contractData, setContractData] = useState([]);
     const [selectedToggle, setSelectedToggle] = useState("users");
-    const [multiDeleteMode, setMultiDeleteMode] = useState(false);
-    const [selectedUserId, setSelectedUserId] = useState(null);
-    const [selected_LINCENSE_PLATE, setSelected_LICENSE_PLATE] = useState(null);
-    const [selectedContractId, setSelectedContractId] = useState(null);
-    const [userInfoModalVisible, setUserInfoModalVisible] = useState(false);
-    const [carInfoModalVisible, setCarInfoModalVisible] = useState(false);
-    const [contractInfoModalVisible, setContractInfoModalVisible] = useState(false);
+    const [isAddFormOpen, setIsAddFormOpen] = useState(false);
+    const [selectedUser, setSelectedUser] = useState();
+    const [isEditing, setIsEditing] = useState(false);
+    const [selectedCar, setSelectedCar] = useState();
+    const [selectedContract, setSelectedContract] = useState();
 
 
-    const handleOpenUserInfoModal = (userId) => {
-        setSelectedUserId(userId);
-        setUserInfoModalVisible(true);
+
+    const handleEditClick = () => {
+        setIsEditing(true);
     };
-    const handleOpenCarInfoModal = (LICENSE_PLATE) => {
-        setSelected_LICENSE_PLATE(LICENSE_PLATE);
-        setCarInfoModalVisible(true);
+
+    const handleUserSaveClick = async () => {
+        try {
+            const response = await fetch(`${userAPI}/${selectedUser.USER_ID}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(userData),
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to save user data");
+            }
+
+            setUserData((prevUserData) => {
+                const updatedUserData = prevUserData.map((user) =>
+                    user.USER_ID === selectedUser.USER_ID ? { ...user, ...userData } : user
+                );
+                return updatedUserData;
+            });
+
+            setIsEditing(false);
+        } catch (error) {
+            console.error("Error saving user data:", error);
+        }
     };
-    const handleOpenContractInfoModal = (CONTRACT_ID) => {
-        setSelectedContractId(CONTRACT_ID);
-        setContractInfoModalVisible(true);
+    const handleCarSaveClick = async () => {
+        try {
+            const response = await fetch(`${carAPI}/${selectedCar.LICENSE_PLATE}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(selectedCar),
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to save car data");
+            }
+
+            setCarData((prevCarData) => {
+                const updatedCarData = prevCarData.map((car) =>
+                    car.LICENSE_PLATE === selectedCar.LICENSE_PLATE ? { ...car, ...selectedCar } : car
+                );
+                return updatedCarData;
+            });
+
+            setIsEditing(false);
+        } catch (error) {
+            console.error("Error saving car data:", error);
+        }
     };
-    const handleMultiDeleteToggle = () => {
-        setMultiDeleteMode(!multiDeleteMode);
+
+    const handleContractSaveClick = async () => {
+        try {
+            const response = await fetch(`${contractAPI}/${selectedContract.CONTRACT_ID}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(selectedContract),
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to save contract data");
+            }
+
+            setContractData((prevContractData) => {
+                const updatedContractData = prevContractData.map((contract) =>
+                    contract.CONTRACT_ID === selectedContract.CONTRACT_ID ? { ...contract, ...selectedContract } : contract
+                );
+                return updatedContractData;
+            });
+
+            setIsEditing(false);
+        } catch (error) {
+            console.error("Error saving contract data:", error);
+        }
     };
+
+
+
+    const renderField = (label, value) => {
+        return (
+            <div className="user-info-modal-item">
+                <label>{label} :</label>
+                {isEditing ? (
+                    <input className="form-control"
+                        type="text"
+                        placeholder={value}
+                    />
+                ) : (
+                    <label>{value}</label>
+                )}
+            </div>
+        );
+    };
+    const renderCarField = (label, value) => {
+        return (
+            <div className="car-info-modal-item">
+                <label>{label} :</label>
+                {isEditing ? (
+                    <input className="form-control"
+                        type="text"
+                        placeholder={value}
+                    />
+                ) : (
+                    <label>{value}</label>
+                )}
+            </div>
+        );
+    };
+
+    const renderContractField = (label, value) => {
+        return (
+            <div className="contract-info-modal-item">
+                <label>{label} :</label>
+                {isEditing ? (
+                    <input
+                        className="form-control"
+                        type="text"
+                        placeholder={value}
+                    />
+                ) : (
+                    <label>{value}</label>
+                )}
+            </div>
+        );
+    };
+
+    const handleAddData = async (formData) => {
+        setIsAddFormOpen(false);
+    };
+
+    const fetchUserData = async () => {
+        try {
+            const response = await fetch(userAPI);
+            if (!response.ok) {
+                throw new Error("Failed to fetch user data");
+            }
+            const data = await response.json();
+            setUserData(data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    const fetchContractData = async () => {
+        try {
+            const response = await fetch(contractAPI);
+            if (!response.ok) {
+                throw new Error("Failed to fetch contract data");
+            }
+            const data = await response.json();
+            setContractData(data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    const fetchCarData = async () => {
+        try {
+            const response = await fetch(carAPI);
+            if (!response.ok) {
+                throw new Error("Failed to fetch car data");
+            }
+            const data = await response.json();
+            setCarData(data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    useEffect(() => {
+        fetchUserData();
+        fetchContractData();
+        fetchCarData();
+    }, []);
+
+
 
     const handleUserDelete = async (userId) => {
         try {
@@ -68,101 +231,35 @@ function Admin() {
             console.error(error);
         }
     };
-
-    const handleMultiDelete = async () => {
+    const handleContractDelete = async (CONTRACT_ID) => {
         try {
-            const checkboxes = document.querySelectorAll(`#${selectedToggle}Checkbox:checked`);
-            const selectedIds = Array.from(checkboxes).map((checkbox) =>
-                checkbox.getAttribute('data-id')
-            );
-
-            const promises = selectedIds.map((id) =>
-                fetch(`${userAPI}/${id}`, {
-                    method: 'DELETE',
-                })
-            );
-
-            const responses = await Promise.all(promises);
-
-            if (responses.every((response) => response.ok)) {
-                setUserData((prevData) =>
-                    prevData.filter((user) => !selectedIds.includes(user.USER_ID))
-                );
-            } else {
-                throw new Error('Failed to delete some users');
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    const fetchData = async (api, setData) => {
-        try {
-            const response = await fetch(api);
-
-            if (!response.ok) {
-                throw new Error(`Failed to fetch data from ${api}`);
-            }
-            const data = await response.json();
-            setData(data);
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    useEffect(() => {
-        fetchData(userAPI, setUserData);
-        fetchData(carAPI, setCarData);
-        fetchData(contractAPI, setContractData);
-    }, [userAPI, carAPI, contractAPI]);
-    useEffect(() => {
-        const handleSideMenuClick = (item) => {
-            const li = item.parentElement;
-            document
-                .querySelectorAll('#sidebar .side-menu.top li')
-                .forEach((i) => i.classList.remove('active'));
-            li.classList.add('active');
-
-            setSelectedToggle(item.getAttribute("data-toggle"));
-        };
-
-        document
-            .querySelectorAll('#sidebar .side-menu.top li a')
-            .forEach((item) => {
-                item.addEventListener('click', () => handleSideMenuClick(item));
+            const response = await fetch(`${contractAPI}/${CONTRACT_ID}`, {
+                method: 'DELETE',
             });
 
-        const handleSidebarToggle = () => {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('hide');
-        };
-
-        document
-            .querySelector('#content nav .bx.bx-menu')
-            .addEventListener('click', handleSidebarToggle);
-
-
-
-
-        return () => {
-            document
-                .querySelectorAll('#sidebar .side-menu.top li a')
-                .forEach((item) => item.removeEventListener('click', handleSideMenuClick));
-            document.querySelector('#content nav .bx.bx-menu').removeEventListener('click', handleSidebarToggle);
-        };
-    }, []);
-
+            if (!response.ok) {
+                throw new Error(`Failed to delete car with CONTRACT_ID: ${CONTRACT_ID}`);
+            }
+            setContractData((prevData) => prevData.filter((contract) => contract.CONTRACT_ID !== CONTRACT_ID));
+        } catch (error) {
+            console.error(error);
+        }
+    };
     const { logout } = useAuth();
     const navigate = useNavigate();
 
     const handleLogout = () => {
         logout();
         navigate("/login");
+
+    };
+    const handleToggle = (toggle) => {
+        setSelectedToggle(toggle);
     };
 
     return (
         <>
-            {/* SIDEBAR */}
+            {/* SIDEBAR */}``
             <section id="sidebar">
                 <a className="brand">
                     <i className="bx bx bxs-taxi" />
@@ -170,25 +267,25 @@ function Admin() {
                 </a>
                 <ul className="side-menu top">
                     <li className={selectedToggle === "users" ? "active" : ""}>
-                        <a data-toggle="users">
+                        <a onClick={() => handleToggle("users")}>
                             <i className="bx bxs-user" />
                             <span className="text">Danh sách người dùng</span>
                         </a>
                     </li>
                     <li className={selectedToggle === "cars" ? "active" : ""}>
-                        <a data-toggle="cars">
+                        <a onClick={() => handleToggle("cars")}>
                             <i className="bx bxs-car" />
                             <span className="text">Danh sách xe</span>
                         </a>
                     </li>
                     <li className={selectedToggle === "contracts" ? "active" : ""}>
-                        <a data-toggle="contracts">
+                        <a onClick={() => handleToggle("contracts")}>
                             <i className="bx bx-file" />
                             <span className="text">Danh sách hợp đồng</span>
                         </a>
                     </li>
                     <li className={selectedToggle === "owner-register" ? "active" : ""}>
-                        <a data-toggle="owner-register">
+                        <a onClick={() => handleToggle("owner-register")}>
                             <i className="bx bx bx-car" />
                             <span className="text">Danh sách xe đăng ký</span>
                         </a>
@@ -218,10 +315,7 @@ function Admin() {
                 <main>
                     <div className="head-title">
                         <div className="left">
-                            {selectedToggle === "users" && <h1>Danh sách người dùng</h1>}
-                            {selectedToggle === "cars" && <h1>Danh sách xe</h1>}
-                            {selectedToggle === "contracts" && <h1>Danh sách hợp đồng</h1>}
-                            {selectedToggle === "owner-register" && <h1>Danh sách xe đăng ký</h1>}
+                            <h1>Danh sách {selectedToggle}</h1>
                         </div>
                     </div>
 
@@ -237,7 +331,7 @@ function Admin() {
                             <i className="bx bxs-group" />
                             <span className="text">
                                 <h3>{userData.length}</h3>
-                                <p>User</p>
+                                <p>Người dùng</p>
                             </span>
                         </li>
                         <li>
@@ -251,33 +345,28 @@ function Admin() {
 
                     {/* table data section */}
                     <div className="table-data-toggle">
-                        <div className="table-data">
+                        <div className="table-data user-table">
                             <div className="order">
                                 <div className="head">
-                                    <h3>{selectedToggle === "dashboard" ? "Dashboard" : `Danh sách ${selectedToggle === "users" ? "người dùng" : selectedToggle === "cars" ? "xe" : selectedToggle === "contracts" ? "hợp đồng" : "xe đăng ký"}`}</h3>
+                                    <h3></h3>
                                     <div className="head-actions">
-                                        {multiDeleteMode ? (
-                                            <button onClick={handleMultiDeleteToggle}>Hủy</button>
-                                        ) : (
-                                            <div>
-                                                <button>Thêm</button>
-                                                <button onClick={handleMultiDeleteToggle}>Xóa nhiều</button>
-                                            </div>
-                                        )}
+                                        <button
+                                            type="button"
+                                            className="btn btn-primary"
+                                            onClick={() => { 
+                                                setIsAddFormOpen(true)
+                                                AddData(selectedToggle,isAddFormOpen)
+                                            }}
+                                        >
+                                            Thêm
+                                        </button>
                                     </div>
                                 </div>
-                                <table>
-                                    <thead>
-                                        {selectedToggle === "cars" && (
-                                            <tr>
-                                                <th>NAME</th>
-                                                <th>LICENSE_PLATE</th>
-                                                <th>BRAND</th>
-                                                <th>PRICE_C</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        )}
-                                        {selectedToggle === "users" && (
+                                {selectedToggle === "users" && (
+
+                                    <table>
+                                        <thead>
+
                                             <tr>
                                                 <th>User ID </th>
                                                 <th>First name</th>
@@ -285,115 +374,198 @@ function Admin() {
                                                 <th>Email</th>
                                                 <th>Action</th>
                                             </tr>
-                                        )}
-                                        {selectedToggle === "contracts" && (
+                                        </thead>
+                                        <tbody>
+                                            {userData.map(user => (
+                                                <tr key={user.id}>
+                                                    <td>{user.USER_ID}</td>
+                                                    <td>{user.FIRST_NAME}</td>
+                                                    <td>{user.LAST_NAME}</td>
+                                                    <td>{user.EMAIL}</td>
+                                                    <td>
+                                                        <div className="table-data-actions">
+                                                            <button type="button" class="btn btn-primary"
+                                                                onClick={() => setSelectedUser(user)}
+                                                            >Xem
+                                                            </button>
+                                                            <button type="button" class="btn btn-danger"
+                                                                onClick={() => handleUserDelete(user.USER_ID)}
+                                                            >
+                                                                Xóa
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+
+                                        </tbody>
+
+                                    </table>
+                                )}
+
+                                {selectedToggle === "cars" && (
+
+                                    <table>
+                                        <thead>
                                             <tr>
-                                                <th>USER_ID</th>
+                                                <th>NAME</th>
                                                 <th>LICENSE_PLATE</th>
                                                 <th>BRAND</th>
                                                 <th>PRICE_C</th>
                                                 <th>Action</th>
                                             </tr>
-                                        )}
-                                    </thead>
-
-
-                                    <tbody>
-                                        {selectedToggle === "users" && userData.map(user => (
-                                            <tr key={user.id}>
-                                                <td>{user.USER_ID}</td>
-                                                <td>{user.FIRST_NAME}</td>
-                                                <td>{user.LAST_NAME}</td>
-                                                <td>{user.EMAIL}</td>
-                                                <td>
-                                                    <div className="table-data-actions">
-                                                        <div>
-                                                            {multiDeleteMode && (
-                                                                <input type="checkbox" id={`userCheckbox-${user.id}`} />
-                                                            )}
-                                                            {!multiDeleteMode && (
-                                                                <div>
-                                                                    <button onClick={() => handleOpenUserInfoModal(user.USER_ID)}>Xem</button>
-                                                                    <button onClick={() => handleUserDelete(user.USER_ID)}>Xóa</button>
-                                                                </div>
-                                                            )}
+                                        </thead>
+                                        <tbody>
+                                            {carData.map(car => (
+                                                <tr key={car.id}>
+                                                    <td>{car.NAME}</td>
+                                                    <td>{car.LICENSE_PLATE}</td>
+                                                    <td>{car.BRAND}</td>
+                                                    <td>{car.PRICE_C}</td>
+                                                    <td>
+                                                        <div className="table-data-actions">
+                                                            <button type="button" class="btn btn-primary"
+                                                                onClick={() => setSelectedCar(car)}
+                                                            >Xem
+                                                            </button>
+                                                            <button type="button" class="btn btn-danger" onClick={() => handleCarDelete(car.LICENSE_PLATE)}>Xóa</button>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ))}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                )}
 
-                                        {selectedToggle === "cars" && carData.map(car => (
-                                            <tr key={car.id}>
-                                                <td>{car.NAME}</td>
-                                                <td>{car.LICENSE_PLATE}</td>
-                                                <td>{car.BRAND}</td>
-                                                <td>{car.PRICE_C}</td>
-                                                <td>
-                                                    <div className="table-data-actions">
-                                                        <div>
-                                                            {multiDeleteMode && (
-                                                                <input type="checkbox" id={`carCheckbox-${car.id}`} />
-                                                            )}
-                                                            {!multiDeleteMode && (
-                                                                <div>
-                                                                    <button onClick={handleOpenCarInfoModal(car.LICENSE_PLATE)}>Xem</button>
-                                                                    <button onClick={() => handleCarDelete(car.LICENSE_PLATE)}>Xóa</button>
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                </td>
+                                {selectedToggle === "contracts" && (
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>LICENSE_PLATE</th>
+                                                <th>START_DATE</th>
+                                                <th>END_DATE</th>
+                                                <th>DEPOSIT_STATUS</th>
+                                                <th>RETURN_STATUS</th>
+                                                <th>Actions</th>
                                             </tr>
-                                        ))}
-                                        {selectedToggle === "contracts" && contractData.map(contract => (
-                                            <tr key={contractData.USER_ID}>
-                                                <td>{contract.NAME}</td>
-                                                <td>{contract.LICENSE_PLATE}</td>
-                                                <td>{contract.BRAND}</td>
-                                                <td>{contract.PRICE_C}</td>
-                                                <td>
-                                                    <div className="table-data-actions">
-                                                        <div>
-                                                            {multiDeleteMode && (
-                                                                <input type="checkbox" id={`carCheckbox-${contract.id}`} />
-                                                            )}
-                                                            {!multiDeleteMode && (
-                                                                <div>
-                                                                    <button onClick={handleOpenContractInfoModal()}>Xem</button>
-                                                                    <button onClick={() => handleCarDelete(contract.LICENSE_PLATE)}>Xóa</button>
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                    {multiDeleteMode && (
-                                        <tr>
-                                            <td colSpan="3">
-                                                <div>
-                                                    <button onClick={handleMultiDelete}>Xóa tất cả mục đã chọn</button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    )}
-                                    {userInfoModalVisible && (
-                                        <UserInfoModal USER_ID={selectedUserId} onclose={() => setUserInfoModalVisible(false)} />
-                                    )}
-                                    {
-                                        carInfoModalVisible && (
-                                            <CarInfoModal LICENSE_PLATE={selected_LINCENSE_PLATE} onClose={() => setCarInfoModalVisible(false)}></CarInfoModal>
-                                        )}
-                                    {
-                                        contractInfoModalVisible &&
-                                        <ContractInfoModal CONTRACT_ID={selectedContractId} onclose={() => setContractInfoModalVisible(false)}></ContractInfoModal>
-                                    }
+                                        </thead>
+                                        <tbody>
+                                            {contractData.map(contract => (
+                                                <tr>
+                                                    <td>{contract.LICENSE_PLATE}</td>
+                                                    <td>{contract.START_DATE}</td>
+                                                    <td>{contract.END_DATE}</td>
+                                                    <td>{contract.DEPOSIT_STATUS}</td>
+                                                    <td>{contract.RETURN_STATUS}</td>
+                                                    <td>
+                                                        <div className="table-data-actions">
+                                                            <button type="button" class="btn btn-primary"
+                                                                onClick={() => {
+                                                                    setSelectedContract(contract)
 
-                                </table>
+                                                                }}
+                                                            >Xem
+                                                            </button>
+                                                            <button type="button" class="btn btn-danger">Xóa</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                )}
                             </div>
                         </div>
+                    </div>
+                   
+
+                    <div className="info-modal-container">
+                        {selectedToggle === "users" && (
+                            <div className="user-info-modal-container container">
+                                {selectedToggle === "users" && selectedUser && (
+                                    <div className="user-info-modal">
+                                        <div className="user-info-fields">
+                                            {renderField("User ID", selectedUser.USER_ID)}
+                                            {renderField("First Name", selectedUser.FIRST_NAME)}
+                                            {renderField("Last Name", selectedUser.LAST_NAME)}
+                                            {renderField("Email", selectedUser.EMAIL)}
+                                        </div>
+                                        <div className="user-info-modal-actions">
+                                            {!isEditing && (
+                                                <div className="user-info-modal-btn">
+                                                    <div className="user-info-modal-btn">
+                                                        <button className="btn btn-primary" onClick={handleEditClick}>Chỉnh Sửa</button>
+                                                        <button className="btn btn-primary" onClick={() => setSelectedUser(null)}>Đóng</button>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            {isEditing && (
+                                                <div className="user-info-modal-btn">
+                                                    <button className="btn btn-primary" onClick={handleUserSaveClick}>Lưu</button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {selectedToggle === "cars" && (
+                            <div className="car-info-modal-container container">
+                                {selectedToggle === "cars" && selectedCar && (
+                                    <div className="car-info-modal">
+                                        <div className="car-info-fields">
+                                            {renderCarField("Name", selectedCar.NAME)}
+                                            {renderCarField("License Plate", selectedCar.LICENSE_PLATE)}
+                                            {renderCarField("Brand", selectedCar.BRAND)}
+                                            {renderCarField("Price", selectedCar.PRICE_C)}
+                                        </div>
+                                        <div className="car-info-modal-actions">
+                                            {!isEditing && (
+                                                <div className="car-info-modal-btn">
+                                                    <button className="btn btn-primary" onClick={handleEditClick}>Chỉnh Sửa</button>
+                                                    <button className="btn btn-primary" onClick={() => setSelectedCar(null)}>Đóng</button>
+                                                </div>
+                                            )}
+                                            {isEditing && (
+                                                <div className="car-info-modal-btn">
+                                                    <button className="btn btn-primary" onClick={handleCarSaveClick}>Lưu</button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {selectedToggle === "contracts" && (
+                            <div className="contract-info-modal-container container">
+                                {selectedToggle === "contracts" && selectedContract && (
+                                    <div className="contract-info-modal">
+                                        <div className="contract-info-fields">
+                                            {renderContractField("License Plate", selectedContract.LICENSE_PLATE)}
+                                            {renderContractField("Start Date", selectedContract.START_DATE)}
+                                            {renderContractField("End Date", selectedContract.END_DATE)}
+                                            {renderContractField("Deposit Status", selectedContract.DEPOSIT_STATUS)}
+                                            {renderContractField("Return Status", selectedContract.RETURN_STATUS)}
+                                        </div>
+                                        <div className="contract-info-modal-actions">
+                                            {!isEditing && (
+                                                <div className="contract-info-modal-btn">
+                                                    <button className="btn btn-primary" onClick={handleEditClick}>Chỉnh Sửa</button>
+                                                    <button className="btn btn-primary" onClick={() => setSelectedContract(null)}>Đóng</button>
+                                                </div>
+                                            )}
+                                            {isEditing && (
+                                                <div className="contract-info-modal-btn">
+                                                    <button className="btn btn-primary" onClick={handleContractSaveClick}>Lưu</button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </main>
                 {/* MAIN */}
