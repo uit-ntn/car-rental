@@ -271,36 +271,6 @@ body {
 	justify-content: center;
 	align-items: center;
 }
-#content nav .profile img {
-	width: 36px;
-	height: 36px;
-	object-fit: cover;
-	border-radius: 50%;
-}
-#content nav .switch-mode {
-	display: block;
-	min-width: 50px;
-	height: 25px;
-	border-radius: 25px;
-	background: var(--grey);
-	cursor: pointer;
-	position: relative;
-}
-#content nav .switch-mode::before {
-	content: '';
-	position: absolute;
-	top: 2px;
-	left: 2px;
-	bottom: 2px;
-	width: calc(25px - 4px);
-	background: var(--blue);
-	border-radius: 50%;
-	transition: all .3s ease;
-}
-#content nav #switch-mode:checked + .switch-mode::before {
-	left: calc(100% - (25px - 4px) - 2px);
-}
-/* NAVBAR */
 
 
 
@@ -432,6 +402,9 @@ body {
 	font-size: 24px;
 	font-weight: 600;
 }
+.content main .table-data .head-actions button{
+padding: 5px;
+}
 #content main .table-data .head .bx {
 	cursor: pointer;
 }
@@ -445,10 +418,10 @@ body {
 	border-collapse: collapse;
 }
 #content main .table-data .order table th {
-	padding-bottom: 12px;
 	font-size: 13px;
 	text-align: left;
 	border-bottom: 1px solid var(--grey);
+	padding: 12px;
 }
 #content main .table-data .order table td {
 	padding: 16px 0;

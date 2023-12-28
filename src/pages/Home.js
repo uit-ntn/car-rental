@@ -3,6 +3,7 @@ import Layout from "../components/Layout";
 import CarList from "../components/CarList";
 import Slider from "../components/Slider";
 import SearchBar from "../components/SearchBar";
+import CommentPost from "../components/CommentPost";
 import "../styles/Home.css";
 import { Link } from "react-router-dom";
 
@@ -128,6 +129,7 @@ function Home() {
                         </div>
                     </div>
                 </div>
+                <CommentPost></CommentPost>
             </Layout>
         </>
     );

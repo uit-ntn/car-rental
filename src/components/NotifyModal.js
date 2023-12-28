@@ -37,7 +37,6 @@ function NotifyModal() {
       </button>
 
       <div className={`modal ${showModal ? 'show' : ''}`} tabIndex="-1" role="dialog" style={{ display: showModal ? 'block' : 'none' }}>
-        <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
               <h5>DANH SÁCH GIAO DỊCH ĐANG CHỜ DUYỆT</h5>
@@ -72,7 +71,6 @@ function NotifyModal() {
                             <td>19 Aug, 2021</td>
                             <td>
                               <div class="d-flex align-items-center">
-                                <span><i class="fa fa-arrow-up" aria-hidden="true"></i></span>
                                 <span>$145</span>
                               </div>
                             </td>
@@ -89,7 +87,6 @@ function NotifyModal() {
                             <td>19 Aug, 2021</td>
                             <td>
                               <div class="d-flex align-items-center">
-                                <span><i class="fa fa-arrow-down" aria-hidden="true"></i></span>
                                 <span>$641.64</span>
                               </div>
                             </td>
@@ -106,7 +103,6 @@ function NotifyModal() {
                             <td>19 Aug, 2021</td>
                             <td>
                               <div class="d-flex align-items-center">
-                                <span><i class="fa fa-arrow-down" aria-hidden="true"></i></span>
                                 <span>$12,457</span>
                               </div>
                             </td>
@@ -123,7 +119,6 @@ function NotifyModal() {
                             <td>19 Aug, 2021</td>
                             <td>
                               <div class="d-flex align-items-center">
-                                <span><i class="fa fa-arrow-down" aria-hidden="true"></i></span>
                                 <span>$12,457</span>
                               </div>
                             </td>
@@ -140,7 +135,6 @@ function NotifyModal() {
                             <td>19 Aug, 2021</td>
                             <td>
                               <div class="d-flex align-items-center">
-                                <span><i class="fa fa-arrow-down" aria-hidden="true"></i></span>
                                 <span>$12,457</span>
                               </div>
                             </td>
@@ -158,25 +152,7 @@ function NotifyModal() {
                             <td>19 Aug, 2021</td>
                             <td>
                               <div class="d-flex align-items-center">
-                                <span><i class="fa fa-arrow-down" aria-hidden="true"></i></span>
                                 <span>$785</span>
-                              </div>
-                            </td>
-                            <td>
-                              <span class="badge fs-6 fw-normal bg-tint-success text-success">Completed</span>
-                            </td>
-                          </tr>
-                          <tr class="align-middle">
-                            <td>
-                              #87444654
-                            </td>
-                            <td>Netflix Inc.</td>
-                            <td>23 Jan, 2021</td>
-                            <td>19 Aug, 2021</td>
-                            <td>
-                              <div class="d-flex align-items-center">
-                                <span><i class="fa fa-arrow-up" aria-hidden="true"></i></span>
-                                <span>$199</span>
                               </div>
                             </td>
                             <td>
@@ -201,7 +177,6 @@ function NotifyModal() {
           </div>
         </div>
       </div>
-    </div>
   );
 }
 

@@ -85,8 +85,7 @@ function Detail() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          fuelType: carData.fuelType,
-          avatar: carData.avatar,
+          fuelType: carData.FEUL,
           price: carData.price,
           fuelConsumption: carData.fuelConsumption,
           transmission: carData.transmission,
@@ -117,17 +116,17 @@ function Detail() {
         {carData && (
           <div className="car-avatar">
             <div className="main-avatar-fix">
-              <img className="main-avatar" src={carData.image} alt={carData.name} />
+              <img className="main-avatar" src={carData.FRONT_IMG} alt={carData.name} />
             </div>
             <div className="other-avatar">
               <div className="car-avatar-1-fix">
-                <img className="car-avatar-1" src={carData.image} alt={carData.name} />
+                <img className="car-avatar-1" src={carData.BACK_IMG} alt={carData.name} />
               </div>
               <div className="car-avatar-2-fix">
-                <img className="car-avatar-2" src={carData.image} alt={carData.name} />
+                <img className="car-avatar-2" src={carData.LEFT_IMG} alt={carData.name} />
               </div>
               <div className="car-avatar-3-fix">
-                <img className="car-avatar-3" src={carData.image} alt={carData.name} />
+                <img className="car-avatar-3" src={carData.RIGHT_IMG} alt={carData.name} />
               </div>
             </div>
           </div>
@@ -156,11 +155,11 @@ function Detail() {
             <div className="price-form-container">
               <div className="price-items">
                 <p>Đơn giá thuê : </p>
-                <span>{carData.price}k/ngày</span>
+                <span>{carData.PRICE_C}k/ngày</span>
               </div>
               <div className="price-items">
                 <p>Phí bảo hiểm :</p>
-                <span>{carData.insuranceFees} vnd/ngày</span>
+                <span>{carData.INSURANCE_C} vnd/ngày</span>
               </div>
               <div className="price-items">
                 <p>Số ngày thuê : </p>
@@ -206,28 +205,28 @@ function Detail() {
                 <img src={require("../assets/img/seats-icon.png")} alt="" />
               </div>
               <h5>Số ghế</h5>
-              <p>{carData && carData.seats ? carData.seats : "chưa rõ"}</p>
+              <p>{carData && carData.SEAT ? carData.SEAT : "chưa rõ"}</p>
             </div>
             <div className="car-feature-item">
               <div className="car-feature-icon-fix">
                 <img src={require("../assets/img/transmission-icon.png")} alt="" />
               </div>
               <h5>Truyền động</h5>
-              <p>{carData && carData.transmission ? carData.transmission : "chưa rõ"}</p>
+              <p>{carData && carData.TRANSMISSION ? carData.TRANSMISSION : "chưa rõ"}</p>
             </div>
             <div className="car-feature-item">
               <div className="car-feature-icon-fix">
                 <img src={require("../assets/img/fuel-type-icon.png")} alt="" />
               </div>
               <h5>Nhiên liệu sử dụng</h5>
-              <p>{carData && carData.fuelType ? carData.fuelType : "chưa rõ"}</p>
+              <p>{carData && carData.FUEL ? carData.FUEL : "chưa rõ"}</p>
             </div>
             <div className="car-feature-item">
               <div className="car-feature-icon-fix">
                 <img src={require("../assets/img/fuel-consumption-icon.png")} alt="" />
               </div>
               <h5>Nhiêu liệu tiêu hao</h5>
-              <p>{carData && carData.fuelConsumption ? carData.fuelConsumption : "chưa rõ"} lít/100km</p>
+              <p>{carData && carData.CONSUMPTION ? carData.CONSUMPTION : "chưa rõ"} lít/100km</p>
             </div>
           </div>
           <hr />
