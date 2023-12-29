@@ -71,70 +71,62 @@ function Home() {
           </div>
 
           {/*instruction section*/}
-          <div className="instruction-section">
-            <div className="instruction-section-title">
-              <h3>Hướng dẫn thuê xe</h3>
-              <p>
-                Chỉ với 4 bước đơn giản để trải nghiệm thuê xe Mioto một cách
-                nhanh chóng
-              </p>
-            </div>
-            <ul className="tutorial-container">
-              <li>
-                <div className="tutorial-item">
-                  <div className="tutorial-fix-img">
-                    <img
-                      src={require("../assets/img/tutorial-img-1.png")}
-                      alt=""
-                    ></img>
-                  </div>
-                  <p>
-                    <span>1</span>Đặt xe trên web Car Rental
-                  </p>
-                </div>
-              </li>
-              <li>
-                <div className="tutorial-item">
-                  <div className="tutorial-fix-img">
-                    <img
-                      src={require("../assets/img/tutorial-img-2.png")}
-                      alt=" "
-                    ></img>
-                  </div>
-                  <p>
-                    <span>2</span>Nhận xe
-                  </p>
-                </div>
-              </li>
-              <li>
-                <div className="tutorial-item">
-                  <div className="tutorial-fix-img">
-                    <img
-                      src={require("../assets/img/tutorial-img-3.png")}
-                      alt=""
-                    ></img>
-                  </div>
-                  <p>
-                    <span>3</span>Bắt đầu hành trình
-                  </p>
-                </div>
-              </li>
-              <li>
-                <div className="tutorial-item">
-                  <div className="tutorial-fix-img">
-                    <img
-                      src={require("../assets/img/tutorial-img-4.png")}
-                      alt=""
-                    ></img>
-                  </div>
-                  <p>
-                    <span>4</span>Trả xe và kết thúc chuyến đi
-                  </p>
-                </div>
-              </li>
-            </ul>
+          <div className="instruction-section d-flex flex-column align-items-center">
+      <div className="instruction-section-title text-center mb-4">
+        <h3>Hướng dẫn thuê xe</h3>
+        <p>Chỉ với 4 bước đơn giản để trải nghiệm thuê xe Mioto một cách nhanh chóng</p>
+      </div>
+      <div className="tutorial-container d-flex justify-content-center">
+        <div className="tutorial-item">
+          <div className="tutorial-fix-img">
+            <img
+              src={require("../assets/img/tutorial-img-1.png")}
+              alt=""
+              className="img-fluid"
+            />
           </div>
-
+          <p>
+            <span>1</span> Đặt xe trên web Car Rental
+          </p>
+        </div>
+        <div className="tutorial-item">
+          <div className="tutorial-fix-img">
+            <img
+              src={require("../assets/img/tutorial-img-2.png")}
+              alt=""
+              className="img-fluid"
+            />
+          </div>
+          <p>
+            <span>2</span> Nhận xe
+          </p>
+        </div>
+        <div className="tutorial-item">
+          <div className="tutorial-fix-img">
+            <img
+              src={require("../assets/img/tutorial-img-3.png")}
+              alt=""
+              className="img-fluid"
+            />
+          </div>
+          <p>
+            <span>3</span> Bắt đầu hành trình
+          </p>
+        </div>
+        <div className="tutorial-item">
+          <div className="tutorial-fix-img">
+            <img
+              src={require("../assets/img/tutorial-img-4.png")}
+              alt=""
+              className="img-fluid"
+            />
+          </div>
+          <p>
+            <span>4</span> Trả xe và kết thúc chuyến đi
+          </p>
+        </div>
+      </div>
+    </div>
           {/* explore-section */}
           <div className="explore-section">
             <div className="explore-fix-img">
@@ -148,7 +140,7 @@ function Home() {
                 hướng đến việc xây dựng cộng đồng nngười dùng ô tô văn minh & uy
                 tín tại Việt Nam
               </p>
-              <button>
+              <button className="btn btn-success">
                 <Link to="/about">Tìm hiểu thêm</Link>
               </button>
             </div>

@@ -5,9 +5,9 @@ import AddData from "../components/AddData";
 import "../styles/Admin.css";
 
 function Admin() {
-    const contractAPI = "https://656d757bbcc5618d3c23335e.mockapi.io/car-rental/contract";
-    const userAPI = "https://6539dce6e3b530c8d9e8c413.mockapi.io/car-rental/user";
-    const carAPI = "https://6539dce6e3b530c8d9e8c413.mockapi.io/car-rental/car";
+    const contractAPI = "http://127.0.0.1:8000/api/contract";
+    const userAPI = "http://127.0.0.1:8000/api/user";
+    const carAPI = "http://127.0.0.1:8000/api/car";
     const [userData, setUserData] = useState([]);
     const [carData, setCarData] = useState([]);
     const [contractData, setContractData] = useState([]);
@@ -17,6 +17,17 @@ function Admin() {
     const [isEditing, setIsEditing] = useState(false);
     const [selectedCar, setSelectedCar] = useState();
     const [selectedContract, setSelectedContract] = useState();
+    const [infoModalDisplay, setInfoModalDisplay] = useState('none');
+
+
+
+    const handleOpenModal = () => {
+        setInfoModalDisplay('block');
+    };
+
+    const handleCloseModal = () => {
+        setInfoModalDisplay('none');
+    };
 
 
 
@@ -31,25 +42,29 @@ function Admin() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(userData),
+                body: JSON.stringify(selectedUser),
             });
 
             if (!response.ok) {
-                throw new Error("Failed to save user data");
+                throw new Error(`Failed to save user data. Server responded with ${response.status}`);
             }
 
-            setUserData((prevUserData) => {
-                const updatedUserData = prevUserData.map((user) =>
-                    user.USER_ID === selectedUser.USER_ID ? { ...user, ...userData } : user
-                );
-                return updatedUserData;
-            });
+            const updatedUserData = userData.map(user =>
+                user.USER_ID === selectedUser.USER_ID ? selectedUser : user
+            );
 
+            setUserData(updatedUserData);
             setIsEditing(false);
         } catch (error) {
-            console.error("Error saving user data:", error);
+            alert("Error saving contract data:", error);
+            setIsEditing(false);
         }
     };
+
+
+
+
+
     const handleCarSaveClick = async () => {
         try {
             const response = await fetch(`${carAPI}/${selectedCar.LICENSE_PLATE}`, {
@@ -73,7 +88,8 @@ function Admin() {
 
             setIsEditing(false);
         } catch (error) {
-            console.error("Error saving car data:", error);
+            alert("Error saving contract data:", error);
+            setIsEditing(false);
         }
     };
 
@@ -100,100 +116,112 @@ function Admin() {
 
             setIsEditing(false);
         } catch (error) {
-            console.error("Error saving contract data:", error);
+            alert("Error saving contract data:", error);
+            setIsEditing(false);
+            
         }
     };
 
 
 
-    const renderField = (label, value) => {
+    const renderField = (label, value, onChange) => {
         return (
-            <div className="user-info-modal-item">
-                <label>{label} :</label>
-                {isEditing ? (
-                    <input className="form-control"
-                        type="text"
-                        placeholder={value}
-                    />
-                ) : (
-                    <label>{value}</label>
-                )}
+            <div className="user-info-modal-item row">
+                <label className="col-sm-4 col-form-label">{label} :</label>
+                <div className="col-sm-8">
+                    {isEditing ? (
+                        <input
+                            className="form-control"
+                            type="text"
+                            value={value}
+                            onChange={onChange}
+                        />
+                    ) : (
+                        <span className="form-control-plaintext">{value}</span>
+                    )}
+                </div>
             </div>
         );
     };
-    const renderCarField = (label, value) => {
-        return (
-            <div className="car-info-modal-item">
-                <label>{label} :</label>
-                {isEditing ? (
-                    <input className="form-control"
-                        type="text"
-                        placeholder={value}
-                    />
-                ) : (
-                    <label>{value}</label>
-                )}
-            </div>
-        );
+    const handleInputChange = (field, newValue) => {
+        setSelectedUser(prevData => ({
+            ...prevData,
+            [field]: newValue,
+        }));
     };
-
-    const renderContractField = (label, value) => {
-        return (
-            <div className="contract-info-modal-item">
-                <label>{label} :</label>
-                {isEditing ? (
-                    <input
-                        className="form-control"
-                        type="text"
-                        placeholder={value}
-                    />
-                ) : (
-                    <label>{value}</label>
-                )}
-            </div>
-        );
+    const handleCarInputChange = (field, newValue) => {
+        setSelectedCar(prevData => ({
+            ...prevData,
+            [field]: newValue,
+        }));
     };
-
-    const handleAddData = async (formData) => {
-        setIsAddFormOpen(false);
+    const handleContractInputChange = (field, newValue) => {
+        setSelectedContract(prevData => ({
+            ...prevData,
+            [field]: newValue,
+        }));
     };
 
     const fetchUserData = async () => {
         try {
-            const response = await fetch(userAPI);
+            const response = await fetch(`${userAPI}s`);
             if (!response.ok) {
                 throw new Error("Failed to fetch user data");
             }
-            const data = await response.json();
-            setUserData(data);
+            const responseData = await response.json();
+
+            // Kiểm tra xem responseData có thuộc tính 'data' và có phải là mảng không
+            const userDataArray = responseData.data && Array.isArray(responseData.data)
+                ? responseData.data
+                : [];
+
+            setUserData(userDataArray);
         } catch (error) {
             console.error(error);
         }
     };
+
+
     const fetchContractData = async () => {
         try {
-            const response = await fetch(contractAPI);
+            const response = await fetch(`${contractAPI}s`);
             if (!response.ok) {
-                throw new Error("Failed to fetch contract data");
+                throw new Error("Failed to fetch user data");
             }
-            const data = await response.json();
-            setContractData(data);
+            const responseData = await response.json();
+
+            // Kiểm tra xem responseData có thuộc tính 'data' và có phải là mảng không
+            const contractDataArray = responseData.data && Array.isArray(responseData.data)
+                ? responseData.data
+                : [];
+
+            setContractData(contractDataArray);
         } catch (error) {
             console.error(error);
         }
     };
+
+
     const fetchCarData = async () => {
         try {
-            const response = await fetch(carAPI);
+            const response = await fetch(`${carAPI}s`);
             if (!response.ok) {
-                throw new Error("Failed to fetch car data");
+                throw new Error("Failed to fetch user data");
             }
-            const data = await response.json();
-            setCarData(data);
+            const responseData = await response.json();
+
+            // Kiểm tra xem responseData có thuộc tính 'data' và có phải là mảng không
+            const carDataArray = responseData.data && Array.isArray(responseData.data)
+                ? responseData.data
+                : [];
+
+            setCarData(carDataArray);
         } catch (error) {
             console.error(error);
         }
     };
+
+
     useEffect(() => {
         fetchUserData();
         fetchContractData();
@@ -206,6 +234,10 @@ function Admin() {
         try {
             const response = await fetch(`${userAPI}/${userId}`, {
                 method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                  },
+
             });
 
             if (!response.ok) {
@@ -213,8 +245,10 @@ function Admin() {
             }
             setUserData((prevData) => prevData.filter((user) => user.USER_ID !== userId));
         } catch (error) {
-            console.error(error);
+            alert(error);
         }
+        
+
     };
 
     const handleCarDelete = async (LICENSE_PLATE) => {
@@ -231,6 +265,7 @@ function Admin() {
             console.error(error);
         }
     };
+
     const handleContractDelete = async (CONTRACT_ID) => {
         try {
             const response = await fetch(`${contractAPI}/${CONTRACT_ID}`, {
@@ -256,6 +291,12 @@ function Admin() {
     const handleToggle = (toggle) => {
         setSelectedToggle(toggle);
     };
+    console.log(userData);
+    console.log("Type of userData:", typeof userData);
+    const updateUserForm = {
+        FIRST_NAME : "",
+        LAST_NAME : "",
+    }
 
     return (
         <>
@@ -266,6 +307,12 @@ function Admin() {
                     <span className="text">Car Rental</span>
                 </a>
                 <ul className="side-menu top">
+                    <li className={selectedToggle === "dashboard" ? "active" : ""}>
+                        <a onClick={() => handleToggle("dashboard")}>
+                            <i className="bx bx bx-dashboard" />
+                            <span className="text">Dashboard</span>
+                        </a>
+                    </li>
                     <li className={selectedToggle === "users" ? "active" : ""}>
                         <a onClick={() => handleToggle("users")}>
                             <i className="bx bxs-user" />
@@ -323,25 +370,26 @@ function Admin() {
                         <li>
                             <i className="bx bxs-calendar-check" />
                             <span className="text">
-                                <h3>{contractData.length}</h3>
+                                <h3>{contractData ? contractData.length : 0}</h3>
                                 <p>Contract</p>
                             </span>
                         </li>
                         <li>
                             <i className="bx bxs-group" />
                             <span className="text">
-                                <h3>{userData.length}</h3>
+                                <h3>{userData ? userData.length : 0}</h3>
                                 <p>Người dùng</p>
                             </span>
                         </li>
                         <li>
                             <i className="bx bxs-dollar-circle" />
                             <span className="text">
-                                <h3>{carData.length}</h3>
+                                <h3>{carData ? carData.length : 0}</h3>
                                 <p>Xe</p>
                             </span>
                         </li>
                     </ul>
+
 
                     {/* table data section */}
                     <div className="table-data-toggle">
@@ -353,14 +401,14 @@ function Admin() {
                                         <button
                                             type="button"
                                             className="btn btn-primary"
-                                            onClick={() => { 
-                                                setIsAddFormOpen(true)
-                                                AddData(selectedToggle,isAddFormOpen)
+                                            onClick={() => {
+                                                setIsAddFormOpen(true);
                                             }}
                                         >
                                             Thêm
                                         </button>
                                     </div>
+
                                 </div>
                                 {selectedToggle === "users" && (
 
@@ -376,27 +424,47 @@ function Admin() {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {userData.map(user => (
-                                                <tr key={user.id}>
-                                                    <td>{user.USER_ID}</td>
-                                                    <td>{user.FIRST_NAME}</td>
-                                                    <td>{user.LAST_NAME}</td>
-                                                    <td>{user.EMAIL}</td>
-                                                    <td>
-                                                        <div className="table-data-actions">
-                                                            <button type="button" class="btn btn-primary"
-                                                                onClick={() => setSelectedUser(user)}
-                                                            >Xem
-                                                            </button>
-                                                            <button type="button" class="btn btn-danger"
-                                                                onClick={() => handleUserDelete(user.USER_ID)}
-                                                            >
-                                                                Xóa
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            ))}
+                                            {
+                                                userData && (
+                                                    userData.length > 0 ? (
+                                                        userData.map(user => (
+                                                            <tr key={user.id}>
+                                                                <td>{user.USER_ID}</td>
+                                                                <td>{user.FIRST_NAME}</td>
+                                                                <td>{user.LAST_NAME}</td>
+                                                                <td>{user.EMAIL}</td>
+                                                                <td>
+                                                                    <div className="table-data-actions">
+                                                                        <button
+                                                                            type="button"
+                                                                            className="btn btn-primary"
+                                                                            onClick={() => {
+                                                                                setSelectedUser(user);
+                                                                                handleOpenModal();
+                                                                            }}
+                                                                        >
+                                                                            Xem
+                                                                        </button>
+                                                                        <button
+                                                                            type="button"
+                                                                            className="btn btn-danger"
+                                                                            onClick={() => handleUserDelete(user.USER_ID)}
+                                                                        >
+                                                                            Xóa
+                                                                        </button>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        ))
+                                                    ) : (
+                                                        <tr>
+                                                            <td colSpan="5">Không có người dùng</td>
+                                                        </tr>
+                                                    )
+                                                )
+                                            }
+
+
 
                                         </tbody>
 
@@ -424,8 +492,11 @@ function Admin() {
                                                     <td>{car.PRICE_C}</td>
                                                     <td>
                                                         <div className="table-data-actions">
-                                                            <button type="button" class="btn btn-primary"
-                                                                onClick={() => setSelectedCar(car)}
+                                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"
+                                                                onClick={() => {
+                                                                    setSelectedCar(car)
+                                                                    handleOpenModal()
+                                                                }}
                                                             >Xem
                                                             </button>
                                                             <button type="button" class="btn btn-danger" onClick={() => handleCarDelete(car.LICENSE_PLATE)}>Xóa</button>
@@ -459,14 +530,14 @@ function Admin() {
                                                     <td>{contract.RETURN_STATUS}</td>
                                                     <td>
                                                         <div className="table-data-actions">
-                                                            <button type="button" class="btn btn-primary"
+                                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"
                                                                 onClick={() => {
                                                                     setSelectedContract(contract)
-
+                                                                    handleOpenModal();
                                                                 }}
                                                             >Xem
                                                             </button>
-                                                            <button type="button" class="btn btn-danger">Xóa</button>
+                                                            <button type="button" class="btn btn-danger" onClick={() => { handleContractDelete(contract.CONTRACT_ID) }}>Xóa</button>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -474,28 +545,85 @@ function Admin() {
                                         </tbody>
                                     </table>
                                 )}
+                                {selectedToggle === "dashboard" && (
+
+                                    <div className="container">
+                                        <div className="row my-3">
+                                            <div className="col">
+                                                <h4>Doanh thu</h4>
+                                            </div>
+                                        </div>
+                                        <div className="row my-2">
+                                            <div className="col-md-6 py-1">
+                                                <div className="card">
+                                                    <div className="card-body">
+                                                        <canvas id="chLine" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6 py-1">
+                                                <div className="card">
+                                                    <div className="card-body">
+                                                        <canvas id="chBar" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="row py-2">
+                                            <div className="col-md-4 py-1">
+                                                <div className="card">
+                                                    <div className="card-body">
+                                                        <canvas id="chDonut1" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-md-4 py-1">
+                                                <div className="card">
+                                                    <div className="card-body">
+                                                        <canvas id="chDonut2" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-md-4 py-1">
+                                                <div className="card">
+                                                    <div className="card-body">
+                                                        <canvas id="chDonut3" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                )}
+
                             </div>
                         </div>
                     </div>
-                   
 
-                    <div className="info-modal-container">
+
+                    <div className="info-modal-container" style={{ display: infoModalDisplay }}>
                         {selectedToggle === "users" && (
-                            <div className="user-info-modal-container container">
+                            <div className="user-info-modal-container">
                                 {selectedToggle === "users" && selectedUser && (
                                     <div className="user-info-modal">
+                                        <h3 className="user-info-modal-title">Thông tin người dùng</h3>
                                         <div className="user-info-fields">
-                                            {renderField("User ID", selectedUser.USER_ID)}
-                                            {renderField("First Name", selectedUser.FIRST_NAME)}
-                                            {renderField("Last Name", selectedUser.LAST_NAME)}
-                                            {renderField("Email", selectedUser.EMAIL)}
+                                            {renderField("User ID", selectedUser.USER_ID, e => handleInputChange("USER_ID", e.target.value))}
+                                            {renderField("First Name", selectedUser.FIRST_NAME, e => handleInputChange("FIRST_NAME", e.target.value))}
+                                            {renderField("Last Name", selectedUser.LAST_NAME, e => handleInputChange("LAST_NAME", e.target.value))}
+                                            {renderField("Email", selectedUser.EMAIL, e => handleInputChange("EMAIL", e.target.value))}
                                         </div>
                                         <div className="user-info-modal-actions">
                                             {!isEditing && (
                                                 <div className="user-info-modal-btn">
                                                     <div className="user-info-modal-btn">
                                                         <button className="btn btn-primary" onClick={handleEditClick}>Chỉnh Sửa</button>
-                                                        <button className="btn btn-primary" onClick={() => setSelectedUser(null)}>Đóng</button>
+                                                        <button className="btn btn-primary" onClick={() => {
+
+                                                            setSelectedUser(null)
+                                                            handleCloseModal();
+                                                        }
+                                                        }>Đóng</button>
                                                     </div>
                                                 </div>
                                             )}
@@ -514,17 +642,22 @@ function Admin() {
                             <div className="car-info-modal-container container">
                                 {selectedToggle === "cars" && selectedCar && (
                                     <div className="car-info-modal">
+                                        <h3 className="car-info-modal-title">Thông tin xe</h3>
                                         <div className="car-info-fields">
-                                            {renderCarField("Name", selectedCar.NAME)}
-                                            {renderCarField("License Plate", selectedCar.LICENSE_PLATE)}
-                                            {renderCarField("Brand", selectedCar.BRAND)}
-                                            {renderCarField("Price", selectedCar.PRICE_C)}
+                                            {renderField("Name", selectedCar.NAME, e => handleCarInputChange("NAME", e.target.value))}
+                                            {renderField("License Plate", selectedCar.LICENSE_PLATE, e => handleCarInputChange("LICENSE_PLATE", e.target.value))}
+                                            {renderField("Brand", selectedCar.BRAND, e => handleCarInputChange("BRAND", e.target.value))}
+                                            {renderField("Price", selectedCar.PRICE_C, e => handleCarInputChange("PRICE_C", e.target.value))}
                                         </div>
+
                                         <div className="car-info-modal-actions">
                                             {!isEditing && (
                                                 <div className="car-info-modal-btn">
                                                     <button className="btn btn-primary" onClick={handleEditClick}>Chỉnh Sửa</button>
-                                                    <button className="btn btn-primary" onClick={() => setSelectedCar(null)}>Đóng</button>
+                                                    <button className="btn btn-primary" onClick={() => {
+                                                        setSelectedCar(null)
+                                                        handleCloseModal()
+                                                    }}>Đóng</button>
                                                 </div>
                                             )}
                                             {isEditing && (
@@ -542,18 +675,22 @@ function Admin() {
                             <div className="contract-info-modal-container container">
                                 {selectedToggle === "contracts" && selectedContract && (
                                     <div className="contract-info-modal">
+                                        <div className="contract-info-modal-title">Thông tin hợp đồng</div>
                                         <div className="contract-info-fields">
-                                            {renderContractField("License Plate", selectedContract.LICENSE_PLATE)}
-                                            {renderContractField("Start Date", selectedContract.START_DATE)}
-                                            {renderContractField("End Date", selectedContract.END_DATE)}
-                                            {renderContractField("Deposit Status", selectedContract.DEPOSIT_STATUS)}
-                                            {renderContractField("Return Status", selectedContract.RETURN_STATUS)}
+                                            {renderField("License Plate", selectedContract.LICENSE_PLATE, e => handleContractInputChange("LICENSE_PLATE", e.target.value))}
+                                            {renderField("Start Date", selectedContract.START_DATE, e => handleContractInputChange("START_DATE", e.target.value))}
+                                            {renderField("End Date", selectedContract.END_DATE, e => handleContractInputChange("END_DATE", e.target.value))}
+                                            {renderField("Deposit Status", selectedContract.DEPOSIT_STATUS, e => handleContractInputChange("DEPOSIT_STATUS", e.target.value))}
+                                            {renderField("Return Status", selectedContract.RETURN_STATUS, e => handleContractInputChange("RETURN_STATUS", e.target.value))}
                                         </div>
                                         <div className="contract-info-modal-actions">
                                             {!isEditing && (
                                                 <div className="contract-info-modal-btn">
                                                     <button className="btn btn-primary" onClick={handleEditClick}>Chỉnh Sửa</button>
-                                                    <button className="btn btn-primary" onClick={() => setSelectedContract(null)}>Đóng</button>
+                                                    <button className="btn btn-primary" onClick={() => {
+                                                        setSelectedContract(null)
+                                                        handleCloseModal()
+                                                    }}>Đóng</button>
                                                 </div>
                                             )}
                                             {isEditing && (
@@ -567,6 +704,16 @@ function Admin() {
                             </div>
                         )}
                     </div>
+
+
+                    <AddData
+                        isOpen={isAddFormOpen}
+                        selectedToggle={selectedToggle}
+                        onClose={() => setIsAddFormOpen(false)}
+                    />
+
+
+
                 </main>
                 {/* MAIN */}
             </section >

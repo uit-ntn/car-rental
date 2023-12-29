@@ -174,11 +174,11 @@ function Detail() {
 
           {/*rent-box section*/}
           {carData && (
-            <form className="rent-box">
+            <form className="rent-box form-group bg-info">
               <div className="total-price-header">
-                <h2>{carData.PRICE_C?.toLocaleString()} vnd/ngày</h2>
+                <h2 className="form-control">{carData.PRICE_C?.toLocaleString()} vnd/ngày</h2>
               </div>
-              <div className="date-time-form">
+              <div className="date-time-form form-control">
                 <div className="date-time-input">
                   <p>Ngày nhận</p>
                   <input
@@ -196,33 +196,33 @@ function Detail() {
                   />
                 </div>
               </div>
-              <div className="location">
+              <div className="location form-control">
                 <h3>Địa điểm giao xe</h3>
                 <p>{carData.LOCATION}</p>
               </div>
               <div className="price-form-container">
-                <div className="price-items">
+                <div className="price-items form-control">
                   <p>Phí dịch vụ : </p>
                   <span>{carData.SERVICE_C?.toLocaleString()} vnd</span>
                 </div>
-                <div className="price-items">
+                <div className="price-items form-control">
                   <p>Phí bảo hiểm :</p>
                   <span>{carData.INSURANCE_C?.toLocaleString()} vnd</span>
                 </div>
-                <div className="price-items">
+                <div className="price-items form-control">
                   <p>Số ngày thuê : </p>
                   <span>{totalDays}</span>
                 </div>
-                <div className="price-items">
+                <div className="price-items form-control">
                   <p>Tổng tiền :</p>
                   <span>{totalPrice?.toLocaleString()} VNĐ</span>
                 </div>
               </div>
               <div className="rent-actions price-items">
-                <button className="btn" onClick={addToCart}>
+                <button className="btn btn-primary" onClick={addToCart}>
                   Thêm vào bookmark
                 </button>
-                <button className="btn" onClick={rentBtnClick}>
+                <button className="btn btn-success" onClick={rentBtnClick}>
                   Chọn thuê
                 </button>
               </div>
