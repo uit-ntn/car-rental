@@ -58,7 +58,6 @@ body {
 	width: 280px;
 	height: 100%;
 	background: var(--light);
-	z-index: 2000;
 	font-family: var(--lato);
 	transition: .3s ease;
 	overflow-x: hidden;
@@ -207,7 +206,6 @@ body {
 	position: sticky;
 	top: 0;
 	left: 0;
-	z-index: 1000;
 }
 
 #content nav::before {
@@ -538,10 +536,11 @@ body {
 	background: var(--orange);
 }
 
-.table-data-actions{
+.table-data-actions {
 	display: flex;
 }
-.table-data-actions button{
+
+.table-data-actions button {
 	padding: 5px;
 	margin: 0 20px;
 }
@@ -661,4 +660,56 @@ body {
 	#content main .table-data .todo .todo-list {
 		min-width: 420px;
 	}
+}
+.info-modal-container {
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    max-width: 600px;
+    width: 100%;
+    overflow: auto; 
+}
+
+.user-info-modal-actions,
+.car-info-modal-actions,
+.contract-info-modal-actions {
+	display: flex;
+	justify-content: space-around;
+
+}
+.user-info-modal-actions button,
+.car-info-modal-actions button,
+.contract-info-modal-actions button{
+	margin: 0 20px;
+	
+}
+.contract-info-modal-item,
+.user-info-modal-item,
+.car-info-modal-item{
+	margin: 20px 0;
+}
+
+.info-modal-container-enter {
+    opacity: 0;
+}
+
+.info-modal-container-enter-active {
+    opacity: 1;
+    transition: opacity 300ms;
+}
+
+.info-modal-container-exit {
+    opacity: 1;
+}
+
+.info-modal-container-exit-active {
+    opacity: 0;
+    transition: opacity 300ms;
 }

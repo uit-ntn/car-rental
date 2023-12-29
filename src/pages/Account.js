@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import AccountLayout from "../components/AccountLayout";
+import useAuth from "../hooks/useAuthentication";
 import "../styles/Account.css";
 
 const Account = () => {
@@ -24,7 +25,7 @@ const Account = () => {
 
         if (userId) {
           // Fetch user data
-          const userResponse = await fetch(`https://6539dce6e3b530c8d9e8c413.mockapi.io/car-rental/user/1`);
+          const userResponse = await fetch(`http://127.0.0.1:8000/api/user/`);
           if (!userResponse.ok) {
             throw new Error(`HTTP Error! Status: ${userResponse.status}`);
           }

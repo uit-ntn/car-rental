@@ -1,0 +1,60 @@
+.add-data-form-container {
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    max-width: 600px; /* Điều chỉnh độ rộng tối đa của modal */
+    width: 100%;
+    overflow: auto; /* Cho phép cuộn nếu nội dung quá dài */
+    overflow: scroll;
+    height: 80vh;
+
+}
+
+.add-data-form-container h4 {
+    margin-top: 0;
+}
+
+.form-group {
+    margin-bottom: 15px;
+
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.add-data-form-actions {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+}
+
+/* Hiệu ứng hiển thị và ẩn modal */
+.add-data-form-container-enter {
+    opacity: 0;
+}
+
+.add-data-form-container-enter-active {
+    opacity: 1;
+    transition: opacity 300ms;
+}
+
+.add-data-form-container-exit {
+    opacity: 1;
+}
+
+.add-data-form-container-exit-active {
+    opacity: 0;
+    transition: opacity 300ms;
+}
+.add-data-form-group {
+}
