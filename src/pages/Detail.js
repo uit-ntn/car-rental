@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Layout from "../components/Layout";
+import Layout from "../layouts/Layout";
 import CheckOutModal from "../components/CheckOutModal";
 import "../styles/Detail.css";
 import UserContext, { UserProvider } from "../hooks/userProvider";

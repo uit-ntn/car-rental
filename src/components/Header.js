@@ -12,7 +12,7 @@ const Header = () => {
 
       {/*Header Logo*/}
       <nav className="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-between px-5">
-        <a className="navbar-brand" href="/">
+        <a className="navbar-brand" to="/">
           <img
             src={logo}
             width="80"
@@ -26,19 +26,19 @@ const Header = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ml-auto">
             <li className="nav-item active">
-              <Link className="nav-link" href="/">Home <span className="sr-only">(current)</span></Link>
+              <Link className="nav-link" to="/">Home <span className="sr-only">(current)</span></Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" href="/about">About</Link>
+              <Link className="nav-link" to="/about">About</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" href="/contact">Contact</Link>
+              <Link className="nav-link" to="/contact">Contact</Link>
             </li>
             <li className='nav-item'>
-              <Link className='nav-link' href="/privacy">Privacy</Link>
+              <Link className='nav-link' to="/privacy">Privacy</Link>
             </li>
             <li className='nav-item'>
-              <Link className='nav-link' href="/help">Help</Link>
+              <Link className='nav-link' to="/help">Help</Link>
             </li>
           </ul>
         </div>
@@ -59,21 +59,21 @@ const Header = () => {
                 Hello User
               </div>
               <div className="dropdown-menu text-center" aria-labelledby="navbarDropdown">
-                <Link className="dropdown-item" href="/user/profile">Profile</Link>
-                <Link className="dropdown-item" href="/user/cart">Cart</Link>
+                <Link className="dropdown-item" to="/user/profile">Profile</Link>
+                <Link className="dropdown-item" to="/user/cart">Cart</Link>
                 <div className="dropdown-divider"></div>
-                <Link className="dropdown-item" href="/logout" onClick={() => setLoggedIn(false)}>Logout</Link>
+                <Link className="dropdown-item" to="/logout" onClick={() => setLoggedIn(false)}>Logout</Link>
               </div>
             </div>
           ) : (
             <>
-              <Link href='/login'
+              <Link to='/login'
                 className="btn btn-primary mr-2 mx-3"
                 onClick={() => alert('Login')}
               >
                 Login
               </Link>
-              <Link href='/register'
+              <Link to='/register'
                 className="btn btn-success mx-3"
                 onClick={() => alert('Register')}
               >

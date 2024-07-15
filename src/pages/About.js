@@ -1,4 +1,4 @@
-import Layout from "../components/Layout";
+import Layout from "../layouts/Layout";
 import "../styles/About.css";
 import banner_1 from "../assets/img/aboutus.banner.jpeg";
 import banner_2 from "../assets/img/aboutus2.png";

@@ -1,116 +1,109 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Layout from "../components/Layout";
+import Layout from "../layouts/Layout";
 import "../styles/Login.css";
 import UserContext from "../hooks/userProvider";
 
 function Login() {
-  const history = useNavigate();
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
-  const [forgotPassword, setForgotPassword] = useState(false);
-  const { userId, setUserId } = useContext(UserContext);
-
-  useEffect(() => {
-    // Nếu đã đăng nhập, chuyển hướng người dùng đến trang chính
-    if (userId) {
-      history("/");
-    }
-  }, [userId, history]);
-
-  const handleLoginClick = async (event) => {
-    event.preventDefault();
-
-    if (!email || !password) {
-      setError("Vui lòng nhập đầy đủ thông tin.");
-      return;
-    }
-
-    // Kiểm tra xem tên người dùng có tồn tại hay không
-    await fetch("http://127.0.0.1:8000/api/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data) {
-          localStorage.setItem('isLoggedIn', JSON.stringify(data.data.USER_ID));
-          setUserId(data.data.USER_ID);
-        }
-        console.log(data);
-      })
-      .catch((e) => console.log(e));
-  };
-
   return (
     <Layout>
-      <form className="login-container">
-        <h2>{forgotPassword ? "Quên mật khẩu" : "Đăng nhập"}</h2>
-        <div className="form-group">
-          <label>Email</label>
-          <input
-            type="text"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="form-control"
-          />
-        </div>
-        {!forgotPassword && (
-          <div className="form-group">
-            <label>Mật khẩu</label>
-            <input
-              type="password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="form-control"
-            />
+      <>
+        {/* Login 13 - Bootstrap Brain Component */}
+        <section className="bg-light py-3 py-md-5">
+          <div className="container-fuild">
+            <div className="row justify-content-center">
+              <div className="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
+                <div className="card border border-light-subtle rounded-3 shadow-sm">
+                  <div className="card-body p-3 p-md-4 p-xl-5">
+                    <h2 className="fs-6 fw-normal text-center text-secondary mb-4">
+                      Sign in to your account
+                    </h2>
+                    <form action="#!">
+                      <div className="row gy-2 overflow-hidden">
+                        <div className="col-12">
+                          <div className="form-floating mb-3">
+                            <input
+                              type="email"
+                              className="form-control"
+                              name="email"
+                              id="email"
+                              placeholder="name@example.com"
+                              required=""
+                            />
+                            <label htmlFor="email" className="form-label">
+                              Email
+                            </label>
+                          </div>
+                        </div>
+                        <div className="col-12">
+                          <div className="form-floating mb-3">
+                            <input
+                              type="password"
+                              className="form-control"
+                              name="password"
+                              id="password"
+                              defaultValue=""
+                              placeholder="Password"
+                              required=""
+                            />
+                            <label htmlFor="password" className="form-label">
+                              Password
+                            </label>
+                          </div>
+                        </div>
+                        <div className="col-12">
+                          <div className="d-flex gap-2 justify-content-between">
+                            <div className="form-check">
+                              <input
+                                className="form-check-input"
+                                type="checkbox"
+                                defaultValue=""
+                                name="rememberMe"
+                                id="rememberMe"
+                              />
+                              <label
+                                className="form-check-label text-secondary"
+                                htmlFor="rememberMe"
+                              >
+                                Keep me logged in
+                              </label>
+                            </div>
+                            <a
+                              href="#!"
+                              className="link-primary text-decoration-none"
+                            >
+                              Forgot password?
+                            </a>
+                          </div>
+                        </div>
+                        <div className="col-12">
+                          <div className="d-grid my-3">
+                            <button className="btn btn-primary btn-lg" type="submit">
+                              Log in
+                            </button>
+                          </div>
+                        </div>
+                        <div className="col-12">
+                          <p className="m-0 text-secondary text-center">
+                            Don't have an account?{" "}
+                            <a
+                              href="#!"
+                              className="link-primary text-decoration-none"
+                            >
+                              Sign up
+                            </a>
+                          </p>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        )}
-        <div className="handle-login-input">
-          {!forgotPassword ? (
-            <>
-              <button className="btn btn-primary" onClick={handleLoginClick}>
-                Đăng nhập
-              </button>
-              <p>{error && <span className="error-message">{error}</span>}</p>
-              <div className="line"></div>
-              <div className="have-an-account">
-                <h5>
-                  Bạn chưa có tài khoản?{" "}
-                  <span>
-                    <Link className="btn btn-link dangky-btn" to="/register">Đăng ký ngay</Link>
-                  </span>
-                </h5>
-              </div>
-            </>
-          ) : (
-            <>
-              <button className="btn btn-primary" disabled>
-                Lấy lại mật khẩu
-              </button>
-              <p>{error && <span className="error-message">{error}</span>}</p>
-              <div className="line"></div>
-              <div className="have-an-account">
-                <h5>
-                  Quay lại đăng nhập?{" "}
-                  <span className="back-login">
-                    <Link to="/login" className="btn btn-link">Đăng nhập</Link>
-                  </span>
-                </h5>
-              </div>
-            </>
-          )}
-        </div>
-      </form>
+        </section>
+      </>
+
     </Layout>
   );
 }

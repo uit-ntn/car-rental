@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Layout from "../components/Layout";
+import Layout from "../layouts/Layout";
 import CarList from "../components/CarList";
 import Slider from "../components/Slider";
 import SearchBar from "../components/SearchBar";

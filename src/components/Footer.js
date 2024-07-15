@@ -13,22 +13,22 @@ function Footer() {
         </div>
 
         <div className="d-flex justify-content-between">
-          <Link href="/" className="me-4 text-reset">
+          <Link to="/" className="me-4 text-reset">
             <i className="fab fa-facebook-f"></i>
           </Link>
-          <Link href="/" className="me-4 text-reset">
+          <Link to="/" className="me-4 text-reset">
             <i className="fab fa-twitter"></i>
           </Link>
-          <Link href="/" className="me-4 text-reset">
+          <Link to="/" className="me-4 text-reset">
             <i className="fab fa-google"></i>
           </Link>
-          <Link href="/" className="me-4 text-reset">
+          <Link to="/" className="me-4 text-reset">
             <i className="fab fa-instagram"></i>
           </Link>
-          <Link href="/" className="me-4 text-reset">
+          <Link to="/" className="me-4 text-reset">
             <i className="fab fa-linkedin"></i>
           </Link>
-          <Link href="/" className="me-4 text-reset">
+          <Link to="/" className="me-4 text-reset">
             <i className="fab fa-github"></i>
           </Link>
         </div>
@@ -51,13 +51,13 @@ function Footer() {
                 Technicals
               </h6>
               <p>
-                <Link href="https://react.dev" className="text-reset">React js</Link>
+                <Link to="https://react.dev" className="text-reset">React js</Link>
               </p>
               <p>
-                <Link href="https://nodejs.org" className="text-reset">Node js</Link>
+                <Link to="https://nodejs.org" className="text-reset">Node js</Link>
               </p>
               <p>
-                <Link href="https://www.mysql.com" className="text-reset">MySQL</Link>
+                <Link to="https://www.mysql.com" className="text-reset">MySQL</Link>
               </p>
             </div>
 
@@ -66,16 +66,16 @@ function Footer() {
                 Useful links
               </h6>
               <p>
-                <Link href="/" className="text-reset">Home</Link>
+                <Link to="/" className="text-reset">Home</Link>
               </p>
               <p>
-                <Link href="/about" className="text-reset">About</Link>
+                <Link to="/about" className="text-reset">About</Link>
               </p>
               <p>
-                <Link href="/contact" className="text-reset">Contact</Link>
+                <Link to="/contact" className="text-reset">Contact</Link>
               </p>
               <p>
-                <Link href="/help" className="text-reset">Help</Link>
+                <Link to="/help" className="text-reset">Help</Link>
               </p>
             </div>
 
