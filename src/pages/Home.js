@@ -37,10 +37,10 @@ function Home() {
   return (
     <>
       <Layout>
-        <div className="home-content">
+        <div className="container-fuild home-content">
           {/*banner section*/}
-          <div className="banner-container">
-            <div className="background">
+          <div className="row banner-container">
+            <div className="col background">
               <h1>Car Rental - Cùng Bạn Đến</h1>
               <h1>Mọi Hành Trình</h1>
               <div className="line"></div>

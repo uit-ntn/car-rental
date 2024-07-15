@@ -1,152 +1,23 @@
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+.container {
+    max-width: 800px;
 }
 
-.search-options {
-    margin: 80px auto;
-    width: 60%;
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.search-options-toggle {
-    display: flex;
-    justify-content: center;
-}
-
-.search-options-toggle button {
-    height: 40px;
-    width: 300px;
-    font-size: 20px;
-    font-weight: bold;
-    background-color: transparent;
-    color: grey;
-}
-
-.search-options-toggle button.selected {
-    background-color: black;
-    color: white;
-}
-
-.search-input.self-driving,
-.car-with-driver {
-    margin: auto;
-    width: 600px;
-    border-radius: 20px;
-    border: 1px solid black;
-    padding: 20px 20px 0 20px;
-    background-color: #9ce1ed;
-}
-
-.search-input.self-driving .location-input p {
-    font-size: 25px;
+.form-group label {
     font-weight: bold;
 }
 
-.search-input.self-driving .location-input input {
-    width: 560px;
-    height: 25px;
-    font-size: 15px;
-    padding: 5px;
-    margin: 5px 0;
-}
-
-.search-options .search-btn {
-    margin: 20px auto;
-    width: 150px;
-    height: 50px;
-}
-
-.search-options .search-btn button {
-    width: 100%;
-    height: 100%;
-    font-size: 30px;
-    background-color: #5fcf86;
-    color: white;
-    border-radius: 5px;
-    border: #5fcf86;
-    transition: background-color 0.3s ease;
-
-}
-.search-options .search-btn button:hover{
-    transform: scale(1.1);
-    background-color: rgb(0, 14, 72);
-    color: white;
-    font-weight: bold;
-    
-}
-
-.rental-period-input-box h3 {
-    text-align: center;
-    margin: 10px;
-
-}
-
-.search-options .rental-period-input {
-    display: flex;
-    justify-content: space-between;
-}
-
-.rental-period-input-box h3 {
-    font-size: 20px;
-}
-
-.rental-period-input-box input {
-    width: 250px;
-    height: 30px;
-    font-size: 20px;
-    padding: 5px;
-}
-
-.rental-period-input p {
-    font-size: 20px;
-    margin: 10px 0;
-}
-
-.car-with-driver.route-input {
-    display: flex;
-    justify-content: space-between;
-}
-
-.car-with-driver .pick-up-box {
-    margin: 20px 0;
-    display: flex;
-    justify-content: space-between;
-}
-
-.pick-up-box .destination-point input,
-.pick-up-box .pick-up-point input {
-    width: 250px;
-    height: 30px;
-    font-size: 15px;
-    padding: 10px;
-    margin: 10px 0;
-}
-
-.pick-up-box .destination-point p,
-.pick-up-box .pick-up-point p {
-    font-size: 25px;
-    font-weight: bold;
-}
-
-.route-input .is-round-trip {
-    margin: 10px 0;
-    display: flex;
-}
-
-.route-input .is-round-trip input {
-    margin: 0 10px;
-    width: 20px;
-    height: 20px;
-}
-
-.route-input .is-round-trip p {
-    font-size: 20px;
+.result-search {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .result-search h3 {
-    text-align: center;
-    font-weight: bold;
-    font-size: 40px;
     margin-bottom: 20px;
 }

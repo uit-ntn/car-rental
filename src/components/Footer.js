@@ -4,62 +4,60 @@ import "../styles/Footer.css";
 
 function Footer() {
   return (
-    <footer className="text-center text-lg-start bg-body-tertiary text-muted">
+    <footer className="text-center text-lg-start bg-body-tertiary text-muted container-fuild">
+
+      {/*social network section*/}
       <section className="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
         <div className="me-5 d-none d-lg-block">
           <span>Get connected with us on social networks:</span>
         </div>
 
-        <div>
-          <a href="" className="me-4 text-reset">
+        <div className="d-flex justify-content-between">
+          <Link href="/" className="me-4 text-reset">
             <i className="fab fa-facebook-f"></i>
-          </a>
-          <a href="" className="me-4 text-reset">
+          </Link>
+          <Link href="/" className="me-4 text-reset">
             <i className="fab fa-twitter"></i>
-          </a>
-          <a href="" className="me-4 text-reset">
+          </Link>
+          <Link href="/" className="me-4 text-reset">
             <i className="fab fa-google"></i>
-          </a>
-          <a href="" className="me-4 text-reset">
+          </Link>
+          <Link href="/" className="me-4 text-reset">
             <i className="fab fa-instagram"></i>
-          </a>  
-          <a href="" className="me-4 text-reset">
+          </Link>
+          <Link href="/" className="me-4 text-reset">
             <i className="fab fa-linkedin"></i>
-          </a>
-          <a href="" className="me-4 text-reset">
+          </Link>
+          <Link href="/" className="me-4 text-reset">
             <i className="fab fa-github"></i>
-          </a>
+          </Link>
         </div>
       </section>
 
-      <section className="">
+      <section className="d-flex justify-content-between">
         <div className="container text-center text-md-start mt-5">
           <div className="row mt-3">
             <div className="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
               <h6 className="text-uppercase fw-bold mb-4">
-                <i className="fas fa-gem me-3"></i>Company name
+                <i className="fas fa-gem me-3"></i>Car Rental
               </h6>
-              <p>
-                Here you can use rows and columns to organize your footer content. Lorem ipsum
-                dolor sit amet, consectetur adipisicing elit.
+              <p className="text-justify">
+                Với đội ngũ nhân viên chuyên nghiệp, tận tâm và giàu kinh nghiệm, chúng tôi cam kết mang đến cho bạn trải nghiệm thuê xe tốt nhất.
               </p>
             </div>
 
             <div className="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
               <h6 className="text-uppercase fw-bold mb-4">
-                Products
+                Technicals
               </h6>
               <p>
-                <a href="#!" className="text-reset">Angular</a>
+                <Link href="https://react.dev" className="text-reset">React js</Link>
               </p>
               <p>
-                <a href="#!" className="text-reset">React</a>
+                <Link href="https://nodejs.org" className="text-reset">Node js</Link>
               </p>
               <p>
-                <a href="#!" className="text-reset">Vue</a>
-              </p>
-              <p>
-                <a href="#!" className="text-reset">Laravel</a>
+                <Link href="https://www.mysql.com" className="text-reset">MySQL</Link>
               </p>
             </div>
 
@@ -68,16 +66,16 @@ function Footer() {
                 Useful links
               </h6>
               <p>
-                <a href="#!" className="text-reset">Pricing</a>
+                <Link href="/" className="text-reset">Home</Link>
               </p>
               <p>
-                <a href="#!" className="text-reset">Settings</a>
+                <Link href="/about" className="text-reset">About</Link>
               </p>
               <p>
-                <a href="#!" className="text-reset">Orders</a>
+                <Link href="/contact" className="text-reset">Contact</Link>
               </p>
               <p>
-                <a href="#!" className="text-reset">Help</a>
+                <Link href="/help" className="text-reset">Help</Link>
               </p>
             </div>
 
@@ -96,10 +94,7 @@ function Footer() {
       </section>
 
       <div className="text-center p-4" style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}>
-        © 2021 Copyright:
-        <a className="text-reset fw-bold" href="https://mdbootstrap.com/">
-          MDBootstrap.com
-        </a>
+        Đội ngũ phát triển web với 200 năm kinh nghiệm
       </div>
     </footer>
   );
