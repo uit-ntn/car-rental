@@ -10,6 +10,9 @@ import Cart from "../pages/Cart";
 import ResetPW from "../pages/ResetPW";
 import Transaction from "../pages/Transaction";
 import Admin from "../pages/Admin";
+
+
+
 const publicRoutes = [
   { path: "/", page: Home },
   { path: "/login", page: Login },
@@ -21,7 +24,6 @@ const publicRoutes = [
 ];
 
 const privateRoutes = [
-  
   { path: "/transaction/:userId", page: Transaction },
   { path: "/owner/register/:userId", page: Owner_Register },
   { path: "/account/:userId", page: Account },

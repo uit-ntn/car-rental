@@ -1,64 +1,86 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import "../styles/Header.css";
-import UserContext from "../hooks/userProvider";
+import React, { useState } from 'react';
 
-function Header() {
-  const { userId, setUserId } = useContext(UserContext);
-  const [userData, setUserData] = useState(null);
-
-  const handleLogout = () => {
-    setUserId(null);
-    setUserData(null);
-    localStorage.removeItem("isLoggedIn");
-  };
-
-  useEffect(() => {
-    if (userId) {
-      fetch(`http://127.0.0.1:8000/api/user/${userId}`)
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          setUserData(data.data);
-        })
-        .catch((e) => console.log(e));
-    }
-  }, [userId]);
+const Header = () => {
+  const [loggedIn, setLoggedIn] = useState(true);
 
   return (
-    <div className="header">
-      <div className="logo-container">
-        <img src={require("../assets/img/logo.png")} alt="Car Rental Logo" />
-        <Link to="/">CAR RENTAL</Link>
-      </div>
-      <div className="navigation">
-        <Link to="/about">Về Car Rental</Link>
-        <div>
-          {userData ? (
-            <div className="user-dropdown">
-              <span className="hello-user">Xin chào {userData.LAST_NAME} </span>
-              <div className="dropdown-content">
-                <Link to={`/transaction/${userId}`}>
-                  Thông tin thuê xe
-                </Link>
-                <Link to={`/bookmark/${userId}`}>Bookmark</Link>
-                <button onClick={handleLogout}>Đăng xuất</button>
-              </div>
-            </div>
-          ) : (
-            <div className="user-login">
-              <Link to="/register" className="login-btn">
-                <button>Đăng ký</button>
-              </Link>
-              <Link to="/login" className="login-btn">
-                <button>Đăng nhập</button>
-              </Link>
-            </div>
-          )}
+    <header>
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <a className="navbar-brand" href="#">
+          <img
+            src=""
+            width="30"
+            height="30"
+            className="d-inline-block align-top"
+            alt=""
+          />
+        </a>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav ml-auto">
+            <li className="nav-item active">
+              <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#">Features</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#">Pricing</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#">Contact</a>
+            </li>
+            {loggedIn ? (
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  User
+                </a>
+                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a className="dropdown-item" href="#">Profile</a>
+                  <a className="dropdown-item" href="#">Settings</a>
+                  <div className="dropdown-divider"></div>
+                  <a className="dropdown-item" href="#" onClick={() => setLoggedIn(false)}>Logout</a>
+                </div>
+              </li>
+            ) : (
+              <>
+                <button
+                  className="btn btn-outline-primary mr-2"
+                  onClick={() => alert('Login')}
+                >
+                  Login
+                </button>
+                <button
+                  className="btn btn-outline-success"
+                  onClick={() => alert('Register')}
+                >
+                  Register
+                </button>
+              </>
+            )}
+          </ul>
         </div>
-      </div>
-    </div>
+      </nav>
+    </header>
   );
-}
+};
 
 export default Header;

@@ -1,45 +1,107 @@
-// src/components/Footer.js
 import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/Footer.css";
 
 function Footer() {
   return (
-    <div className="footer">
-      <ul className="footer-content">
-        <li className="footer-info">
-          <h1>CAR RENTAL</h1>
-          <div className="phone-contact">
-            <p>0823 346 347</p>
-            <p>Tổng đài hỗ trợ: 24/24</p>
+    <footer className="text-center text-lg-start bg-body-tertiary text-muted">
+      <section className="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+        <div className="me-5 d-none d-lg-block">
+          <span>Get connected with us on social networks:</span>
+        </div>
+
+        <div>
+          <a href="" className="me-4 text-reset">
+            <i className="fab fa-facebook-f"></i>
+          </a>
+          <a href="" className="me-4 text-reset">
+            <i className="fab fa-twitter"></i>
+          </a>
+          <a href="" className="me-4 text-reset">
+            <i className="fab fa-google"></i>
+          </a>
+          <a href="" className="me-4 text-reset">
+            <i className="fab fa-instagram"></i>
+          </a>  
+          <a href="" className="me-4 text-reset">
+            <i className="fab fa-linkedin"></i>
+          </a>
+          <a href="" className="me-4 text-reset">
+            <i className="fab fa-github"></i>
+          </a>
+        </div>
+      </section>
+
+      <section className="">
+        <div className="container text-center text-md-start mt-5">
+          <div className="row mt-3">
+            <div className="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+              <h6 className="text-uppercase fw-bold mb-4">
+                <i className="fas fa-gem me-3"></i>Company name
+              </h6>
+              <p>
+                Here you can use rows and columns to organize your footer content. Lorem ipsum
+                dolor sit amet, consectetur adipisicing elit.
+              </p>
+            </div>
+
+            <div className="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+              <h6 className="text-uppercase fw-bold mb-4">
+                Products
+              </h6>
+              <p>
+                <a href="#!" className="text-reset">Angular</a>
+              </p>
+              <p>
+                <a href="#!" className="text-reset">React</a>
+              </p>
+              <p>
+                <a href="#!" className="text-reset">Vue</a>
+              </p>
+              <p>
+                <a href="#!" className="text-reset">Laravel</a>
+              </p>
+            </div>
+
+            <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+              <h6 className="text-uppercase fw-bold mb-4">
+                Useful links
+              </h6>
+              <p>
+                <a href="#!" className="text-reset">Pricing</a>
+              </p>
+              <p>
+                <a href="#!" className="text-reset">Settings</a>
+              </p>
+              <p>
+                <a href="#!" className="text-reset">Orders</a>
+              </p>
+              <p>
+                <a href="#!" className="text-reset">Help</a>
+              </p>
+            </div>
+
+            <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+              <h6 className="text-uppercase fw-bold mb-4">Contact</h6>
+              <p><i className="fas fa-home me-3"></i> Đại học quốc gia thành phố Hồ Chí Minh</p>
+              <p>
+                <i className="fas fa-envelope me-3"></i>
+                npthanhnhan2003@gmail.com
+              </p>
+              <p><i className="fas fa-phone me-3"></i> + 0823 346 347</p>
+              <p><i className="fas fa-print me-3"></i> + 0823 346 347</p>
+            </div>
           </div>
-          <div className="email-contact">
-            <p>Gửi mail cho CAR RENTAL</p>
-            <p>contact.carrental@gmail.com</p>
-          </div>
-        </li>
-        <li className="footer-path">
-          <div className="privacy">
-            <h5>Chính sách và quy định</h5>
-            <Link to="/privacy">Quy chế hoạt động</Link>
-            <Link to="/privacy">Bảo mật thông tin</Link>
-            <Link to="/privacy">Giải quyết tranh chấp</Link>
-          </div>
-          <div className="explore">
-            <h5>Tìm hiểu thêm</h5>
-            <Link to="/instructions">Hướng dẫn chung</Link>
-            <Link to="/instructions">Hướng dẫn đặt xe</Link>
-            <Link to="/instructions">Hướng dẫn thanh toán</Link>
-            <Link to="/instructions">Hỏi và trả lời</Link>
-          </div>
-          <div className="about">
-            <h5>Về Car Rental</h5>
-            <Link to="/about">Car Rental blog</Link>
-            <Link to="/recuit">Tuyển dụng</Link>
-          </div>
-        </li>
-      </ul>
-    </div>
+        </div>
+      </section>
+
+      <div className="text-center p-4" style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}>
+        © 2021 Copyright:
+        <a className="text-reset fw-bold" href="https://mdbootstrap.com/">
+          MDBootstrap.com
+        </a>
+      </div>
+    </footer>
   );
 }
 
