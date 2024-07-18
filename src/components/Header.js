@@ -8,7 +8,7 @@ const Header = () => {
   // const [user,setUser] = useState();
 
   return (
-    <header className='container-fuild'>
+    <header className='container-fuild border'>
 
       {/*Header Logo*/}
       <nav className="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-between px-5">
@@ -83,7 +83,6 @@ const Header = () => {
           )}
         </div>
       </nav>
-
     </header>
   );
 };
