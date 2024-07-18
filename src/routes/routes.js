@@ -1,33 +1,55 @@
 import Home from "../pages/Home";
-import Auth from "../pages/Auth";  // Đổi tên từ Login sang Auth
+import Auth from "../pages/Auth";
 import About from "../pages/About";
 import Detail from "../pages/Detail";
-import Owner_Register from "../pages/Owner.Register";
 import Account from "../pages/Account";
-import Instructions from "../pages/Instructions";
-import Cart from "../pages/Cart";
 import ResetPW from "../pages/ResetPW";
-import Transaction from "../pages/Transaction";
-import Admin from "../pages/Admin";
+import Privacy from "../pages/Privacy";
+// import Admin from "../pages/Admin";
 
+
+// No need to login to use
 const publicRoutes = [
   { path: "/", page: Home },
-  { path: "/auth/login", page: Auth },  
-  { path: "/auth/register", page: Auth }, 
+  { path: "/auth/login", page: Auth },
+  { path: "/auth/register", page: Auth },
   { path: "/auth/forgotpw", page: Auth },
   { path: "/about", page: About },
-  { path: "/instructions", page: Instructions },
-  { path: "/bookmark/:userId", page: Cart },
   { path: "/detail/:id", page: Detail },
+  { path: "/privacy", page: Privacy }
 ];
 
-const privateRoutes = [
-  { path: "/transaction/:userId", page: Transaction },
-  { path: "/owner/register/:userId", page: Owner_Register },
+
+// role = customer
+const customerRoutes = [
   { path: "/account/:userId", page: Account },
   { path: `/resetpw/:userId`, page: ResetPW },
 ];
 
-const adminRoutes = [{ path: "/admin", page: Admin }];
 
-export { privateRoutes, publicRoutes, adminRoutes };
+// role = sale staff
+const saleStaffRoutes = [
+
+]
+
+// role = warehouse staff
+const warehouseStaffRoute = [
+
+]
+
+// role = admin
+const adminRoutes = [
+  // { path: "/admin", page: Admin }
+];
+
+
+
+
+
+export {
+  publicRoutes,
+  customerRoutes,
+  saleStaffRoutes,
+  warehouseStaffRoute,
+  adminRoutes
+};

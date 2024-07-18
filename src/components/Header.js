@@ -12,7 +12,7 @@ const Header = () => {
 
       {/*Header Logo*/}
       <nav className="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-between px-5">
-        <a className="navbar-brand" to="/">
+        <Link className="navbar-brand" to="/">
           <img
             src={logo}
             width="80"
@@ -20,7 +20,7 @@ const Header = () => {
             className="d-inline-block align-top"
             alt="logo"
           />
-        </a>
+        </Link>
 
         {/*Header Navigation*/}
         <div className="collapse navbar-collapse" id="navbarNav">

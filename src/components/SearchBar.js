@@ -3,7 +3,7 @@ import CarList from "../components/CarList";
 import "../styles/SearchBar.css";
 
 export default function SearchBar() {
-  const [isSelfDrivingSelected] = useState(true);
+  // const [isSelfDrivingSelected] = useState(true);
   const [pickupDate, setPickupDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
   const [searchResults, setSearchResults] = useState();

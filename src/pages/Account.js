@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import AccountLayout from "../components/AccountLayout";
-import useAuth from "../hooks/useAuthentication";
 import "../styles/Account.css";
 
 const Account = () => {
@@ -323,8 +322,8 @@ const Account = () => {
                   {/* Add the rendering for the license image here */}
                   <img
                     className="license-image"
+                    src={licenseData.licenseImage ? licenseData.licenseImage : ""}
                     alt="License Image"
-                    src={licenseData.licenseImage ? URL.createObjectURL(licenseData.licenseImage) : ""}
                   />
                 </div>
               )}

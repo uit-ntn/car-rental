@@ -1,4 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React
+, {
+  useState
+}
+  from "react";
 import ProductCard from "./ProductCard";
 import "../styles/CarList.css";
 import { filter } from "lodash";

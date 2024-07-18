@@ -1,7 +1,13 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import React, {
+  useState,
+  useEffect
+} from "react";
+import {
+  useNavigate,
+  useLocation
+} from "react-router-dom";
 import Layout from "../layouts/Layout";
-import UserContext from "../hooks/userProvider";
+// import UserContext from "../hooks/userProvider";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -46,8 +52,8 @@ const Auth = () => {
                       {isLogin
                         ? "Sign in to your account"
                         : isForgotPassword
-                        ? "Forgot Password"
-                        : "Create an account"}
+                          ? "Forgot Password"
+                          : "Create an account"}
                     </h2>
                     <form action="#!">
                       <div className="row gy-2 overflow-hidden">
@@ -154,8 +160,8 @@ const Auth = () => {
                               {isLogin
                                 ? "Log in"
                                 : isForgotPassword
-                                ? "Reset Password"
-                                : "Sign up"}
+                                  ? "Reset Password"
+                                  : "Sign up"}
                             </button>
                           </div>
                         </div>
@@ -164,8 +170,8 @@ const Auth = () => {
                             {isLogin
                               ? "Don't have an account? "
                               : isForgotPassword
-                              ? "Remembered your password? "
-                              : "Already have an account? "}
+                                ? "Remembered your password? "
+                                : "Already have an account? "}
                             <a
                               href="#!"
                               className="link-primary text-decoration-none"
@@ -174,8 +180,8 @@ const Auth = () => {
                               {isLogin
                                 ? "Sign up"
                                 : isForgotPassword
-                                ? "Log in"
-                                : "Log in"}
+                                  ? "Log in"
+                                  : "Log in"}
                             </a>
                           </p>
                         </div>
