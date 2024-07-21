@@ -3,7 +3,7 @@ import CarList from "../components/CarList";
 import "../styles/SearchBar.css";
 
 export default function SearchBar() {
-  const [isSelfDrivingSelected] = useState(true);
+  // const [isSelfDrivingSelected] = useState(true);
   const [pickupDate, setPickupDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
   const [searchResults, setSearchResults] = useState();
@@ -31,26 +31,13 @@ export default function SearchBar() {
   };
 
   const validateDateRange = (start, end) => {
-    console.log(start);
-    console.log(start &&
-      end &&
-      new Date(end) > new Date(start) &&
-      new Date(start) >= new Date());
     setIsFormValid(
       start &&
-        end &&
-        new Date(end) > new Date(start) &&
-        new Date(start) >= new Date()
+      end &&
+      new Date(end) > new Date(start) &&
+      new Date(start) >= new Date()
     );
   };
-
-  // const handleToggle = (isSelfDriving) => {
-  //   setIsSelfDrivingSelected(isSelfDriving);
-  //   setSelectedButton(isSelfDriving ? "self-driving" : "with-driver");
-  //   setPickupDate("");
-  //   setReturnDate("");
-  //   setIsFormValid(false);
-  // };
 
   const handleSearch = () => {
     if (isFormValid) {
@@ -68,71 +55,71 @@ export default function SearchBar() {
     }
   };
 
-  
   return (
-    <div>
-      <div className="search-options">
-        <div className="search-options-toggle">
-          <button
-            // onClick={() => handleToggle(true)}
-            className={selectedButton === "self-driving" ? "selected" : ""}
-          >
-            Tìm kiếm xe mong muốn
-          </button>
-        </div>
-
-        {(isSelfDrivingSelected || !isSelfDrivingSelected) && (
-          <div
-            className={`search-input ${
-              isSelfDrivingSelected ? "self-driving" : "car-with-driver"
-            }`}
-          >
-            <div className="location-input">
-              <p>Địa điểm nhận xe</p>
+    <form className="container mt-5">
+      <div className="card p-4">
+        <div className="search-options">
+          <div className="search-options-toggle mb-3 d-flex justify-content-between">
+            <button
+              className={`btn btn-primary text-center ${selectedButton === "self-driving" ? "active" : ""}`}
+              disabled
+            >
+              Xe tự lái
+            </button>
+            <button
+              className={`btn btn-primary text-center ${selectedButton === "self-driving" ? "active" : ""}`}
+              disabled
+            >
+              Xe có xế
+            </button>
+          </div>
+          <div className="search-input">
+            <div className="form-group">
+              <label htmlFor="location">Địa điểm nhận xe</label>
               <input
                 type="text"
-                name="location"
+                id="location"
+                className="form-control"
                 placeholder="Nhập địa điểm"
                 value={location}
                 onChange={handleLocationChange}
               />
             </div>
-
-            <div className="rental-period-input-box">
-              <h3>THỜI GIAN THUÊ</h3>
-              <div className="rental-period-input">
-                <div>
-                  <p>Thời gian nhận xe</p>
-                  <input
-                    type="date"
-                    name="pickupDate"
-                    value={pickupDate}
-                    onChange={handlePickupDateChange}
-                  />
-                </div>
-                <div>
-                  <p>Thời gian trả xe</p>
-                  <input
-                    type="date"
-                    name="returnDate"
-                    value={returnDate}
-                    onChange={handleReturnDateChange}
-                  />
-                </div>
-              </div>
+            <div className="form-group">
+              <label htmlFor="pickupDate">Thời gian nhận xe</label>
+              <input
+                type="date"
+                id="pickupDate"
+                className="form-control"
+                value={pickupDate}
+                onChange={handlePickupDateChange}
+              />
             </div>
-            <div className="search-btn">
-              <button onClick={handleSearch}>Tìm xe</button>
+            <div className="form-group">
+              <label htmlFor="returnDate">Thời gian trả xe</label>
+              <input
+                type="date"
+                id="returnDate"
+                className="form-control"
+                value={returnDate}
+                onChange={handleReturnDateChange}
+              />
+            </div>
+            <div className="text-center mt-4">
+              <button className="btn btn-success" onClick={handleSearch} disabled={!isFormValid}>
+                Tìm xe
+              </button>
+
             </div>
           </div>
-        )}
+        </div>
       </div>
       {searchResults && (
-        <div className="result-search">
+        <div className="result-search mt-5">
           <h3>Kết quả tìm kiếm</h3>
           <CarList cars={searchResults} />
         </div>
       )}
-    </div>
+    </form>
   );
 }

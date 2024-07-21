@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Layout from "../components/Layout";
+import Layout from "../layouts/Layout";
 import CheckOutModal from "../components/CheckOutModal";
 import "../styles/Detail.css";
-import UserContext, { UserProvider } from "../hooks/userProvider";
+import UserContext
+// , { UserProvider }
+  from "../hooks/userProvider";
 
 function Detail() {
   const { id } = useParams();
@@ -300,7 +302,7 @@ function Detail() {
             </div>
             <hr />
 
-            {}
+            { }
             <div className="other-amenities">
               <h3>Các tiện nghi khác</h3>
               <ul className="other-amenities-list">

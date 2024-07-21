@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Layout from "../components/Layout";
+import Layout from "../layouts/Layout";
 import CarList from "../components/CarList";
 import Slider from "../components/Slider";
 import SearchBar from "../components/SearchBar";
@@ -33,14 +33,14 @@ function Home() {
     console.log(localStorage.getItem('isLoggedIn'));
   }, []);
 
-  
+
   return (
     <>
       <Layout>
-        <div className="home-content">
+        <div className="container-fuild home-content">
           {/*banner section*/}
-          <div className="banner-container">
-            <div className="background">
+          <div className="row banner-container">
+            <div className="col background">
               <h1>Car Rental - Cùng Bạn Đến</h1>
               <h1>Mọi Hành Trình</h1>
               <div className="line"></div>
@@ -72,61 +72,61 @@ function Home() {
 
           {/*instruction section*/}
           <div className="instruction-section d-flex flex-column align-items-center">
-      <div className="instruction-section-title text-center mb-4">
-        <h3>Hướng dẫn thuê xe</h3>
-        <p>Chỉ với 4 bước đơn giản để trải nghiệm thuê xe Mioto một cách nhanh chóng</p>
-      </div>
-      <div className="tutorial-container d-flex justify-content-center">
-        <div className="tutorial-item">
-          <div className="tutorial-fix-img">
-            <img
-              src={require("../assets/img/tutorial-img-1.png")}
-              alt=""
-              className="img-fluid"
-            />
+            <div className="instruction-section-title text-center mb-4">
+              <h3>Hướng dẫn thuê xe</h3>
+              <p>Chỉ với 4 bước đơn giản để trải nghiệm thuê xe Mioto một cách nhanh chóng</p>
+            </div>
+            <div className="tutorial-container d-flex justify-content-center">
+              <div className="tutorial-item">
+                <div className="tutorial-fix-img">
+                  <img
+                    src={require("../assets/img/tutorial-img-1.png")}
+                    alt=""
+                    className="img-fluid"
+                  />
+                </div>
+                <p>
+                  <span>1</span> Đặt xe trên web Car Rental
+                </p>
+              </div>
+              <div className="tutorial-item">
+                <div className="tutorial-fix-img">
+                  <img
+                    src={require("../assets/img/tutorial-img-2.png")}
+                    alt=""
+                    className="img-fluid"
+                  />
+                </div>
+                <p>
+                  <span>2</span> Nhận xe
+                </p>
+              </div>
+              <div className="tutorial-item">
+                <div className="tutorial-fix-img">
+                  <img
+                    src={require("../assets/img/tutorial-img-3.png")}
+                    alt=""
+                    className="img-fluid"
+                  />
+                </div>
+                <p>
+                  <span>3</span> Bắt đầu hành trình
+                </p>
+              </div>
+              <div className="tutorial-item">
+                <div className="tutorial-fix-img">
+                  <img
+                    src={require("../assets/img/tutorial-img-4.png")}
+                    alt=""
+                    className="img-fluid"
+                  />
+                </div>
+                <p>
+                  <span>4</span> Trả xe và kết thúc chuyến đi
+                </p>
+              </div>
+            </div>
           </div>
-          <p>
-            <span>1</span> Đặt xe trên web Car Rental
-          </p>
-        </div>
-        <div className="tutorial-item">
-          <div className="tutorial-fix-img">
-            <img
-              src={require("../assets/img/tutorial-img-2.png")}
-              alt=""
-              className="img-fluid"
-            />
-          </div>
-          <p>
-            <span>2</span> Nhận xe
-          </p>
-        </div>
-        <div className="tutorial-item">
-          <div className="tutorial-fix-img">
-            <img
-              src={require("../assets/img/tutorial-img-3.png")}
-              alt=""
-              className="img-fluid"
-            />
-          </div>
-          <p>
-            <span>3</span> Bắt đầu hành trình
-          </p>
-        </div>
-        <div className="tutorial-item">
-          <div className="tutorial-fix-img">
-            <img
-              src={require("../assets/img/tutorial-img-4.png")}
-              alt=""
-              className="img-fluid"
-            />
-          </div>
-          <p>
-            <span>4</span> Trả xe và kết thúc chuyến đi
-          </p>
-        </div>
-      </div>
-    </div>
           {/* explore-section */}
           <div className="explore-section">
             <div className="explore-fix-img">

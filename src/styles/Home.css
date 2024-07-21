@@ -4,13 +4,10 @@
     box-sizing: border-box;
 }
 
-.home-content {
-    width: 100vw;
 
-}
+/*banner section*/
 
 .banner-container {
-    margin: 50px;
     width: 1200px;
     height: 500px;
     margin: 50px auto;
@@ -63,6 +60,9 @@
     -webkit-text-stroke: 1px rgb(16, 16, 16);
 
 }
+
+
+/*promo-section*/
 
 .promo-section {
     margin-top: 100px;

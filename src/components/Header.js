@@ -1,64 +1,90 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import "../styles/Header.css";
-import UserContext from "../hooks/userProvider";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-function Header() {
-  const { userId, setUserId } = useContext(UserContext);
-  const [userData, setUserData] = useState(null);
+import logo from "../assets/img/logo.jpeg"
 
-  const handleLogout = () => {
-    setUserId(null);
-    setUserData(null);
-    localStorage.removeItem("isLoggedIn");
-  };
-
-  useEffect(() => {
-    if (userId) {
-      fetch(`http://127.0.0.1:8000/api/user/${userId}`)
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          setUserData(data.data);
-        })
-        .catch((e) => console.log(e));
-    }
-  }, [userId]);
+const Header = () => {
+  const [loggedIn, setLoggedIn] = useState(false);
+  // const [user,setUser] = useState();
 
   return (
-    <div className="header">
-      <div className="logo-container">
-        <img src={require("../assets/img/logo.png")} alt="Car Rental Logo" />
-        <Link to="/">CAR RENTAL</Link>
-      </div>
-      <div className="navigation">
-        <Link to="/about">Về Car Rental</Link>
-        <div>
-          {userData ? (
-            <div className="user-dropdown">
-              <span className="hello-user">Xin chào {userData.LAST_NAME} </span>
-              <div className="dropdown-content">
-                <Link to={`/transaction/${userId}`}>
-                  Thông tin thuê xe
-                </Link>
-                <Link to={`/bookmark/${userId}`}>Bookmark</Link>
-                <button onClick={handleLogout}>Đăng xuất</button>
+    <header className='container-fuild border'>
+
+      {/*Header Logo*/}
+      <nav className="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-between px-5">
+        <Link className="navbar-brand" to="/">
+          <img
+            src={logo}
+            width="80"
+            height="60"
+            className="d-inline-block align-top"
+            alt="logo"
+          />
+        </Link>
+
+        {/*Header Navigation*/}
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav ml-auto">
+            <li className="nav-item active">
+              <Link className="nav-link" to="/">Home <span className="sr-only">(current)</span></Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/about">About</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/contact">Contact</Link>
+            </li>
+            <li className='nav-item'>
+              <Link className='nav-link' to="/privacy">Privacy</Link>
+            </li>
+            <li className='nav-item'>
+              <Link className='nav-link' to="/help">Help</Link>
+            </li>
+          </ul>
+        </div>
+
+
+        {/*Header Action*/}
+        <div className='d-flex justify-center px-5'>
+          {loggedIn ? (
+            <div className="nav-item dropdown btn btn-primary">
+              <div
+                className="nav-link dropdown-toggle"
+                id="navbarDropdown"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Hello User
+              </div>
+              <div className="dropdown-menu text-center" aria-labelledby="navbarDropdown">
+                <Link className="dropdown-item" to="/user/profile">Profile</Link>
+                <Link className="dropdown-item" to="/user/cart">Cart</Link>
+                <div className="dropdown-divider"></div>
+                <Link className="dropdown-item" to="/logout" onClick={() => setLoggedIn(false)}>Logout</Link>
               </div>
             </div>
           ) : (
-            <div className="user-login">
-              <Link to="/register" className="login-btn">
-                <button>Đăng ký</button>
+            <>
+              <Link to='/login'
+                className="btn btn-primary mr-2 mx-3"
+                onClick={() => alert('Login')}
+              >
+                Login
               </Link>
-              <Link to="/login" className="login-btn">
-                <button>Đăng nhập</button>
+              <Link to='/register'
+                className="btn btn-success mx-3"
+                onClick={() => alert('Register')}
+              >
+                Register
               </Link>
-            </div>
+            </>
           )}
         </div>
-      </div>
-    </div>
+      </nav>
+    </header>
   );
-}
+};
 
 export default Header;
