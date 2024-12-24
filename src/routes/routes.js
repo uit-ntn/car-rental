@@ -5,6 +5,9 @@ import Detail from "../pages/Detail";
 import Account from "../pages/Account";
 import ResetPW from "../pages/ResetPW";
 import Privacy from "../pages/Privacy";
+// import Blog from "../pages/Blog";
+
+
 // import Admin from "../pages/Admin";
 
 
@@ -17,6 +20,7 @@ const publicRoutes = [
   { path: "/about", page: About },
   { path: "/detail/:id", page: Detail },
   { path: "/privacy", page: Privacy }
+  // , { path: "/blog",page: Blog }
 ];
 
 

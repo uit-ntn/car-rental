@@ -67,15 +67,13 @@ const Header = () => {
             </div>
           ) : (
             <>
-              <Link to='/login'
+              <Link to='/auth/login'
                 className="btn btn-primary mr-2 mx-3"
-                onClick={() => alert('Login')}
               >
                 Login
               </Link>
-              <Link to='/register'
+              <Link to='/auth/register'
                 className="btn btn-success mx-3"
-                onClick={() => alert('Register')}
               >
                 Register
               </Link>

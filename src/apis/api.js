@@ -3,7 +3,7 @@ import axios from 'axios';
 // Instance axios with default config
 const api = axios.create({
   baseURL: '',
-  timeout: 10000, // Thời gian timeout (ms)
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
