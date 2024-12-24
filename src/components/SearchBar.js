@@ -3,15 +3,14 @@ import CarList from "../components/CarList";
 import "../styles/SearchBar.css";
 
 export default function SearchBar() {
-  // const [isSelfDrivingSelected] = useState(true);
   const [pickupDate, setPickupDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
   const [searchResults, setSearchResults] = useState();
-  const [selectedButton] = useState("self-driving");
   const [isFormValid, setIsFormValid] = useState(false);
   const [location, setLocation] = useState("");
 
-  const apiUrl = "http://127.0.0.1:8000/api/cars";
+  const apiUrl = process.env.API_URL
+
 
   const handlePickupDateChange = (event) => {
     const newPickupDate = event.target.value;
@@ -59,22 +58,9 @@ export default function SearchBar() {
     <form className="container mt-5">
       <div className="card p-4">
         <div className="search-options">
-          <div className="search-options-toggle mb-3 d-flex justify-content-between">
-            <button
-              className={`btn btn-primary text-center ${selectedButton === "self-driving" ? "active" : ""}`}
-              disabled
-            >
-              Xe tự lái
-            </button>
-            <button
-              className={`btn btn-primary text-center ${selectedButton === "self-driving" ? "active" : ""}`}
-              disabled
-            >
-              Xe có xế
-            </button>
-          </div>
+          <h2 className="text-center fs-3 fw-bold">TÌM KIẾM XE</h2>
           <div className="search-input">
-            <div className="form-group">
+            <div className="form-group mt-3">
               <label htmlFor="location">Địa điểm nhận xe</label>
               <input
                 type="text"
@@ -85,7 +71,7 @@ export default function SearchBar() {
                 onChange={handleLocationChange}
               />
             </div>
-            <div className="form-group">
+            <div className="form-group mt-3">
               <label htmlFor="pickupDate">Thời gian nhận xe</label>
               <input
                 type="date"
@@ -95,7 +81,7 @@ export default function SearchBar() {
                 onChange={handlePickupDateChange}
               />
             </div>
-            <div className="form-group">
+            <div className="form-group mt-3">
               <label htmlFor="returnDate">Thời gian trả xe</label>
               <input
                 type="date"
