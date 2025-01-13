@@ -1,0 +1,60 @@
+.instruction-section {
+    margin: 200px auto;
+}
+
+.instruction-section .instruction-section-title h3 {
+    text-align: center;
+    font-size: 50px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.instruction-section-title p {
+    text-align: center;
+    font-size: 30px;
+    margin: 40px 0;
+}
+
+.instruction-section .tutorial-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    list-style: none;
+}
+
+.tutorial-container .tutorial-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tutorial-item .tutorial-fix-img {
+    height: 250px;
+    width: 250px;
+}
+
+.tutorial-fix-img img {
+    height: 100%;
+    width: 100%;
+    border: 2px solid black;
+    padding: 10px;
+}
+
+.tutorial-container .tutorial-item p {
+    color: black;
+    margin: 10px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.tutorial-item span {
+    margin: 5px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #5fcf86;
+    height: 30px;
+    width: 30px;
+    padding: 5px;
+    border-radius: 5px;
+}
