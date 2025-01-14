@@ -1,6 +1,6 @@
 import React from "react";
 
-const Login = ({ navigate }) => (
+const Login = () => (
   <form>
     <div className="row gy-2 overflow-hidden">
       <div className="col-12">

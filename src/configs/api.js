@@ -2,12 +2,15 @@ import axios from 'axios';
 
 // Instance axios with default config
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:8000',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
 });
+
+console.log(process.env.REACT_APP_API_URL);
+
 
 // Interceptor for request: add token to request header
 api.interceptors.request.use(

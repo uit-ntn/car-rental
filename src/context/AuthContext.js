@@ -1,34 +1,34 @@
 import React, { createContext, useState, useEffect } from 'react';
-import api from '../apis/api';
+import api from '../configs/api';
 
-// Tạo context
+// create context
 export const AuthContext = createContext();
 
-// Cung cấp AuthProvider
+// AuthProvider
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [user_id, setUser_id] = useState(localStorage.getItem('user_id') || null);
   const [token, setToken] = useState(localStorage.getItem('authToken') || null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (token) {
       api.defaults.headers['Authorization'] = `Bearer ${token}`;
-      // Gửi yêu cầu lấy thông tin người dùng
-      api.get('/user/me')  // Thay thế bằng endpoint lấy thông tin user
+      api.get('/users/${user._id}')
         .then(response => {
-          setUser(response.data);
+          setUserData(response.data);
           setLoading(false);
         })
         .catch(() => {
           setLoading(false);
-          setUser(null);
+          setUserData(null);
         });
     } else {
       setLoading(false);
     }
   }, [token]);
 
-  // Đăng ký người dùng
+  // Sign up
   const signup = async (email, password) => {
     try {
       const response = await api.post('/auth/signup', { email, password });
@@ -38,20 +38,20 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Đăng nhập
+  // Login
   const login = async (email, password) => {
     try {
       const response = await api.post('/auth/login', { email, password });
       const { token } = response.data;
       setToken(token);
-      localStorage.setItem('authToken', token);  // Lưu token vào localStorage
+      localStorage.setItem('authToken', token);  // save token to local storage
       return response.data;
     } catch (error) {
       throw error.response?.data || error.message;
     }
   };
 
-  // Quên mật khẩu
+  // Forgot password
   const forgotPassword = async (email) => {
     try {
       const response = await api.post('/auth/forgot-password', { email });
@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Đặt lại mật khẩu
+  // Reset password
   const resetPassword = async (token, newPassword) => {
     try {
       const response = await api.post('/auth/reset-password', { token, newPassword });
@@ -71,15 +71,15 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Đăng xuất
+  // Logout
   const logout = () => {
     setToken(null);
-    setUser(null);
+    setUserData(null);
     localStorage.removeItem('authToken');
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, signup, login, forgotPassword, resetPassword, logout }}>
+    <AuthContext.Provider value={{ user_id, userData, token, loading, signup, login, forgotPassword, resetPassword, logout }}>
       {children}
     </AuthContext.Provider>
   );

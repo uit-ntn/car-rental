@@ -1,162 +1,181 @@
-import React
-, {
-  useState
-}
-  from "react";
-import ProductCard from "./ProductCard";
-import "../styles/CarList.css";
-import { filter } from "lodash";
+import React, { useContext, useState } from "react";
+import { CarContext } from "../context/CarContext";
+import CarCard from "./CarCard";
 
-const CarList = ({ cars }) => {
-  const [filterPrice, setFilterPrice] = useState("0");
-  const [filterStar, setFilterStar] = useState("0");
+const CarList = () => {
+  const { cars, loading, error } = useContext(CarContext);
+  const [currentPage, setCurrentPage] = useState(1);
+  const carsPerPage = 8;
 
-  const handleFilterPrice = (price) => {
-    console.log("Click");
-    console.log(price);
-    console.log(filteredCars);
-    setFilterPrice(price);
+  const [filters, setFilters] = useState({
+    status: "",
+    priceRange: { min: 0, max: Infinity },
+    location: "",
+  });
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "priceRange") {
+      const [min, max] = value.split("-").map((v) => (v === "Infinity" ? Infinity : parseInt(v, 10)));
+      setFilters((prev) => ({
+        ...prev,
+        priceRange: { min, max },
+      }));
+    } else {
+      setFilters((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+
+    setCurrentPage(1); // Reset to the first page
   };
 
-  const handleFilterStar = (star) => {
-    setFilterStar(star);
+  const uniqueLocations = [...new Set(cars.map((car) => car.location))];
+
+  const filteredCars = cars.filter((car) => {
+    const matchesStatus = !filters.status || car.status === filters.status;
+    const matchesPrice =
+      car.price >= filters.priceRange.min &&
+      car.price <= filters.priceRange.max;
+    const matchesLocation =
+      !filters.location || car.location === filters.location;
+
+    return matchesStatus && matchesPrice && matchesLocation;
+  });
+
+  const totalPages = Math.ceil(filteredCars.length / carsPerPage);
+
+  const currentCars = filteredCars.slice(
+    (currentPage - 1) * carsPerPage,
+    currentPage * carsPerPage
+  );
+
+  const goToPage = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
   };
 
-  const filteredCars = cars
-    .filter((car) => {
-      switch (filterPrice.toString()) {
-        case "0":
-          return true;
-        case "600":
-          return car.PRICE_C >= 0 && car.PRICE_C < 600000;
-        case "1000":
-          return car.PRICE_C >= 600000 && car.PRICE_C < 1000000;
-        case "1500":
-          return car.PRICE_C >= 1000000 && car.PRICE_C < 1500000;
-        case "2000":
-          return car.PRICE_C >= 1500000 && car.PRICE_C < 2000000;
-        case "2001":
-          return car.PRICE_C >= 2000000;
-        default:
-          return true;
-      }
-    })
-    .filter((car) => {
-      switch (filterStar.toString()) {
-        case "0":
-          return true;
-        case "3":
-          return car.STAR >= 0 && car.STAR < 3;
-        case "4":
-          return car.STAR >= 3 && car.STAR < 4;
-        case "5":
-          return car.STAR >= 4 && car.STAR < 5;
-        default:
-          return true;
-      }
-    });
+  if (loading) return <p>Loading cars...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
-    <div>
-      <div className="filter-container">
-        <label>
-          Lọc theo giá:
-          <select onChange={(e) => handleFilterPrice(parseInt(e.target.value))}>
-            <option value="0">Tất cả</option>
-            <option value="600">600k và thấp hơn</option>
-            <option value="1000">600k đến dưới 1000k</option>
-            <option value="1500">1000k đến dưới 1500k</option>
-            <option value="2000">1500k đến dưới 2000k</option>
-            <option value="2001">Trên 2000k</option>
-            {/* Thêm các mức giá khác nếu cần */}
-          </select>
-        </label>
+    <div className="container mt-5">
+      <h2 className="text-center my-4 fw-bold">DANH SÁCH XE</h2>
 
-        <label>
-          Lọc theo đánh giá:
-          <select onChange={(e) => handleFilterStar(parseInt(e.target.value))}>
-            <option value="0">Tất cả</option>
-            <option value="3">3 sao và thấp hơn</option>
-            <option value="4">3 sao đến 4 sao</option>
-            <option value="5">4 sao đến 5 sao</option>
+      {/* Filters */}
+      <div className="row mb-4">
+        <div className="col-md-4">
+          <select
+            name="status"
+            className="form-select"
+            value={filters.status}
+            onChange={handleFilterChange}
+          >
+            <option value="">Tất cả trạng thái</option>
+            <option value="available">Chưa có chuyến</option>
+            <option value="rented">Đã có chuyến</option>
+            <option value="maintenance">Đang bảo dưỡng</option>
           </select>
-        </label>
+        </div>
+        <div className="col-md-4">
+          <select
+            name="priceRange"
+            className="form-select"
+            onChange={handleFilterChange}
+          >
+            <option value="0-Infinity">Tất cả khoảng giá</option>
+            <option value="0-500000">Dưới 500K</option>
+            <option value="500000-1000000">500K - 1M</option>
+            <option value="1000000-Infinity">Trên 1M</option>
+          </select>
+        </div>
+        <div className="col-md-4">
+          <select
+            name="location"
+            className="form-select"
+            value={filters.location}
+            onChange={handleFilterChange}
+          >
+            <option value="">Tất cả vị trí</option>
+            {uniqueLocations.map((location, index) => (
+              <option key={index} value={location}>
+                {location}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      {filteredCars.length === 0 ? (
-        <p className="filter-no-found">Không có xe phù hợp.</p>
-      ) : (
-        <ul className="Car-list-container">
-          {filteredCars.map((car, index) => (
-            <li key={index}>
-              <ProductCard
-                id={car.LICENSE_PLATE}
-                image={car.LEFT_IMG}
-                name={car.NAME}
-                address={car.LOCATION}
-                star={car.STAR}
-                price={car.PRICE_C}
-                trip={car.TRIP}
-                available={car.IS_AVAILABLE}
-              />
-            </li>
-          ))}
-        </ul>
-      )}
+      {/* Danh sách xe */}
+      <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+        {currentCars.map((car) => (
+          <CarCard key={car._id} car={car} />
+        ))}
+      </div>
+
+      {/* Phân trang */}
+      <div className="d-flex justify-content-center align-items-center mt-4">
+        <button
+          className="btn btn-outline-primary me-2"
+          disabled={currentPage === 1}
+          onClick={() => goToPage(1)}
+        >
+          Trang đầu
+        </button>
+        <button
+          className="btn btn-outline-primary me-2"
+          disabled={currentPage === 1}
+          onClick={() => goToPage(currentPage - 1)}
+        >
+          Trang trước
+        </button>
+        <span className="mx-2">
+          Trang {currentPage} / {totalPages}
+        </span>
+        <button
+          className="btn btn-outline-primary ms-2"
+          disabled={currentPage === totalPages}
+          onClick={() => goToPage(currentPage + 1)}
+        >
+          Trang kế
+        </button>
+        <button
+          className="btn btn-outline-primary ms-2"
+          disabled={currentPage === totalPages}
+          onClick={() => goToPage(totalPages)}
+        >
+          Trang cuối
+        </button>
+      </div>
+
+      {/* Input đi đến trang */}
+      <div className="d-flex justify-content-center align-items-center mt-3">
+        <input
+          type="number"
+          className="form-control w-auto me-2"
+          min="1"
+          max={totalPages}
+          placeholder="Trang"
+          style={{ width: "80px", height: "30px", fontSize: "14px" }}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              goToPage(Number(e.target.value));
+            }
+          }}
+        />
+        <button
+          className="btn btn-outline-success"
+          style={{ height: "30px", fontSize: "14px", padding: "0 10px" }}
+          onClick={(e) => goToPage(Number(e.target.previousSibling.value))}
+        >
+          Đi tới
+        </button>
+      </div>
     </div>
   );
 };
 
 export default CarList;
-
-// {
-//   "LICENSE_PLATE": "37K-12350",
-//   "OWNER_ID": "U0048",
-//   "NAME": "VINFAST VF8 ECO 2022",
-//   "LOCATION": "Hồ Chí Minh",
-//   "LAST_CHECK": "2023-09-03",
-//   "BRAND": "VINFAST",
-//   "SEAT": 5,
-//   "TRANSMISSION": "Số tự động",
-//   "FUEL": "Điện",
-//   "CONSUMPTION": 400,
-//   "PRICE_C": 1250000,
-//   "SERVICE_C": 148000,
-//   "INSURANCE_C": 148000,
-//   "DESCRIPTION": "VINFAST VF8 ECO 2023\nXe không đổ xăng ko mùi hôi, phí sạc tính theo odo 1200đ/km tiết kiệm 1/3 so với xe xăng",
-//   "MAP": "Y",
-//   "BLUETOOTH": "Y",
-//   "CAMERA_360": "N",
-//   "CAMERA_SIDES": "Y",
-//   "CAMERA_JOURNEY": "N",
-//   "CAMERA_BACK": "Y",
-//   "TIRE_SENSOR": "Y",
-//   "IMPACT_SENSOR": "Y",
-//   "SPEED_WARNING": "Y",
-//   "SKY_WINDOW": "Y",
-//   "GPS": "Y",
-//   "CHILD_SEAT": "Y",
-//   "USB": "Y",
-//   "SPARE_TIRE": "N",
-//   "DVD": "N",
-//   "ETC": "Y",
-//   "AIRBAG": "N",
-//   "PICKUP_COVER": "Y",
-//   "FRONT_IMG": "VinFast-F",
-//   "BACK_IMG": "VinFast-B",
-//   "LEFT_IMG": "VinFast-L",
-//   "RIGHT_IMG": "VinFast-R",
-//   "IS_AVAILABLE": true,
-//   "user": {
-//       "USER_ID": "U0048",
-//       "password": "$2y$12$vlqPDYRJyXVNcT7ouoiLDeMvEIVqNnQ8uqLwvPV0sOIxkSq.4WAhu",
-//       "FIRST_NAME": "Robert",
-//       "LAST_NAME": "Toni",
-//       "DOB": "1993-12-18",
-//       "GENDER": "M",
-//       "SDT": "33311224677",
-//       "EMAIL": "ToniMan93@example.com",
-//       "GPLX": "GPLX048",
-//       "LOCATION": "Hồ Chí Minh"
-//   }
-// }
