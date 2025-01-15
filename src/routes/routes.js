@@ -9,7 +9,7 @@ const publicRoutes = [
   { path: "/auth/register", page: Auth },
   { path: "/auth/forgotpw", page: Auth },
   { path: "/about", page: About },
-  { path: "/detail/:id", page: Detail },
+  { path: "/car/:id", page: Detail },
 ];
 
 
