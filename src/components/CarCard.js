@@ -1,6 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const CarCard = ({ car }) => {
+  const navigate = useNavigate();
+
+  const goToDetailPage = () => {
+    navigate(`/car/${car._id}`);
+    console.log(typeof car._id);
+  };
+
   return (
     <div className="col-md-3 col-sm-6 mb-3">
       <div
@@ -17,7 +25,9 @@ const CarCard = ({ car }) => {
             overflow: "hidden",
             borderRadius: "10px 10px 0 0",
             border: "1px solid #e1e4e8",
+            cursor: "pointer", 
           }}
+          onClick={goToDetailPage}
         >
           <img
             src={car.image}
@@ -32,7 +42,7 @@ const CarCard = ({ car }) => {
         </div>
 
         {/* Card Body */}
-        <div className="card-body p-2"> {/* Giảm padding */}
+        <div className="card-body p-2">
           {/* Transmission Badge */}
           <span
             className={`badge ${
@@ -96,6 +106,7 @@ const CarCard = ({ car }) => {
             <button
               className="btn btn-info btn-sm"
               style={{ fontSize: "13px", padding: "3px 10px" }}
+              onClick={goToDetailPage} // Navigate on click
             >
               <i className="bi bi-info-circle"></i> Xem chi tiết
             </button>
