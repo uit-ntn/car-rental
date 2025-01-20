@@ -1,7 +1,9 @@
+// AuthContext.js
+
 import React, { createContext, useState, useEffect } from 'react';
 import api from '../configs/api';
 
-// create context
+// Create context
 export const AuthContext = createContext();
 
 // AuthProvider
@@ -14,7 +16,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (token) {
       api.defaults.headers['Authorization'] = `Bearer ${token}`;
-      api.get('/users/${user._id}')
+      api.get(`/users/${user_id}`)
         .then(response => {
           setUserData(response.data);
           setLoading(false);
@@ -26,7 +28,7 @@ export const AuthProvider = ({ children }) => {
     } else {
       setLoading(false);
     }
-  }, [token]);
+  }, [token, user_id]);
 
   // Sign up
   const signup = async (email, password) => {
@@ -42,9 +44,11 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await api.post('/auth/login', { email, password });
-      const { token } = response.data;
+      const { token, user } = response.data;
       setToken(token);
-      localStorage.setItem('authToken', token);  // save token to local storage
+      setUser_id(user.id);  // Assuming the user data includes an ID
+      localStorage.setItem('authToken', token);  // Save token to local storage
+      localStorage.setItem('user_id', user.id);  // Save user ID
       return response.data;
     } catch (error) {
       throw error.response?.data || error.message;
@@ -76,6 +80,7 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     setUserData(null);
     localStorage.removeItem('authToken');
+    localStorage.removeItem('user_id');
   };
 
   return (
