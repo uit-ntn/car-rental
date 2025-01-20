@@ -12,36 +12,27 @@ const publicRoutes = [
   { path: "/car/:id", page: Detail },
 ];
 
-
-// role = customer
+// Các route dành cho customer
 const customerRoutes = [
   // { path: "/account/:userId", page: Account },
 ];
 
-
-// role = sale staff
+// Các route dành cho sale staff
 const saleStaffRoutes = [
-
-]
-
-// role = warehouse staff
-const warehouseStaffRoute = [
-
-]
-
-// role = admin
-const adminRoutes = [
-  // { path: "/admin", page: Admin }
 ];
 
+// Các route dành cho warehouse staff
+const warehouseStaffRoute = [
+];
 
-
-
+// Các route dành cho admin
+const adminRoutes = [
+];
 
 export {
   publicRoutes,
   customerRoutes,
   saleStaffRoutes,
   warehouseStaffRoute,
-  adminRoutes
+  adminRoutes,
 };
