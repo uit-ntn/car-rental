@@ -82,15 +82,15 @@ export const CarProvider = ({ children }) => {
   return (
     <CarContext.Provider
       value={{
-        cars, // Trạng thái danh sách xe
-        loading, // Trạng thái tải dữ liệu
-        error, // Trạng thái lỗi
-        fetchCars, // Hàm gọi để lấy tất cả xe
-        createCar, // Hàm gọi để tạo xe mới
-        updateCar, // Hàm gọi để cập nhật xe
-        deleteCar, // Hàm gọi để xóa xe
-        getCarsByStatus, // Hàm gọi để lấy xe theo trạng thái
-        getCarsByLocation, // Hàm gọi để lấy xe theo địa điểm
+        cars,
+        loading,
+        error,
+        fetchCars,
+        createCar,
+        updateCar,
+        deleteCar,
+        getCarsByStatus,
+        getCarsByLocation,
       }}
     >
       {children}
