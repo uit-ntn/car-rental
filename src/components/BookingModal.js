@@ -1,148 +1,200 @@
-import React from "react";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
 
-const BookingModal = ({
-  car,
-  startDate,
-  endDate,
-  totalCost,
-  setStartDate,
-  setEndDate,
-  onClose,
-  onConfirm,
-}) => {
-  const calculateDays = () => {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    const diffInMs = end - start;
-    return diffInMs / (1000 * 60 * 60 * 24) + 1;
+const BookingModal = ({ car, onClose }) => {
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [totalDays, setTotalDays] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  const handleStartDateChange = (e) => {
+    setStartDate(e.target.value);
+    calculateTotal();
   };
 
-  const totalDays = startDate && endDate ? calculateDays() : 0;
+  const handleEndDateChange = (e) => {
+    setEndDate(e.target.value);
+    calculateTotal();
+  };
+
+  const calculateTotal = () => {
+    if (startDate && endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      const diffTime = Math.abs(end - start);
+      const days = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Tính số ngày
+
+      if (days > 0) {
+        setTotalDays(days); // Nếu ngày hợp lệ
+        setTotalPrice(days * car.price); // Tính thành tiền
+      } else {
+        setTotalDays(0); // Nếu ngày không hợp lệ, đặt lại
+        setTotalPrice(0); // Đặt lại thành tiền
+      }
+    }
+  };
+
+  const handleBookNow = () => {
+    toast.success("Đặt xe thành công!");
+    onClose(); // Đóng modal sau khi đặt
+    setTimeout(() => {
+      toast.success("Thông báo đặt xe đã được gửi!");
+    }, 1000); // Toast sau 1s
+  };
+
+  // Hàm định dạng số với dấu chấm
+  const formatNumber = (number) => {
+    return new Intl.NumberFormat("vi-VN").format(number);
+  };
 
   return (
-    <div
-      className="modal fade"
-      id="bookingModal"
-      tabIndex="-1"
-      aria-labelledby="bookingModalLabel"
-      aria-hidden="true"
-    >
-      <div className="modal-dialog">
-        <div className="modal-content">
-          <div className="modal-header border-bottom-0">
-            <h5 className="modal-title" id="bookingModalLabel">
-              Đặt xe
-            </h5>
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-              onClick={onClose}
-            ></button>
-          </div>
-          <div className="modal-body">
-            <div className="mb-3">
-              <div className="d-flex justify-content-between">
-                <strong>Tên xe:</strong> <span>{car.model}</span>
+    <>
+      <div className="modal show" style={{ display: "block" }} tabIndex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+        <div className="modal-dialog modal-lg">
+          <div className="modal-content">
+            <div className="modal-header bg-primary text-white">
+              <h5 className="text-center fw-bold" id="bookingModalLabel">HỢP ĐỒNG THUÊ XE</h5>
+              <button type="button" className="btn-close" onClick={onClose} aria-label="Close"></button>
+            </div>
+            <div className="modal-body">
+              {/* Thông tin khách hàng */}
+              <div className="mb-4 p-3 border border-dark rounded shadow-sm">
+                <h5 className="text-center fw-bold mb-4">THÔNG TIN KHÁCH HÀNG</h5>
+                <div className="row mb-3">
+                  <div className="col">
+                    <strong>Họ và tên:</strong>
+                    <input type="text" className="form-control border border-secondary" />
+                  </div>
+                  <div className="col">
+                    <strong>Số điện thoại:</strong>
+                    <input type="text" className="form-control border border-secondary" />
+                  </div>
+                </div>
+                <div className="row mb-3">
+                  <div className="col">
+                    <strong>Email:</strong>
+                    <input type="email" className="form-control border border-secondary" />
+                  </div>
+                </div>
               </div>
-              <div className="d-flex justify-content-between">
-                <strong>Hãng sản xuất:</strong> <span>{car.make}</span>
+
+              {/* Thông tin xe */}
+              <div className="mb-4 p-3 border border-dark rounded shadow-sm">
+                <h5 className="text-center fw-bold mb-4">THÔNG TIN XE</h5>
+                <div className="row mb-3">
+                  <div className="col">
+                    <strong>Tên xe:</strong>
+                    <span>{car.model} ({car.make})</span>
+                  </div>
+                  <div className="col">
+                    <strong>Giá thuê:</strong>
+                    <span>{formatNumber(car.price)} VND/ngày</span>
+                  </div>
+                </div>
+                <div className="row mb-3">
+                  <div className="col">
+                    <strong>Biển số:</strong>
+                    <span>{car.license_plate}</span>
+                  </div>
+                  <div className="col">
+                    <strong>Vị trí:</strong>
+                    <span>{car.location}</span>
+                  </div>
+                </div>
+                {/* Thêm các thông tin chi tiết xe */}
+                <div className="row mb-3">
+                  <div className="col">
+                    <strong>Năm sản xuất:</strong>
+                    <span>{car.year}</span>
+                  </div>
+                  <div className="col">
+                    <strong>Trạng thái:</strong>
+                    <span>{car.status === "available" ? "Chưa có chuyến" : car.status === "rented" ? "Đã có chuyến" : "Đang bảo dưỡng"}</span>
+                  </div>
+                </div>
+                <div className="row mb-3">
+                  <div className="col">
+                    <strong>Hộp số:</strong>
+                    <span>{car.transmission === "Automatic" ? "Tự động" : "Số sàn"}</span>
+                  </div>
+                  <div className="col">
+                    <strong>Công ty bảo hiểm:</strong>
+                    <span>{car.insurance_info.company}</span>
+                  </div>
+                </div>
+                <div className="row mb-3">
+                  <div className="col">
+                    <strong>Mã hợp đồng:</strong>
+                    <span>{car.insurance_info.policy_number}</span>
+                  </div>
+                  <div className="col">
+                    <strong>Ngày hết hạn bảo hiểm:</strong>
+                    <span>{new Date(car.insurance_info.expiration_date).toLocaleDateString()}</span>
+                  </div>
+                </div>
               </div>
-              <div className="d-flex justify-content-between">
-                <strong>Năm sản xuất:</strong> <span>{car.year}</span>
-              </div>
-              <div className="d-flex justify-content-between">
-                <strong>Biển số:</strong> <span>{car.license_plate}</span>
-              </div>
-              <div className="d-flex justify-content-between">
-                <strong>Vị trí:</strong> <span>{car.location}</span>
-              </div>
-              <div className="d-flex justify-content-between">
-                <strong>Giá thuê:</strong>{" "}
-                <span className="text-success">{car.price / 1000}K/ngày</span>
-              </div>
-              <div className="d-flex justify-content-between">
-                <strong>Hộp số:</strong>{" "}
-                <span>{car.transmission === "Automatic" ? "Tự động" : "Số sàn"}</span>
-              </div>
-              <div className="d-flex justify-content-between">
-                <strong>Công ty bảo hiểm:</strong>{" "}
-                <span>{car.insurance_info.company}</span>
-              </div>
-              <div className="d-flex justify-content-between">
-                <strong>Mã hợp đồng:</strong>{" "}
-                <span>{car.insurance_info.policy_number}</span>
-              </div>
-              <div className="d-flex justify-content-between">
-                <strong>Ngày hết hạn:</strong>{" "}
-                <span>
-                  {new Date(car.insurance_info.expiration_date).toLocaleDateString()}
-                </span>
+
+              {/* Section Rent */}
+              <div className="mb-4 p-3 border border-dark rounded shadow-sm">
+                <h5 className="text-center fw-bold mb-4">THÔNG TIN THUÊ</h5>
+                <div className="row mb-3">
+                  <div className="col">
+                    <strong>Ngày bắt đầu:</strong>
+                    <input
+                      type="date"
+                      value={startDate}
+                      onChange={handleStartDateChange}
+                      className="form-control border border-secondary"
+                    />
+                  </div>
+                  <div className="col">
+                    <strong>Ngày kết thúc:</strong>
+                    <input
+                      type="date"
+                      value={endDate}
+                      onChange={handleEndDateChange}
+                      className="form-control border border-secondary"
+                    />
+                  </div>
+                </div>
+
+
+                <div className="row mb-3">
+                  <div className="col">
+                    <strong>Tổng số ngày:</strong>
+                  </div>
+                  <div className="col">
+                    <span>{totalDays}</span>
+                  </div>
+                </div>
+                <div className="row mb-3">
+                  <div className="col">
+                    <strong>Thành tiền:</strong>
+                  </div>
+                  <div className="col">
+                    <span>{formatNumber(totalPrice)} VND</span>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className="mb-3">
-              <label htmlFor="startDate" className="form-label">
-                Ngày bắt đầu:
-              </label>
-              <input
-                type="date"
-                id="startDate"
-                className="form-control"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-              />
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" onClick={onClose}>
+                Đóng
+              </button>
+              <button type="button" className="btn btn-warning">
+                Thêm vào giỏ hàng
+              </button>
+              <button type="button" className="btn btn-primary" onClick={handleBookNow}>
+                Đặt ngay
+              </button>
             </div>
-            <div className="mb-3">
-              <label htmlFor="endDate" className="form-label">
-                Ngày kết thúc:
-              </label>
-              <input
-                type="date"
-                id="endDate"
-                className="form-control"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-              />
-            </div>
-
-            {totalDays > 0 && (
-              <div className="mb-3">
-                <div className="d-flex justify-content-between">
-                  <strong>Tổng số ngày:</strong> <span>{totalDays} ngày</span>
-                </div>
-                <div className="d-flex justify-content-between">
-                  <strong>Tổng cộng:</strong>{" "}
-                  <span>{totalCost / 1000}K</span>
-                </div>
-                <div className="d-flex justify-content-between">
-                  <strong>Chương trình giảm giá:</strong>
-                  <span className="text-danger">-120.000đ</span>
-                </div>
-                <div className="d-flex justify-content-between">
-                  <strong>Thành tiền:</strong>{" "}
-                  <span className="text-success fw-bold">{(totalCost - 120000) / 1000}K</span>
-                </div>
-              </div>
-            )}
-          </div>
-          <div className="modal-footer">
-            <button
-              type="button"
-              className="btn btn-secondary"
-              data-bs-dismiss="modal"
-              onClick={onClose}
-            >
-              Hủy
-            </button>
-            <button type="button" className="btn btn-warning" onClick={onConfirm}>
-              Chọn thuê
-            </button>
           </div>
         </div>
       </div>
-    </div>
+
+      <div className="modal-backdrop fade show" style={{ zIndex: 1040 }}></div>
+    </>
   );
 };
 

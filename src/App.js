@@ -2,10 +2,13 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { publicRoutes, customerRoutes, saleStaffRoutes, warehouseStaffRoute, adminRoutes } from "./routes/routes";
 import NotFound from "./pages/NotFound";
+import { ToastContainer } from "react-toastify";  // Thêm import ToastContainer
+import 'react-toastify/dist/ReactToastify.css';  // Thêm CSS cho Toast
+
 import "./App.css";
 
 const getUserRole = () => {
- // get role from localStorage
+  // get role from localStorage
   return localStorage.getItem('role');
   // customer, saleStaff, warehouseStaff, admin
 };
@@ -26,7 +29,6 @@ const ProtectedRoute = ({ element, allowedRoles }) => {
 };
 
 function App() {
-
   return (
     <Router>
       <div className="App">
@@ -43,7 +45,7 @@ function App() {
             );
           })}
 
-          {/*Customer route*/}
+          {/* Customer route */}
           {customerRoutes.map((route, index) => {
             const Page = route.page;
             return (
@@ -94,6 +96,9 @@ function App() {
           {/* Route NotFound */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+
+        {/* ToastContainer to show notification */}
+        <ToastContainer position="top-right" autoClose={5000} hideProgressBar />
       </div>
     </Router>
   );
