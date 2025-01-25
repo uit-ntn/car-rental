@@ -2,6 +2,12 @@ import Home from "../pages/Home";
 import Auth from "../pages/Auth";
 import About from "../pages/About";
 import Detail from "../pages/Detail";
+import User from "../pages/UserManagement";
+import Cars from "../pages/CarManagement";
+
+const adminRoutes = [
+  { path: "/admin/cars", page: Cars },
+];
 
 const publicRoutes = [
   { path: "/", page: Home },
@@ -23,10 +29,6 @@ const saleStaffRoutes = [
 
 // Các route dành cho warehouse staff
 const warehouseStaffRoute = [
-];
-
-// Các route dành cho admin
-const adminRoutes = [
 ];
 
 export {
