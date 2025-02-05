@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await login(email, password);
       setToken(response.token);
-      setUser_id(response.user_id);
+      setUser_id(response._id);
       localStorage.setItem('authToken', response.token);
       localStorage.setItem('user_id', response._id);
       return response;

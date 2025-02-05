@@ -1,23 +1,26 @@
 import React, { useState, useContext } from "react";
-import { AuthContext } from "../context/AuthContext"; // Import AuthContext
+import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import icon từ react-icons
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 const Login = () => {
-  const { loginHandler } = useContext(AuthContext);  // Use login function from AuthContext
+  const { loginHandler } = useContext(AuthContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [showPassword, setShowPassword] = useState(false);  // State to toggle password visibility
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await loginHandler(email, password);
-      navigate("/");  // Redirect to home or dashboard
+      toast.success("Đăng nhập thành công!");
+      navigate("/");
     } catch (err) {
       setError(err.message || 'Đăng nhập thất bại!');  // Show error message
+      toast.error("Đăng nhập thất bại!");  // Show error toast
     }
   };
 

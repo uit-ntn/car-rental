@@ -2,11 +2,10 @@ import Home from "../pages/Home";
 import Auth from "../pages/Auth";
 import About from "../pages/About";
 import Detail from "../pages/Detail";
-import User from "../pages/UserManagement";
-import Cars from "../pages/CarManagement";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 const adminRoutes = [
-  { path: "/admin/cars", page: Cars },
+  {path: "/dashboard", page: DashboardLayout},
 ];
 
 const publicRoutes = [

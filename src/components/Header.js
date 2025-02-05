@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import logo from "../assets/img/logo.jpeg";
 
 const Header = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const { userData, loggedIn, logout } = useContext(AuthContext); // Get user data and loggedIn status from AuthContext
 
   return (
     <header>
@@ -59,7 +60,7 @@ const Header = () => {
           </ul>
 
           <div className="d-flex">
-            {loggedIn ? (
+            {userData ? (
               <div className="dropdown">
                 <button
                   className="btn btn-outline-primary dropdown-toggle"
@@ -68,7 +69,7 @@ const Header = () => {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  Hello
+                  <i className="fas fa-user me-2"></i> Xin chào, {userData.username} {/* Display user's name */}
                 </button>
                 <ul className="dropdown-menu" aria-labelledby="userMenu">
                   <li>
@@ -87,8 +88,8 @@ const Header = () => {
                   <li>
                     <Link
                       className="dropdown-item"
-                      to="/logout"
-                      onClick={() => setLoggedIn(false)}
+                      to="/auth/login"
+                      onClick={() => logout()}
                     >
                       <i className="fas fa-sign-out-alt me-2 text-danger"></i>Logout
                     </Link>
