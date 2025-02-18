@@ -1,10 +1,10 @@
+// AuthContext.js
 import React, { createContext, useState, useEffect } from 'react';
+import { signup, login, forgotPassword, resetPassword } from '../services/authService';
 import api from '../configs/api';
 
-// create context
 export const AuthContext = createContext();
 
-// AuthProvider
 export const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
   const [user_id, setUser_id] = useState(localStorage.getItem('user_id') || null);
@@ -14,9 +14,10 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (token) {
       api.defaults.headers['Authorization'] = `Bearer ${token}`;
-      api.get('/users/${user._id}')
+      api.get(`/api/users/${user_id}`)
         .then(response => {
           setUserData(response.data);
+          console.log('User Data:', response.data);  // Log to check the response
           setLoading(false);
         })
         .catch(() => {
@@ -26,60 +27,46 @@ export const AuthProvider = ({ children }) => {
     } else {
       setLoading(false);
     }
-  }, [token]);
+  }, [token, user_id]);
 
-  // Sign up
-  const signup = async (email, password) => {
-    try {
-      const response = await api.post('/auth/signup', { email, password });
-      return response.data;
-    } catch (error) {
-      throw error.response?.data || error.message;
-    }
-  };
-
-  // Login
-  const login = async (email, password) => {
-    try {
-      const response = await api.post('/auth/login', { email, password });
-      const { token } = response.data;
-      setToken(token);
-      localStorage.setItem('authToken', token);  // save token to local storage
-      return response.data;
-    } catch (error) {
-      throw error.response?.data || error.message;
-    }
-  };
-
-  // Forgot password
-  const forgotPassword = async (email) => {
-    try {
-      const response = await api.post('/auth/forgot-password', { email });
-      return response.data;
-    } catch (error) {
-      throw error.response?.data || error.message;
-    }
-  };
-
-  // Reset password
-  const resetPassword = async (token, newPassword) => {
-    try {
-      const response = await api.post('/auth/reset-password', { token, newPassword });
-      return response.data;
-    } catch (error) {
-      throw error.response?.data || error.message;
-    }
-  };
-
-  // Logout
   const logout = () => {
     setToken(null);
     setUserData(null);
     localStorage.removeItem('authToken');
+    localStorage.removeItem('user_id');
   };
 
+  const loginHandler = async (email, password) => {
+    try {
+      const response = await login(email, password);
+      setToken(response.token);
+      setUser_id(response._id);
+      localStorage.setItem('authToken', response.token);
+      localStorage.setItem('user_id', response._id);
+      return response;
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  const signupHandler = async (email, password) => {
+    try {
+      const response = await signup(email, password);
+      console.log('Signup Response:', response);  // Log to check the response
+      setToken(response.token);
+      setUser_id(response.user_id);
+      localStorage.setItem('authToken', response.token);
+      localStorage.setItem('user_id', response._id);
+      return response;
+    } catch (err) {
+      console.error('Signup Error:', err);  // Log to check the error
+      throw err;
+    }
+  };
+  
+
   return (
-    <AuthContext.Provider value={{ user_id, userData, token, loading, signup, login, forgotPassword, resetPassword, logout }}>
+    <AuthContext.Provider value={{ user_id, userData, token, loading, loginHandler, signupHandler, forgotPassword, resetPassword, logout }}>
       {children}
     </AuthContext.Provider>
   );

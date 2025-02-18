@@ -2,6 +2,11 @@ import Home from "../pages/Home";
 import Auth from "../pages/Auth";
 import About from "../pages/About";
 import Detail from "../pages/Detail";
+import DashboardLayout from "../layouts/DashboardLayout";
+
+const adminRoutes = [
+  {path: "/dashboard", page: DashboardLayout},
+];
 
 const publicRoutes = [
   { path: "/", page: Home },
@@ -12,36 +17,23 @@ const publicRoutes = [
   { path: "/car/:id", page: Detail },
 ];
 
-
-// role = customer
+// Các route dành cho customer
 const customerRoutes = [
   // { path: "/account/:userId", page: Account },
 ];
 
-
-// role = sale staff
+// Các route dành cho sale staff
 const saleStaffRoutes = [
-
-]
-
-// role = warehouse staff
-const warehouseStaffRoute = [
-
-]
-
-// role = admin
-const adminRoutes = [
-  // { path: "/admin", page: Admin }
 ];
 
-
-
-
+// Các route dành cho warehouse staff
+const warehouseStaffRoute = [
+];
 
 export {
   publicRoutes,
   customerRoutes,
   saleStaffRoutes,
   warehouseStaffRoute,
-  adminRoutes
+  adminRoutes,
 };
