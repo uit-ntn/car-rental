@@ -69,7 +69,7 @@ const Header = () => {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  <i className="fas fa-user me-2"></i> Xin chào, {userData.username} {/* Display user's name */}
+                  <i className="fas fa-user me-2"></i> Xin chào, {userData.full_name} {/* Display user's name */}
                 </button>
                 <ul className="dropdown-menu" aria-labelledby="userMenu">
                   <li>

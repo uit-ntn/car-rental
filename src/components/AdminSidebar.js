@@ -87,7 +87,7 @@ const AdminSidebar = () => {
             onMouseEnter={() => setHovered(1)}
             onMouseLeave={() => setHovered(null)}
           >
-            <FaUsers className="me-3" style={{ fontSize: '1.5rem', color: '#ecf0f1' }} /> Người dùng <span className="badge bg-primary ms-auto">30</span>
+            <FaUsers className="me-3" style={{ fontSize: '1.5rem', color: '#ecf0f1' }} /> Người dùng <span className="badge bg-primary ms-auto"></span>
           </NavLink>
         </li>
 
@@ -105,7 +105,7 @@ const AdminSidebar = () => {
             onMouseEnter={() => setHovered(2)}
             onMouseLeave={() => setHovered(null)}
           >
-            <FaCar className="me-3" style={{ fontSize: '1.5rem', color: '#ecf0f1' }} /> Xe <span className="badge bg-primary ms-auto">30</span>
+            <FaCar className="me-3" style={{ fontSize: '1.5rem', color: '#ecf0f1' }} /> Xe <span className="badge bg-primary ms-auto"></span>
           </NavLink>
         </li>
         
@@ -123,7 +123,7 @@ const AdminSidebar = () => {
             onMouseEnter={() => setHovered(3)}
             onMouseLeave={() => setHovered(null)}
           >
-            <FaFileContract className="me-3" style={{ fontSize: '1.5rem', color: '#ecf0f1' }} /> Hợp đồng <span className="badge bg-primary ms-auto">30</span>
+            <FaFileContract className="me-3" style={{ fontSize: '1.5rem', color: '#ecf0f1' }} /> Hợp đồng <span className="badge bg-primary ms-auto"></span>
           </NavLink>
         </li>
 

@@ -2,14 +2,17 @@ import React, { useContext } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { publicRoutes, customerRoutes, saleStaffRoutes, warehouseStaffRoute, adminRoutes } from "./routes/routes";
 import NotFound from "./pages/NotFound";
-import { ToastContainer } from "react-toastify";  // Thêm import ToastContainer
-import 'react-toastify/dist/ReactToastify.css';  // Thêm CSS cho Toast
-import { AuthContext } from "./context/AuthContext"; // Import AuthContext
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { AuthContext } from "./context/AuthContext";
 import DashboardLayout from "./layouts/DashboardLayout";
 import Dashboard from "./pages/Dashboard"; // import the Dashboard page
 
 
 import "./App.css";
+import User from "./pages/User";
+import Car from "./pages/Car";
+import Rental from "./pages/Rental";
 
 // ProtectedRoute Component : Protect route with role
 const ProtectedRoute = ({ element, allowedRoles }) => {
@@ -74,9 +77,9 @@ function App() {
 
           <Route element={<DashboardLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/dashboard/users" element={<div>User Management Page</div>} />
-            <Route path="/dashboard/cars" element={<div>Cars Management Page</div>} />
-            <Route path="/dashboard/rentals" element={<div>Rentals Management Page</div>} />
+            <Route path="/dashboard/users" element={<User/>} />
+            <Route path="/dashboard/cars" element={<Car/>} />
+            <Route path="/dashboard/contracts" element={<Rental/>} />
           </Route>
 
 
