@@ -1,15 +1,24 @@
 import React, { useEffect, useState } from "react";
-import api from "../configs/api";
 import { AiOutlineEye, AiOutlineDelete } from "react-icons/ai";
-import { FaRegCalendarAlt, FaCar, FaUser, FaMoneyBillWave, FaClipboardList } from "react-icons/fa"; // Các icon khác
+import { FaRegCalendarAlt, FaCar, FaUser, FaMoneyBillWave, FaClipboardList } from "react-icons/fa";
+import { toast } from "react-toastify";
+import { fetchRentals, deleteRental } from "../services/rentalService";
 
 const Rentals = () => {
   const [rentals, setRentals] = useState([]);
 
   useEffect(() => {
-    api.get("/api/rentals")
-      .then((res) => setRentals(res.data))
-      .catch(console.error);
+    const getRentals = async () => {
+      try {
+        const data = await fetchRentals();
+        setRentals(data);
+      } catch (error) {
+        console.error("Lỗi khi lấy dữ liệu rentals:", error);
+        toast.error("Lỗi khi lấy dữ liệu rentals");
+      }
+    };
+
+    getRentals();
   }, []);
 
   const rentalColumns = [
@@ -29,6 +38,18 @@ const Rentals = () => {
       return value.toLocaleString('vi-VN'); // Format số
     }
     return value || "N/A"; // Trả về "N/A" nếu không có giá trị
+  };
+
+  // Handle delete rental
+  const handleDelete = async (_id) => {
+    try {
+      await deleteRental(_id);
+      setRentals(rentals.filter(rental => rental._id !== _id)); // Cập nhật lại danh sách rentals
+      toast.success("Xóa rental thành công!");
+    } catch (error) {
+      console.error("Lỗi khi xóa rental:", error);
+      toast.error("Lỗi khi xóa rental");
+    }
   };
 
   return (
@@ -59,7 +80,10 @@ const Rentals = () => {
                 <button className="btn btn-warning btn-sm">
                   <AiOutlineEye /> Xem
                 </button>
-                <button className="btn btn-danger btn-sm ms-2">
+                <button
+                  className="btn btn-danger btn-sm ms-2"
+                  onClick={() => handleDelete(row._id)} // Gọi hàm xóa khi nhấn nút Xóa
+                >
                   <AiOutlineDelete /> Xóa
                 </button>
               </td>
