@@ -49,9 +49,9 @@ const AdminSidebar = () => {
     >
       <h4
         className="text-center mb-4 text-white font-weight-bold"
-        style={{ fontSize: '1.8rem', fontFamily: 'Arial, sans-serif', letterSpacing: '1px' }}
+        style={{ fontSize: '1.8rem', fontFamily: 'Arial, sans-serif', letterSpacing: '1px',fontWeight: '600' }}
       >
-        Car Rental
+        CAR RENTAL
       </h4>
       
       <ul className="nav flex-column">
@@ -163,7 +163,7 @@ const AdminSidebar = () => {
             onMouseEnter={() => setHovered(5)}
             onMouseLeave={() => setHovered(null)}
           >
-            <FaCog className="me-3" style={{ fontSize: '1.5rem', color: '#ecf0f1' }} /> Cài đặt <span className="badge bg-primary ms-auto">45</span>
+            <FaCog className="me-3" style={{ fontSize: '1.5rem', color: '#ecf0f1' }} /> Cài đặt <span className="badge bg-primary ms-auto"></span>
           </NavLink>
         </li>
 
