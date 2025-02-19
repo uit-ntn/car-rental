@@ -12,7 +12,7 @@ const AdminHeader = () => {
       }}
     >
       <div className="container d-flex justify-content-between align-items-center">
-        <h3 style={{ fontWeight: '600' }}>Admin Dashboard</h3>
+        <h3 style={{ fontWeight: '600', color:'white' }}>Admin Dashboard</h3>
 
         {/* Search Bar */}
         <div className="d-flex align-items-center">

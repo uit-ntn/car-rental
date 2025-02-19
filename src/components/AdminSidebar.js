@@ -49,9 +49,9 @@ const AdminSidebar = () => {
     >
       <h4
         className="text-center mb-4 text-white font-weight-bold"
-        style={{ fontSize: '1.8rem', fontFamily: 'Arial, sans-serif', letterSpacing: '1px' }}
+        style={{ fontSize: '1.8rem', fontFamily: 'Arial, sans-serif', letterSpacing: '1px',fontWeight: '600' }}
       >
-        Car Rental
+        CAR RENTAL
       </h4>
       
       <ul className="nav flex-column">

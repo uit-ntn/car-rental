@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { AiOutlineEye, AiOutlineDelete } from "react-icons/ai";
-import { FaUser, FaEnvelope, FaPhoneAlt, FaIdCard } from "react-icons/fa";
+import { FaUser, FaEnvelope, FaPhoneAlt, FaIdCard, FaPlus } from "react-icons/fa";
 import { fetchUsers, deleteUser } from "../services/userService";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const User = () => {
   const [users, setUserss] = useState([]);
@@ -10,6 +11,11 @@ const User = () => {
   const [userToView, setUsersToView] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showViewModal, setShowViewModal] = useState(false);
+  const [filterRole, setFilterRole] = useState(""); // Filter by role
+  const [filterDob, setFilterDob] = useState(""); // Filter by date of birth
+  const [filterAddress, setFilterAddress] = useState(""); // Filter by address
+  const [availableDobs, setAvailableDobs] = useState([]); // List of available birth years
+  const [availableAddresses, setAvailableAddresses] = useState([]); // List of available addresses
 
   // Fetch users
   useEffect(() => {
@@ -17,6 +23,13 @@ const User = () => {
       try {
         const data = await fetchUsers();
         setUserss(data);
+
+        // Get all available years and addresses
+        const uniqueYears = [...new Set(data.map(user => new Date(user.birthday).getFullYear()))];
+        const uniqueAddresses = [...new Set(data.map(user => user.address))];
+
+        setAvailableDobs(uniqueYears);
+        setAvailableAddresses(uniqueAddresses);
       } catch (error) {
         console.error("Lỗi khi lấy dữ liệu:", error);
       }
@@ -24,6 +37,15 @@ const User = () => {
 
     getUsers();
   }, []);
+
+  // Filter users based on criteria
+  const filteredUsers = users.filter((user) => {
+    const matchesRole = filterRole ? user.role.toLowerCase().includes(filterRole.toLowerCase()) : true;
+    const matchesDob = filterDob ? new Date(user.birthday).getFullYear() === parseInt(filterDob) : true;
+    const matchesAddress = filterAddress ? user.address.toLowerCase().includes(filterAddress.toLowerCase()) : true;
+
+    return matchesRole && matchesDob && matchesAddress;
+  });
 
   // Handle delete action
   const handleDelete = async () => {
@@ -53,11 +75,88 @@ const User = () => {
     setShowViewModal(true);
   };
 
+  // Clear all filters
+  const clearFilters = () => {
+    setFilterRole("");
+    setFilterDob("");
+    setFilterAddress("");
+  };
+
   return (
     <div className="card shadow-sm p-3">
-      <h4 className="fw-bold">
-        <FaUser /> DANH SÁCH NGƯỜI DÙNG
-      </h4>
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h4 className="fw-bold">
+          <FaUser /> DANH SÁCH NGƯỜI DÙNG
+        </h4>
+
+        <div className="d-flex">
+
+          {/* Clear Filters Button */}
+          <button className="btn btn-warning me-2" onClick={clearFilters}>
+            Xoá Bộ Lọc
+          </button>
+
+          {/* Add User Button */}
+          <button className="btn btn-primary" onClick={() => console.log("Add User functionality")}>
+            <FaPlus /> Thêm Người Dùng
+          </button>
+
+
+        </div>
+      </div>
+
+      {/* Filter Section */}
+      <div className="row mb-3">
+        {/* Filter by Role */}
+        <div className="col-md-4">
+          <label htmlFor="roleFilter" className="form-label">Lọc theo vai trò</label>
+          <select
+            id="roleFilter"
+            className="form-select"
+            value={filterRole}
+            onChange={(e) => setFilterRole(e.target.value)}
+          >
+            <option value="">Tất cả</option>
+            <option value="admin">Quản trị viên</option>
+            <option value="sales">Nhân viên bán hàng</option>
+            <option value="warehouse">Nhân viên kho</option>
+            <option value="customer">Khách hàng</option>
+          </select>
+        </div>
+
+        {/* Filter by Date of Birth */}
+        <div className="col-md-4">
+          <label htmlFor="dobFilter" className="form-label">Lọc theo năm sinh</label>
+          <select
+            id="dobFilter"
+            className="form-select"
+            value={filterDob}
+            onChange={(e) => setFilterDob(e.target.value)}
+          >
+            <option value="">Tất cả</option>
+            {availableDobs.map((dob, index) => (
+              <option key={index} value={dob}>{dob}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Filter by Address */}
+        <div className="col-md-4">
+          <label htmlFor="addressFilter" className="form-label">Lọc theo địa chỉ</label>
+          <select
+            id="addressFilter"
+            className="form-select"
+            value={filterAddress}
+            onChange={(e) => setFilterAddress(e.target.value)}
+          >
+            <option value="">Tất cả</option>
+            {availableAddresses.map((address, index) => (
+              <option key={index} value={address}>{address}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
       <table className="table table-striped table-bordered table-hover">
         <thead className="table-primary text-center">
           <tr>
@@ -70,7 +169,7 @@ const User = () => {
         </thead>
 
         <tbody>
-          {users.map((user) => (
+          {filteredUsers.map((user) => (
             <tr key={user._id} className="text-center">
               <td>{user.email || "N/A"}</td>
               <td>{user.full_name || "N/A"}</td>
@@ -119,7 +218,6 @@ const User = () => {
                         </tr>
                         <tr style={{ backgroundColor: '#f9f9f9' }}>
                           <td><strong>Ngày sinh:</strong></td>
-                          {/* Format date of birth is string to localdate */}
                           <td>{new Date(userToView.birthday).toLocaleDateString()}</td>
                         </tr>
                         <tr>
