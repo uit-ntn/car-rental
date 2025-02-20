@@ -49,11 +49,23 @@ const deleteUser = async (id) => {
     }
 }
 
+// Get rental By User ID
+const getRentalsByCustomerId = async (id) => {
+    try {
+        const response = await api.get(`/api/users/${id}/rentals`);
+        return response.data;
+    } catch (err) {
+        throw err.response?.data?.message || "Lỗi khi lấy rentals theo ID người dùng";
+    }
+}
+
+
 export {
     fetchUsers,
     createUser,
     getUserById,
     updateUser,
-    deleteUser
+    deleteUser,
+    getRentalsByCustomerId
 };
 

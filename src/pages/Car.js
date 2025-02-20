@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchCars, deleteCar } from "../services/carService";
+import { fetchCars, deleteCar, createCar, updateCar } from "../services/carService";
 import { FaCar, FaPlus, FaRegCalendarAlt, FaCarAlt, FaIdCard, FaLocationArrow, FaMoneyBillWave, FaCog } from "react-icons/fa";
 import { AiOutlineEye, AiOutlineDelete } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
@@ -11,6 +11,7 @@ const Cars = () => {
     const [carToView, setCarToView] = useState(null);
     const [showViewModal, setShowViewModal] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
+    const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     // Filter states
@@ -21,6 +22,7 @@ const Cars = () => {
     const [filterPriceMin, setFilterPriceMin] = useState(0);
     const [filterPriceMax, setFilterPriceMax] = useState(1000000);
 
+    // Get all cars when the component mounts
     useEffect(() => {
         const getCars = async () => {
             try {
@@ -48,6 +50,26 @@ const Cars = () => {
     // Handle create car
     const handleCreateCar = async () => {
         try {
+            const CarData = {
+                make: document.getElementById("make").value,
+                model: document.getElementById("model").value,
+                year: parseInt(document.getElementById("year").value),
+                license_plate: document.getElementById("license_plate").value,
+                status: document.getElementById("status").value,
+                location: document.getElementById("location").value,
+                price: parseInt(document.getElementById("price").value),
+                image: document.getElementById("image").value,
+                transmission: document.getElementById("transmission").value,
+                insurance_info: {
+                    company: document.getElementById("insurance_company").value,
+                    expiration_date: document.getElementById("insurance_expiration").value,
+                    policy_number: document.getElementById("policy_number").value
+                }
+            };
+            const newCar = await createCar(CarData);
+            setCars([...cars, newCar]);
+            toast.success("Thêm xe thành công!");
+            setShowAddModal(false);
 
         }
         catch (error) {
@@ -55,6 +77,40 @@ const Cars = () => {
             toast.error("Lỗi khi thêm xe.");
         }
     }
+
+    // handleUpdateCar
+    const handleUpdateCar = async () => {
+        try {
+            const updatedCar = {
+                make: document.getElementById("make_update").value,
+                model: document.getElementById("model_update").value,
+                year: parseInt(document.getElementById("year_update").value),
+                license_plate: document.getElementById("license_plate_update").value,
+                status: document.getElementById("status_update").value,
+                location: document.getElementById("location_update").value,
+                price: parseInt(document.getElementById("price_update").value),
+                image: document.getElementById("image_update").value,
+                transmission: document.getElementById("transmission_update").value,
+                insurance_info: {
+                    company: document.getElementById("insurance_company_update").value,
+                    expiration_date: document.getElementById("insurance_expiration_update").value,
+                    policy_number: document.getElementById("policy_number_update").value
+                }
+            };
+
+            const updatedData = await updateCar(carToView._id, updatedCar);
+            setCars(cars.map(car => car._id === carToView._id ? updatedData : car));
+
+            toast.success("Cập nhật xe thành công!");
+            setShowUpdateModal(false);
+        } catch (error) {
+            console.error("Lỗi khi cập nhật xe:", error);
+            toast.error("Lỗi khi cập nhật xe.");
+            setShowUpdateModal(false);
+        }
+    };
+
+
 
     // Handle delete car
     const handleDelete = async () => {
@@ -121,17 +177,21 @@ const Cars = () => {
                     <FaCar /> DANH SÁCH XE
                 </h4>
                 <div className="d-flex">
+
+                    {/* Clear Filters Button */}
+                    <button className="btn btn-warning me-2" onClick={resetFilters}>
+                        Xoá Bộ Lọc
+                    </button>
+
                     {/* Add Car Button */}
-                    <button className="btn btn-primary me-2" onClick={() =>
+                    <button className="btn btn-primary" onClick={() =>
                         setShowAddModal(true)
+
                     }>
                         <FaPlus /> Thêm Xe
                     </button>
 
-                    {/* Clear Filters Button */}
-                    <button className="btn btn-warning" onClick={resetFilters}>
-                        Xoá Bộ Lọc
-                    </button>
+
                 </div>
             </div>
 
@@ -280,11 +340,11 @@ const Cars = () => {
                     <div className="modal fade show" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.5)' }} id="viewModal" tabIndex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
                         <div className="modal-dialog modal-dialog-centered">
                             <div className="modal-content">
-                                <div className="modal-header">
+                                <div className="modal-header bg-primary text-white">
                                     <h5 className="modal-title" id="viewModalLabel">CHI TIẾT XE</h5>
                                     <button type="button" className="btn-close" aria-label="Close" onClick={() => setShowViewModal(false)}></button>
                                 </div>
-                                <div className="modal-body">
+                                <div className="modal-body" style={{ maxHeight: '500px', overflowY: 'auto' }}>
                                     {carToView ? (
                                         <div className="table-responsive">
                                             {/* Table to display car details */}
@@ -350,13 +410,17 @@ const Cars = () => {
                                                         <td><strong>Ngày hết hạn bảo hiểm:</strong></td>
                                                         <td>{new Date(carToView.insurance_info.expiration_date).toLocaleDateString('vi-VN')}</td>
                                                     </tr>
-
                                                 </tbody>
                                             </table>
                                         </div>
                                     ) : <p>Không có dữ liệu xe.</p>}
                                 </div>
                                 <div className="modal-footer">
+                                    <button type="button" className="btn btn-primary" onClick={() => {
+                                        setShowViewModal(false)
+                                        setShowUpdateModal(true)
+                                    }
+                                    }>Cập nhật</button>
                                     <button type="button" className="btn btn-secondary" onClick={() => setShowViewModal(false)}>Đóng</button>
                                 </div>
                             </div>
@@ -364,17 +428,19 @@ const Cars = () => {
                     </div>
                 )
             }
+
+
             {/* Modal for adding car */}
             {
                 showAddModal && (
                     <div className="modal fade show" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.5)' }} id="addModal" tabIndex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
                         <div className="modal-dialog modal-dialog-centered" style={{ maxWidth: '70vw' }}>
-                            <div className="modal-content" style={{ height: '80vh', display: 'flex', flexDirection: 'column' }}>
+                            <div className="modal-content" style={{ height: '90vh', display: 'flex', flexDirection: 'column' }}>
                                 <div className="modal-header bg-primary text-white">
                                     <h5 className="modal-title fw-bold" id="addModalLabel">BIỂU MẪU THÊM XE MỚI</h5>
                                     <button type="button" className="btn-close" aria-label="Close" onClick={() => setShowAddModal(false)}></button>
                                 </div>
-                                <div className="modal-body" style={{ maxHeight: 'calc(80vh - 120px)', overflowY: 'auto' }}> {/* Body scrollable, dynamic height */}
+                                <div className="modal-body" style={{ maxHeight: 'calc(90vh - 120px)', overflowY: 'auto' }}> {/* Body scrollable, dynamic height */}
                                     <form onSubmit={handleCreateCar} >
                                         <h2 className="text-center">Nhập thông tin xe</h2>
 
@@ -402,9 +468,9 @@ const Cars = () => {
                                                 <div className="mb-3">
                                                     <label htmlFor="status" className="form-label">Trạng thái</label>
                                                     <select className="form-select" id="status" required>
-                                                        <option value="Sẵn sàng">Sẵn sàng</option>
-                                                        <option value="Đang thuê">Đang thuê</option>
-                                                        <option value="Bảo trì">Bảo trì</option>
+                                                        <option value="available">Sẵn sàng</option>
+                                                        <option value="rented">Đang thuê</option>
+                                                        <option value="maintaince">Bảo trì</option>
                                                     </select>
                                                 </div>
                                                 <div className="mb-3">
@@ -419,11 +485,18 @@ const Cars = () => {
                                                     <label htmlFor="image" className="form-label">Hình ảnh</label>
                                                     <input type="text" className="form-control" id="image" required />
                                                 </div>
+                                                <div className="mb-3">
+                                                    <label htmlFor="image" className="form-label">Hộp số</label>
+                                                    <select className="form-select" id="transmission" required>
+                                                        <option value="Automatic">Tự động</option>
+                                                        <option value="Manual">Số sàn</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
 
                                         {/* Insurance Information */}
-                                        <h3 className="mt-4">Nhập thông tin bảo hiểm</h3>
+                                        <h3 className="mt-4 text-center">Nhập thông tin bảo hiểm</h3>
                                         <div className="row">
                                             <div className="col-md-6">
                                                 <div className="mb-3">
@@ -450,13 +523,207 @@ const Cars = () => {
                                 {/* Fixed Footer */}
                                 <div className="modal-footer" style={{ position: 'sticky', bottom: '0', background: '#f9f9f9', zIndex: '10' }}>
                                     <button type="button" className="btn btn-secondary" onClick={() => setShowAddModal(false)}>Hủy</button>
-                                    <button type="submit" className="btn btn-primary">Thêm</button>
+                                    <button type="submit" className="btn btn-primary" onClick={() => {
+                                        handleCreateCar()
+                                        setShowAddModal(false);
+                                    }}>Thêm</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 )
             }
+
+            {/* Modal for updating car details */}
+            {
+                showUpdateModal && (
+                    <div className="modal fade show" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.5)' }} id="updateModal" tabIndex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+                        <div className="modal-dialog modal-dialog-centered">
+                            <div className="modal-content">
+                                <div className="modal-header bg-primary text-white">
+                                    <h5 className="modal-title" id="updateModalLabel">CẬP NHẬT XE</h5>
+                                    <button type="button" className="btn-close" aria-label="Close" onClick={() => setShowUpdateModal(false)}></button>
+                                </div>
+                                <div className="modal-body">
+                                    {carToView ? (
+                                        <div className="table-responsive">
+                                            <form>
+                                                <table className="table table-bordered">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><strong>Hãng xe:</strong></td>
+                                                            <td>
+                                                                <input
+                                                                    id="make_update"
+                                                                    type="text"
+                                                                    className="form-control"
+                                                                    defaultValue={carToView.make}
+                                                                    placeholder={carToView.make}
+                                                                />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><strong>Mẫu xe:</strong></td>
+                                                            <td>
+                                                                <input
+                                                                    id="model_update"
+                                                                    type="text"
+                                                                    className="form-control"
+                                                                    defaultValue={carToView.model}
+                                                                    placeholder={carToView.model}
+                                                                />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><strong>Năm sản xuất:</strong></td>
+                                                            <td>
+                                                                <input
+                                                                    id="year_update"
+                                                                    type="number"
+                                                                    className="form-control"
+                                                                    defaultValue={carToView.year}
+                                                                    placeholder={carToView.year}
+                                                                />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><strong>Biển số:</strong></td>
+                                                            <td>
+                                                                <input
+                                                                    id="license_plate_update"
+                                                                    type="text"
+                                                                    className="form-control"
+                                                                    defaultValue={carToView.license_plate}
+                                                                    placeholder={carToView.license_plate}
+                                                                />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><strong>Trạng thái:</strong></td>
+                                                            <td>
+                                                                <input
+                                                                    id="status_update"
+                                                                    type="text"
+                                                                    className="form-control"
+                                                                    defaultValue={carToView.status}
+                                                                    placeholder={carToView.status}
+                                                                />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><strong>Vị trí:</strong></td>
+                                                            <td>
+                                                                <input
+                                                                    id="location_update"
+                                                                    type="text"
+                                                                    className="form-control"
+                                                                    defaultValue={carToView.location}
+                                                                    placeholder={carToView.location}
+                                                                />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><strong>Giá thuê:</strong></td>
+                                                            <td>
+                                                                <input
+                                                                    id="price_update"
+                                                                    type="number"
+                                                                    className="form-control"
+                                                                    defaultValue={carToView.price}
+                                                                    placeholder={formatValue(carToView.price)}
+                                                                />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><strong>Hình ảnh:</strong></td>
+                                                            <td>
+                                                                <input
+                                                                    id="image_update"
+                                                                    type="text"
+                                                                    className="form-control"
+                                                                    defaultValue={carToView.image}
+                                                                    placeholder={carToView.image}
+                                                                />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><strong>Hộp số:</strong></td>
+                                                            <td>
+                                                                <select
+                                                                    id="transmission_update"
+                                                                    className="form-select"
+                                                                    defaultValue={carToView.transmission}
+                                                                    placeholder={carToView.transmission}
+                                                                >
+                                                                    <option value="Automatic">Tự động</option>
+                                                                    <option value="Manual">Số sàn</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                                {/* Insurance Information Table */}
+                                                <table className="table table-bordered mt-3">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><strong>Công ty bảo hiểm:</strong></td>
+                                                            <td>
+                                                                <input
+                                                                    id="insurance_company_update"
+                                                                    type="text"
+                                                                    className="form-control"
+                                                                    defaultValue={carToView.insurance_info.company}
+                                                                    placeholder={carToView.insurance_info.company}
+                                                                />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><strong>Số hợp đồng:</strong></td>
+                                                            <td>
+                                                                <input
+                                                                    id="policy_number_update"
+                                                                    type="text"
+                                                                    className="form-control"
+                                                                    defaultValue={carToView.insurance_info.policy_number}
+                                                                    placeholder={carToView.insurance_info.policy_number}
+                                                                />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><strong>Ngày hết hạn bảo hiểm:</strong></td>
+                                                            <td>
+                                                                <input
+                                                                    id="insurance_expiration_update"
+                                                                    type="date"
+                                                                    className="form-control"
+                                                                    defaultValue={new Date(carToView.insurance_info.expiration_date).toISOString().split('T')[0]}
+                                                                    placeholder={new Date(carToView.insurance_info.expiration_date).toLocaleDateString('vi-VN')}
+                                                                />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </form>
+                                        </div>
+                                    ) : <p>Không có dữ liệu xe.</p>}
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-primary" onClick={handleUpdateCar}>
+                                        Lưu thay đổi
+                                    </button>
+                                    <button type="button" className="btn btn-secondary" onClick={() => setShowUpdateModal(false)}>
+                                        Đóng
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
+
+
+
 
 
             {/* Modal for deleting car */}{
