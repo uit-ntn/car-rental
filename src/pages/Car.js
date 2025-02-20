@@ -441,7 +441,7 @@ const Cars = () => {
                                     <button type="button" className="btn-close" aria-label="Close" onClick={() => setShowAddModal(false)}></button>
                                 </div>
                                 <div className="modal-body" style={{ maxHeight: 'calc(90vh - 120px)', overflowY: 'auto' }}> {/* Body scrollable, dynamic height */}
-                                    <form onSubmit={handleCreateCar} >
+                                    <form >
                                         <h2 className="text-center">Nhập thông tin xe</h2>
 
                                         {/* Two Columns Layout */}
@@ -523,9 +523,8 @@ const Cars = () => {
                                 {/* Fixed Footer */}
                                 <div className="modal-footer" style={{ position: 'sticky', bottom: '0', background: '#f9f9f9', zIndex: '10' }}>
                                     <button type="button" className="btn btn-secondary" onClick={() => setShowAddModal(false)}>Hủy</button>
-                                    <button type="submit" className="btn btn-primary" onClick={() => {
+                                    <button type="button" className="btn btn-primary" onClick={() => {
                                         handleCreateCar()
-                                        setShowAddModal(false);
                                     }}>Thêm</button>
                                 </div>
                             </div>

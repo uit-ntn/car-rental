@@ -115,12 +115,6 @@ const User = () => {
     setShowDeleteModal(true);
   };
 
-  // Open view modal for user details
-  const openViewModal = (user) => {
-    setUsersToView(user);
-    setShowViewModal(true);
-  };
-
   // Clear all filters
   const clearFilters = () => {
     setFilterRole("");
@@ -203,6 +197,7 @@ const User = () => {
         </div>
       </div>
 
+      {/* Table of Users */}
       <table className="table table-striped table-bordered table-hover">
         <thead className="table-primary text-center">
           <tr>
@@ -224,7 +219,10 @@ const User = () => {
               <td>
                 <button
                   className="btn btn-success btn-sm"
-                  onClick={() => openViewModal(user)}
+                  onClick={() => {
+                    setUsersToView(user);
+                    setShowViewModal(true);
+                  }}
                 >
                   <AiOutlineEye /> Xem
                 </button>
@@ -312,7 +310,7 @@ const User = () => {
                     <input type="email" className="form-control"
                       placeholder={userToView.email}
                       defaultValue={userToView.email}
-                     id="email_update" />
+                      id="email_update" />
                   </div>
                   <div className="mb-3">
                     <label htmlFor="role" className="form-label">Vai trò</label>
@@ -325,36 +323,35 @@ const User = () => {
                   </div>
                   <div className="mb-3">
                     <label htmlFor="full_name" className="form-label">Họ Tên</label>
-                    <input type="text" className="form-control" 
-                    placeholder={userToView.full_name} 
-                    defaultValue={userToView.full_name} id="full_name_update" />
+                    <input type="text" className="form-control"
+                      placeholder={userToView.full_name}
+                      defaultValue={userToView.full_name} id="full_name_update" />
                   </div>
                   <div className="mb-3">
                     <label htmlFor="phone" className="form-label">Số điện thoại</label>
-                    <input type="text" className="form-control" 
-                      placeholder={userToView.phone} 
+                    <input type="text" className="form-control"
+                      placeholder={userToView.phone}
                       defaultValue={userToView.phone}
-                     id="phone_update" />
+                      id="phone_update" />
                   </div>
                   <div className="mb-3">
                     <label htmlFor="address" className="form-label">Địa chỉ</label>
                     <input type="text" className="form-control"
                       placeholder={userToView.address}
                       defaultValue={userToView.address}
-                     id="address_update" />
+                      id="address_update" />
                   </div>
                   <div className="mb-">
                     <label htmlFor="birthday" className="form-label">Ngày sinh</label>
                     <input type="date" className="form-control"
                       placeholder={new Date(userToView.birthday).toLocaleDateString()}
                       defaultValue={new Date(userToView.birthday).toLocaleDateString()}
-                     id="birthday_update" />
+                      id="birthday_update" />
                   </div>
                 </form>
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-primary" onClick={() => {
-                  setShowUpdateModal(false);
                   handleUpdateUser();
                 }}>Cập nhật</button>
                 <button type="button" className="btn btn-secondary" onClick={() => setShowUpdateModal(false)}>Đóng</button>
@@ -410,7 +407,6 @@ const User = () => {
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-primary" onClick={() => {
-                  setShowCreateModal(false)
                   handleCreateUser();
                 }}>Tạo</button>
                 <button type="button" className="btn btn-secondary" onClick={() => setShowCreateModal(false)}>Đóng</button>
