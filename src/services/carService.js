@@ -23,7 +23,7 @@ const fetchCars = async () => {
 const createCar = async (carData) => {
   try {
     const response = await api.post('/api/cars', carData);
-    return response.data;
+    return response.data.message;
   } catch (err) {
     throw handleError(err, 'Lỗi khi tạo xe');
   }
@@ -78,16 +78,6 @@ const getCarsByLocation = async (location) => {
   }
 };
 
-// Add a document to a car
-const addDocumentToCar = async (id, documentData) => {
-  try {
-    const response = await api.post(`/api/cars/${id}/documents`, documentData);
-    return response.data;
-  } catch (err) {
-    throw handleError(err, 'Lỗi khi thêm tài liệu vào xe');
-  }
-};
-
 // Update car's insurance info
 const updateInsuranceInfo = async (id, insuranceInfo) => {
   try {
@@ -106,6 +96,5 @@ export {
   deleteCar,
   getCarsByStatus,
   getCarsByLocation,
-  addDocumentToCar,
   updateInsuranceInfo
 };
