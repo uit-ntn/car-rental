@@ -2,9 +2,10 @@ import React from 'react';
 import slider1 from '../assets/img/slider1.jpg';
 import slider2 from '../assets/img/slider2.jpg';
 import slider3 from '../assets/img/slider3.jpg';
+import slider4 from '../assets/img/slider4.jpg';
 
 function Slider() {
-  const images = [slider1, slider2, slider3];
+  const images = [slider1, slider2, slider3, slider4];
 
   return (
     <div className="promo-section container-fluid px-0 mt-5">

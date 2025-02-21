@@ -3,6 +3,7 @@ import { fetchCars, deleteCar, createCar, updateCar } from "../services/carServi
 import { FaCar, FaPlus, FaRegCalendarAlt, FaCarAlt, FaIdCard, FaLocationArrow, FaMoneyBillWave, FaCog } from "react-icons/fa";
 import { AiOutlineEye, AiOutlineDelete } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
+import { CarProvider } from "../context/CarContext";
 import 'react-toastify/dist/ReactToastify.css';
 
 const Cars = () => {
@@ -19,8 +20,11 @@ const Cars = () => {
     const [filterModel, setFilterModel] = useState("");
     const [filterYear, setFilterYear] = useState("");
     const [filterStatus, setFilterStatus] = useState("");
-    const [filterPriceMin, setFilterPriceMin] = useState(0);
-    const [filterPriceMax, setFilterPriceMax] = useState(1000000);
+
+    const [minPrice, setMinPrice] = useState(0);
+    const [maxPrice, setMaxPrice] = useState(0);
+    const [filterPriceMin, setFilterPriceMin] = useState(minPrice);
+    const [filterPriceMax, setFilterPriceMax] = useState(maxPrice);
 
     // Get all cars when the component mounts
     useEffect(() => {
@@ -126,13 +130,18 @@ const Cars = () => {
         }
     };
 
+    // Lấy các mức giá khả dụng cho dropdown
+    const availablePrices = [...new Set(cars.map(car => car.price))].sort((a, b) => b - a);
+
+
+
     // Filter cars based on the selected filters
     const filteredCars = cars.filter((car) => {
         const matchesMake = filterMake ? car.make.toLowerCase().includes(filterMake.toLowerCase()) : true;
         const matchesModel = filterModel ? car.model.toLowerCase().includes(filterModel.toLowerCase()) : true;
         const matchesYear = filterYear ? car.year.toString().includes(filterYear.toString()) : true;
         const matchesStatus = filterStatus ? car.status.toLowerCase() === filterStatus.toLowerCase() : true;
-        const matchesPrice = car.price >= filterPriceMin && car.price <= filterPriceMax;
+        const matchesPrice = car.price >= parseInt(filterPriceMin) && car.price <= parseInt(filterPriceMax);
 
         return matchesMake && matchesModel && matchesYear && matchesStatus && matchesPrice;
     });
@@ -141,9 +150,18 @@ const Cars = () => {
     const availableMakes = [...new Set(cars.map(car => car.make))];
     const availableModels = filterMake ? [...new Set(cars.filter(car => car.make === filterMake).map(car => car.model))] : [];
     const availableYears = [...new Set(cars.map(car => car.year))];
-    const availableStatuses = ["Sẵn sàng", "Đang thuê", "Bảo trì"];
-    const minPrice = Math.min(...cars.map(car => car.price));
-    const maxPrice = Math.max(...cars.map(car => car.price));
+    const availableStatuses = ["available", "rented", "maintenance"];
+
+
+    useEffect(() => {
+        if (cars.length > 0) {
+            const maxPriceValue = Math.max(...cars.map(car => car.price));
+            const minPriceValue = Math.min(...cars.map(car => car.price));
+            setMinPrice(minPriceValue);
+            setMaxPrice(maxPriceValue);
+            resetFilters();
+        }
+    }, [cars]);
 
     // Reset filters
     const resetFilters = () => {
@@ -158,11 +176,11 @@ const Cars = () => {
     // Function to get the background color for status
     const getStatusColor = (status) => {
         switch (status) {
-            case 'Đang thuê':
+            case 'available':
                 return 'bg-primary';
-            case 'Sẵn sàng':
+            case 'rented':
                 return 'bg-success';
-            case 'Bảo trì':
+            case 'mainteance':
                 return 'bg-warning';
             default:
                 return 'bg-secondary';
@@ -255,39 +273,37 @@ const Cars = () => {
                         onChange={(e) => setFilterStatus(e.target.value)}
                     >
                         <option value="">Tất cả</option>
-                        {availableStatuses.map((status, index) => (
-                            <option key={index} value={status}>{status}</option>
-                        ))}
+                        <option value="available">Sẵn sàng</option>
+                        <option value="rented">Đang thuê</option>
+                        <option value="maintenance">Bảo trì</option>
+
+
                     </select>
                 </div>
             </div>
 
             {/* Price Range Filter */}
             <div className="row mb-3">
-                <div className="col-md-6">
-                    <label htmlFor="priceRange" className="form-label">Lọc theo giá thuê</label>
-                    <input
-                        type="range"
-                        id="priceRange"
-                        min={minPrice}
-                        max={maxPrice}
-                        value={filterPriceMin}
-                        onChange={(e) => setFilterPriceMin(e.target.value)}
-                        className="form-range"
-                    />
-                    <input
-                        type="range"
-                        min={minPrice}
-                        max={maxPrice}
-                        value={filterPriceMax}
-                        onChange={(e) => setFilterPriceMax(e.target.value)}
-                        className="form-range"
-                    />
-                    <div className="d-flex justify-content-between">
-                        <span>{formatValue(filterPriceMin)}</span>
-                        <span>{formatValue(filterPriceMax)}</span>
-                    </div>
+                {/* Filter by Price Min */}
+                <div className="col-md-3">
+                    <label className="form-label">Giá thuê tối thiểu</label>
+                    <select className="form-select" value={filterPriceMin} onChange={(e) => setFilterPriceMin(e.target.value)}>
+                        {availablePrices.map((price, index) => (
+                            <option key={index} value={price}>{formatValue(price)} VNĐ</option>
+                        ))}
+                    </select>
                 </div>
+
+                {/* Filter by Price Max */}
+                <div className="col-md-3">
+                    <label className="form-label">Giá thuê tối đa</label>
+                    <select className="form-select" value={filterPriceMax} onChange={(e) => setFilterPriceMax(e.target.value)}>
+                        {availablePrices.map((price, index) => (
+                            <option key={index} value={price}>{formatValue(price)} VNĐ</option>
+                        ))}
+                    </select>
+                </div>
+
             </div>
 
             <table className="table table-striped table-bordered table-hover">
@@ -306,7 +322,7 @@ const Cars = () => {
                 </thead>
                 <tbody>
                     {filteredCars.map((car, rowIndex) => (
-                        <tr key={rowIndex} className={getStatusColor(car.status)}>
+                        <tr key={rowIndex}>
                             <td><img src={car.image} alt="Car" width="80" height="50" className="rounded" /></td>
                             <td>{car.make}</td>
                             <td>{car.model}</td>
@@ -373,7 +389,7 @@ const Cars = () => {
                                                     </tr>
                                                     <tr>
                                                         <td><strong>Trạng thái:</strong></td>
-                                                        <td>{carToView.status}</td>
+                                                        <td className={getStatusColor(carToView.status)}>{carToView.status}</td>
                                                     </tr>
                                                     <tr>
                                                         <td><strong>Vị trí:</strong></td>
@@ -441,7 +457,7 @@ const Cars = () => {
                                     <button type="button" className="btn-close" aria-label="Close" onClick={() => setShowAddModal(false)}></button>
                                 </div>
                                 <div className="modal-body" style={{ maxHeight: 'calc(90vh - 120px)', overflowY: 'auto' }}> {/* Body scrollable, dynamic height */}
-                                    <form onSubmit={handleCreateCar} >
+                                    <form >
                                         <h2 className="text-center">Nhập thông tin xe</h2>
 
                                         {/* Two Columns Layout */}
@@ -523,9 +539,8 @@ const Cars = () => {
                                 {/* Fixed Footer */}
                                 <div className="modal-footer" style={{ position: 'sticky', bottom: '0', background: '#f9f9f9', zIndex: '10' }}>
                                     <button type="button" className="btn btn-secondary" onClick={() => setShowAddModal(false)}>Hủy</button>
-                                    <button type="submit" className="btn btn-primary" onClick={() => {
+                                    <button type="button" className="btn btn-primary" onClick={() => {
                                         handleCreateCar()
-                                        setShowAddModal(false);
                                     }}>Thêm</button>
                                 </div>
                             </div>

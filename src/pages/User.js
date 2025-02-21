@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { AiOutlineEye, AiOutlineDelete } from "react-icons/ai";
 import { FaUser, FaEnvelope, FaPhoneAlt, FaIdCard, FaPlus } from "react-icons/fa";
-import { fetchUsers, deleteUser } from "../services/userService";
+import { fetchUsers, createUser, updateUser, deleteUser } from "../services/userService";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -11,6 +11,8 @@ const User = () => {
   const [userToView, setUsersToView] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showViewModal, setShowViewModal] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [filterRole, setFilterRole] = useState(""); // Filter by role
   const [filterDob, setFilterDob] = useState(""); // Filter by date of birth
   const [filterAddress, setFilterAddress] = useState(""); // Filter by address
@@ -47,8 +49,52 @@ const User = () => {
     return matchesRole && matchesDob && matchesAddress;
   });
 
+  // Handle create action
+  const handleCreateUser = async () => {
+    try {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const role = document.getElementById("role").value;
+      const full_name = document.getElementById("full_name").value;
+      const phone = document.getElementById("phone").value;
+      const address = document.getElementById("address").value;
+      const newUser = { email, password, role, full_name, phone, address };
+      await createUser(newUser);
+      setUserss([...users, newUser]);
+      toast.success("Tạo người dùng mới thành công!");
+      setShowCreateModal(false);
+    } catch (error) {
+      console.error("Lỗi khi tạo người dùng:", error);
+      toast.error("Lỗi khi tạo người dùng.");
+      setShowCreateModal(false);
+    }
+  };
+
+  // Handle update action
+  const handleUpdateUser = async () => {
+    try {
+      const email = document.getElementById("email_update").value;
+      const role = document.getElementById("role_update").value;
+      const full_name = document.getElementById("full_name_update").value;
+      const phone = document.getElementById("phone_update").value;
+      const address = document.getElementById("address_update").value;
+      const birthday = document.getElementById("birthday_update").value;
+      const updatedUser = { email, role, full_name, phone, address, birthday };
+      await updateUser(userToView._id, updatedUser);
+      const updatedUsers = users.map(user => (user._id === userToView._id ? updatedUser : user));
+      setUserss(updatedUsers);
+      toast.success("Cập nhật thông tin người dùng thành công!");
+      setShowUpdateModal(false);
+    } catch (error) {
+      console.error("Lỗi khi cập nhật người dùng:", error);
+      toast.error("Lỗi khi cập nhật người dùng.");
+      setShowUpdateModal(false);
+    }
+  };
+
+
   // Handle delete action
-  const handleDelete = async () => {
+  const handleDeleteUser = async () => {
     try {
       if (userToDelete) {
         await deleteUser(userToDelete._id);
@@ -67,12 +113,6 @@ const User = () => {
   const openDeleteModal = (user) => {
     setUsersToDelete(user);
     setShowDeleteModal(true);
-  };
-
-  // Open view modal for user details
-  const openViewModal = (user) => {
-    setUsersToView(user);
-    setShowViewModal(true);
   };
 
   // Clear all filters
@@ -97,7 +137,7 @@ const User = () => {
           </button>
 
           {/* Add User Button */}
-          <button className="btn btn-primary" onClick={() => console.log("Add User functionality")}>
+          <button className="btn btn-primary" onClick={() => setShowCreateModal(true)}>
             <FaPlus /> Thêm Người Dùng
           </button>
 
@@ -157,6 +197,7 @@ const User = () => {
         </div>
       </div>
 
+      {/* Table of Users */}
       <table className="table table-striped table-bordered table-hover">
         <thead className="table-primary text-center">
           <tr>
@@ -178,7 +219,10 @@ const User = () => {
               <td>
                 <button
                   className="btn btn-success btn-sm"
-                  onClick={() => openViewModal(user)} // Open modal on view button click
+                  onClick={() => {
+                    setUsersToView(user);
+                    setShowViewModal(true);
+                  }}
                 >
                   <AiOutlineEye /> Xem
                 </button>
@@ -241,12 +285,137 @@ const User = () => {
                 )}
               </div>
               <div className="modal-footer">
+                <button type="button" className="btn btn-primary" onClick={() => setShowUpdateModal(true)}>Sửa</button>
                 <button type="button" className="btn btn-secondary" onClick={() => setShowViewModal(false)}>Đóng</button>
               </div>
             </div>
           </div>
         </div>
       )}
+
+
+      {/* Modal for update user details */}
+      {showUpdateModal && (
+        <div className="modal fade show" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.5)' }} id="updateModal" tabIndex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content" style={{ borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
+              <div className="modal-header">
+                <h5 className="modal-title" id="updateModalLabel">Cập nhật thông tin người dùng</h5>
+                <button type="button" className="btn-close" aria-label="Close" onClick={() => setShowUpdateModal(false)}></button>
+              </div>
+              <div className="modal-body">
+                <form>
+                  <div className="mb-3">
+                    <label htmlFor="email" className="form-label">Email</label>
+                    <input type="email" className="form-control"
+                      placeholder={userToView.email}
+                      defaultValue={userToView.email}
+                      id="email_update" />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="role" className="form-label">Vai trò</label>
+                    <select id="role_update" className="form-select" defaultValue={userToView.role}>
+                      <option value="admin">Quản trị viên</option>
+                      <option value="sales">Nhân viên bán hàng</option>
+                      <option value="warehouse">Nhân viên kho</option>
+                      <option value="customer">Khách hàng</option>
+                    </select>
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="full_name" className="form-label">Họ Tên</label>
+                    <input type="text" className="form-control"
+                      placeholder={userToView.full_name}
+                      defaultValue={userToView.full_name} id="full_name_update" />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="phone" className="form-label">Số điện thoại</label>
+                    <input type="text" className="form-control"
+                      placeholder={userToView.phone}
+                      defaultValue={userToView.phone}
+                      id="phone_update" />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="address" className="form-label">Địa chỉ</label>
+                    <input type="text" className="form-control"
+                      placeholder={userToView.address}
+                      defaultValue={userToView.address}
+                      id="address_update" />
+                  </div>
+                  <div className="mb-">
+                    <label htmlFor="birthday" className="form-label">Ngày sinh</label>
+                    <input type="date" className="form-control"
+                      placeholder={new Date(userToView.birthday).toLocaleDateString()}
+                      defaultValue={new Date(userToView.birthday).toLocaleDateString()}
+                      id="birthday_update" />
+                  </div>
+                </form>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-primary" onClick={() => {
+                  handleUpdateUser();
+                }}>Cập nhật</button>
+                <button type="button" className="btn btn-secondary" onClick={() => setShowUpdateModal(false)}>Đóng</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+
+
+      {/* Modal for create user details */}
+      {showCreateModal && (
+        <div className="modal fade show" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.5)' }} id="createModal" tabIndex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content" style={{ borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
+              <div className="modal-header">
+                <h5 className="modal-title" id="createModalLabel">Tạo người dùng mới</h5>
+                <button type="button" className="btn-close" aria-label="Close" onClick={() => setShowCreateModal(false)}></button>
+              </div>
+              <div className="modal-body">
+                <form>
+                  <div className="mb-3">
+                    <label htmlFor="email" className="form-label">Email</label>
+                    <input type="email" className="form-control" id="email" />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="password" className="form-label">Mật khẩu</label>
+                    <input type="password" className="form-control" id="password" />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="role" className="form-label">Vai trò</label>
+                    <select id="role" className="form-select">
+                      <option value="admin">Quản trị viên</option>
+                      <option value="sales">Nhân viên bán hàng</option>
+                      <option value="warehouse">Nhân viên kho</option>
+                      <option value="customer">Khách hàng</option>
+                    </select>
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="full_name" className="form-label">Họ Tên</label>
+                    <input type="text" className="form-control" id="full_name" />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="phone" className="form-label">Số điện thoại</label>
+                    <input type="text" className="form-control" id="phone" />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="address" className="form-label">Địa chỉ</label>
+                    <input type="text" className="form-control" id="address" />
+                  </div>
+                </form>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-primary" onClick={() => {
+                  handleCreateUser();
+                }}>Tạo</button>
+                <button type="button" className="btn btn-secondary" onClick={() => setShowCreateModal(false)}>Đóng</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
 
       {/* Modal for delete confirmation */}
       {showDeleteModal && (
@@ -262,7 +431,7 @@ const User = () => {
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" onClick={() => setShowDeleteModal(false)}>Hủy</button>
-                <button type="button" className="btn btn-danger" onClick={handleDelete}>Xóa</button>
+                <button type="button" className="btn btn-danger" onClick={handleDeleteUser}>Xóa</button>
               </div>
             </div>
           </div>
