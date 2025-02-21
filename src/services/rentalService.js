@@ -49,10 +49,22 @@ const deleteRental = async (id) => {
   }
 };
 
+// Update status rental
+const updateRentalStatus = async (id, status) => {
+  try {
+    const response = await api.put(`/api/rentals/${id}/status`, { status });
+    return response.data;
+  } catch (err) {
+    throw err.response?.data?.message || "Lỗi khi cập nhật trạng thái rental";
+  }
+};
+
+
 export {
   fetchRentals,
   createRental,
   getRentalById,
   updateRental,
-  deleteRental
+  deleteRental,
+  updateRentalStatus
 };

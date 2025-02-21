@@ -1,22 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { AiOutlineEye, AiOutlineDelete } from "react-icons/ai";
 import { FaRegCalendarAlt, FaCar, FaUser, FaMoneyBillWave, FaClipboardList, FaPlus, FaFileContract } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { fetchRentals, deleteRental } from "../services/rentalService";
+import { fetchRentals, createRental, updateRental, deleteRental, updateRentalStatus } from "../services/rentalService";
+import { fetchUsers } from "../services/userService";
 import { ToastContainer } from "react-toastify";
+import { CarContext } from "../context/CarContext";
 import "react-toastify/dist/ReactToastify.css";
 
 const Rentals = () => {
   const [rentals, setRentals] = useState([]);
-  const [rentalToView, setRentalToView] = useState(null); // State để lưu hợp đồng khi xem
-  const [rentalToDelete, setRentalToDelete] = useState(null); // State để lưu hợp đồng khi xóa
-  const [showViewModal, setShowViewModal] = useState(false); // State để mở modal xem
-  const [showDeleteModal, setShowDeleteModal] = useState(false); // State để mở modal xóa
+  const [customers, setCustomers] = useState([]);
+  const [rentalToView, setRentalToView] = useState(null);
+  const [rentalToDelete, setRentalToDelete] = useState(null);
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const [filterStatus, setFilterStatus] = useState(""); // Filter by status
   const [filterMonth, setFilterMonth] = useState(""); // Filter by month
   const [filterCarName, setFilterCarName] = useState(""); // Filter by car name
   const [filterCustomerName, setFilterCustomerName] = useState(""); // Filter by customer name
+  const { cars } = useContext(CarContext);
 
   useEffect(() => {
     const getRentals = async () => {
@@ -32,6 +38,21 @@ const Rentals = () => {
     getRentals();
   }, []);
 
+// Get all customer
+  useEffect(() => {
+    const getCustomers = async () => {
+      try {
+        const data = await fetchUsers();
+        const customers = data.filter(user => user.role === 'customer');
+        setCustomers(customers);
+      } catch (error) {
+        console.error("Lỗi khi lấy dữ liệu khách hàng:", error);
+        toast.error("Lỗi khi lấy dữ liệu khách hàng");
+      }
+    };
+    getCustomers();
+  }, []);
+
   // Hàm format giá trị ngày tháng và số
   const formatValue = (value) => {
     if (value && value instanceof Date && !isNaN(value)) {
@@ -41,6 +62,70 @@ const Rentals = () => {
     }
     return value || "N/A"; // Trả về "N/A" nếu không có giá trị
   };
+
+  // Handle create rental
+  const handleCreate = async () => {
+    const carId = document.getElementById('carId').value;
+    const customerId = document.getElementById('customerId').value;
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+    const newRental = {
+      car_id: carId,
+      customer_id: customerId,
+      start_date: startDate,
+      end_date: endDate
+    };
+    console.log(newRental);
+    try {
+      await createRental(newRental);
+      setRentals([...rentals, newRental]); // Thêm hợp đồng mới vào danh sách
+      toast.success("Tạo hợp đồng thành công!");
+      setShowCreateModal(false); // Đóng modal sau khi tạo thành công
+    } catch (error) {
+      console.error("Lỗi khi tạo hợp đồng:", error);
+      toast.error("Lỗi khi tạo hợp đồng");
+      setShowCreateModal(false); // Đóng modal nếu có lỗi
+    }
+  };
+
+  // Handle update status rental
+  const handleUpdateStatusRental = async (rental_id) => {
+    try {
+      await updateRentalStatus(rental_id, "Đã duyệt");
+      setRentals(rentals.map(rental => rental._id === rental_id ? { ...rental, status: "Đã duyệt" } : rental));
+      toast.success("Cập nhật trạng thái thành công!");
+      setShowViewModal(false);
+    } catch (error) {
+      console.error("Lỗi khi cập nhật trạng thái hợp đồng:", error);
+      toast.error("Lỗi khi cập nhật trạng thái hợp đồng");
+    }
+  };
+
+  // Handle update rental
+  const handleUpdate = async () => {
+    const carId = document.getElementById('carId').value;
+    const customerId = document.getElementById('customerId').value;
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+    const updatedRental = {
+      car_id: carId,
+      customer_id: customerId,
+      start_date: startDate,
+      end_date: endDate
+    };
+    try {
+      await updateRental(rentalToView._id, updatedRental);
+      setRentals(rentals.map(rental => rental._id === rentalToView._id ? updatedRental : rental));
+      toast.success("Cập nhật hợp đồng thành công!");
+      setShowUpdateModal(false);
+    }
+    catch (error) {
+      console.error("Lỗi khi cập nhật hợp đồng:", error);
+      toast.error("Lỗi khi cập nhật hợp đồng");
+      setShowUpdateModal(false);
+    }
+  };
+  
 
   // Handle delete rental
   const handleDelete = async () => {
@@ -87,8 +172,10 @@ const Rentals = () => {
         return 'bg-primary'; // Blue for 'Đang thuê'
       case 'Hoàn thành':
         return 'bg-success'; // Success for 'Hoàn thành'
-      default:
+      case 'Đã huỷ':
         return 'bg-danger'; // Mặc định cho đã huỷ
+      default:
+        return 'bg-info'; // Default background color
     }
   };
 
@@ -114,7 +201,7 @@ const Rentals = () => {
         </button>
 
         {/* Add Rental Button */}
-        <button className="btn btn-primary" onClick={() => console.log("Add User functionality")}>
+        <button className="btn btn-primary" onClick={() => setShowCreateModal(true)}>
           <FaPlus /> Thêm Hợp Đồng
         </button>
 
@@ -269,12 +356,112 @@ const Rentals = () => {
               )}
             </div>
             <div className="modal-footer">
+            <button type="button" className="btn btn-primary" onClick={() => setShowUpdateModal(true)}>Sửa</button>
+              {rentalToView.status === "Chờ duyệt" && (
+                <button type="button" className="btn btn-success" onClick={() => handleUpdateStatusRental(rentalToView._id)}>Duyệt</button>
+              )}
               <button type="button" className="btn btn-secondary" onClick={() => setShowViewModal(false)}>Đóng</button>
             </div>
           </div>
         </div>
       </div>
     )}
+
+    {/* Modal for create rental */}
+    {showCreateModal && (
+      <div className="modal fade show" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.5)' }} id="createModal" tabIndex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content" style={{ borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
+            <div className="modal-header">
+              <h5 className="modal-title" id="createModalLabel">Tạo hợp đồng thuê xe</h5>
+              <button type="button" className="btn-close" aria-label="Close" onClick={() => setShowCreateModal(false)}></button>
+            </div>
+            <div className="modal-body">
+              <form>
+                <div className="mb-3">
+                  <label htmlFor="carId" className="form-label">Chọn Xe</label>
+                  <select className="form-select" id="carId_update">
+                    <option value="">Chọn xe</option>
+                    {cars.map((car, index) => (
+                      <option key={index} value={car._id}>{car.make} {car.model} {car.year}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="customerId" className="form-label">Chọn Khách hàng</label>
+                  <select className="form-select" id="customerId_update">
+                    <option value="">Chọn khách hàng</option>
+                    {customers.map((customer, index) => (
+                      <option key={index} value={customer._id}>{customer.full_name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="startDate" className="form-label">Ngày bắt đầu</label>
+                  <input type="date" className="form-control" id="startDate_update" />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="endDate" className="form-label">Ngày kết thúc</label>
+                  <input type="date" className="form-control" id="endDate_update" />
+                </div>
+              </form>
+
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-primary" onClick={handleCreate}>Tạo hợp đồng</button>
+              <button type="button" className="btn btn-secondary" onClick={() => setShowCreateModal(false)}>Đóng</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* Modal for update rental */}
+    {showUpdateModal && (
+      <div className="modal fade show" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.5)' }} id="updateModal" tabIndex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content" style={{ borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
+            <div className="modal-header">
+              <h5 className="modal-title" id="updateModalLabel">Cập nhật hợp đồng</h5>
+              <button type="button" className="btn-close" aria-label="Close" onClick={() => setShowUpdateModal(false)}></button>
+            </div>
+            <div className="modal-body">
+              <form>
+                <div className="mb-3">
+                  <label htmlFor="carId" className="form-label">Chọn Xe</label>
+                  <select className="form-select" id="carId" defaultValue={rentalToView.car_id}>
+                    {cars.map((car, index) => (
+                      <option key={index} value={car._id}>{car.make} {car.model} {car.year}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="customerId" className="form-label">Chọn Khách hàng</label>
+                  <select className="form-select" id="customerId">
+                    {customers.map((customer, index) => (
+                      <option key={index} value={customer._id}>{customer.full_name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="startDate" className="form-label">Ngày bắt đầu</label>
+                  <input type="date" className="form-control" id="startDate" />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="endDate" className="form-label">Ngày kết thúc</label>
+                  <input type="date" className="form-control" id="endDate" />
+                </div>
+              </form>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-info" onClick={handleUpdate}>Cập nhật</button>
+              <button type="button" className="btn btn-secondary" onClick={() => setShowUpdateModal(false)}>Đóng</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+
 
     {/* Modal for delete confirmation */}
     {showDeleteModal && (
