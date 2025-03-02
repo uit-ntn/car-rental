@@ -30,6 +30,29 @@ const getRentalById = async (id) => {
   }
 };
 
+// Get rental by user
+const getRentalByUser = async (userId) => {
+  try {
+    const response = await api.get(`/api/rentals/user/${userId}`);
+    return response.data;
+  } catch (err) {
+    throw err.response?.data?.message || "Lỗi khi lấy rental theo user";
+  }
+};
+
+// Lấy danh sách xe thuê của một người dùng
+const getRentalsByUserId = async (userId) => {
+  try {
+    const response = await api.get(`/api/rentals/user/${userId}`);
+    return response.data;
+  } catch (err) {
+    throw err.response?.data?.message || "Lỗi khi lấy danh sách xe thuê";
+  }
+};
+
+export { getRentalsByUserId };
+
+
 // Update rental by ID
 const updateRental = async (id, updatedData) => {
   try {
@@ -64,6 +87,7 @@ export {
   fetchRentals,
   createRental,
   getRentalById,
+  getRentalByUser,
   updateRental,
   deleteRental,
   updateRentalStatus
