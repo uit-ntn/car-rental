@@ -2,6 +2,7 @@ import Home from "../pages/Home";
 import Auth from "../pages/Auth";
 import About from "../pages/About";
 import Detail from "../pages/Detail";
+import Account from "../pages/Account";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 const adminRoutes = [
@@ -19,7 +20,7 @@ const publicRoutes = [
 
 // Các route dành cho customer
 const customerRoutes = [
-  // { path: "/account/:userId", page: Account },
+  { path: "/user/:userId", page: Account },
 ];
 
 // Các route dành cho sale staff
