@@ -1,11 +1,15 @@
 import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { updateUser } from "../services/userService"; // Import hàm updateUser từ API
 
 const UserInfo = () => {
-    const { userData, loading } = useContext(AuthContext); // Lấy dữ liệu user từ context
+    const { userData, loading, user_id, setUserData } = useContext(AuthContext); // Lấy dữ liệu từ context
 
     // Trạng thái chỉnh sửa
     const [isEditing, setIsEditing] = useState(false);
+    const [saving, setSaving] = useState(false); // Trạng thái lưu dữ liệu
+    const [message, setMessage] = useState(""); // Hiển thị thông báo
+
     const [editedData, setEditedData] = useState({
         full_name: "",
         email: "",
@@ -47,12 +51,24 @@ const UserInfo = () => {
     // Bật chế độ chỉnh sửa
     const handleEdit = () => {
         setIsEditing(true);
+        setMessage(""); // Xóa thông báo cũ
     };
 
-    // Lưu thay đổi (hiện tại chỉ console.log, có thể thay bằng API update)
-    const handleSave = () => {
-        console.log("Updated User Data:", editedData);
-        setIsEditing(false);
+    // Lưu thay đổi vào server
+    const handleSave = async () => {
+        setSaving(true);
+        setMessage(""); // Reset message
+
+        try {
+            const updatedUser = await updateUser(user_id, editedData);
+            setUserData(updatedUser); // Cập nhật dữ liệu trong context
+            setIsEditing(false);
+            setMessage("Cập nhật thành công! ✅");
+        } catch (error) {
+            setMessage(`Lỗi: ${error}`);
+        } finally {
+            setSaving(false);
+        }
     };
 
     // Hủy chỉnh sửa (reset về dữ liệu gốc)
@@ -65,6 +81,7 @@ const UserInfo = () => {
             avt: userData?.avt || "https://via.placeholder.com/150"
         });
         setIsEditing(false);
+        setMessage(""); // Xóa thông báo
     };
 
     return (
@@ -87,6 +104,7 @@ const UserInfo = () => {
             {/* Form chỉnh sửa thông tin */}
             <div className="col-md-8">
                 <h3>Thông tin cá nhân</h3>
+                {message && <p className={message.includes("Lỗi") ? "text-danger" : "text-success"}>{message}</p>}
                 <form>
                     <div className="mb-3">
                         <label htmlFor="full_name" className="form-label">Họ và Tên</label>
@@ -142,7 +160,14 @@ const UserInfo = () => {
                         <button type="button" className="btn btn-warning" onClick={handleEdit}>Chỉnh sửa</button>
                     ) : (
                         <>
-                            <button type="button" className="btn btn-success me-2" onClick={handleSave}>Lưu</button>
+                            <button
+                                type="button"
+                                className="btn btn-success me-2"
+                                onClick={handleSave}
+                                disabled={saving}
+                            >
+                                {saving ? "Đang lưu..." : "Lưu"}
+                            </button>
                             <button type="button" className="btn btn-secondary" onClick={handleCancel}>Hủy</button>
                         </>
                     )}
