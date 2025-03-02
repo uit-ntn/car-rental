@@ -16,10 +16,9 @@ const Account = () => {
             />
           </div>
           <h5 className="text-center mt-3">Denis Holland</h5>
-          <p className="text-center">Balance: 38.00$</p>
         </div>
         <div className="col-md-8">
-          <h3>Personal Information</h3>
+          <h3>Thông tin cá nhân</h3>
           <form>
             <div className="mb-3">
               <label htmlFor="firstName" className="form-label">First Name</label>
