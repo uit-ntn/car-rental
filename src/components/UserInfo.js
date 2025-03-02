@@ -15,7 +15,7 @@ const UserInfo = () => {
         email: "",
         phone: "",
         address: "",
-        avt: "https://via.placeholder.com/150"
+        avt: ""
     });
 
     // Cập nhật dữ liệu khi `userData` thay đổi
@@ -26,7 +26,7 @@ const UserInfo = () => {
                 email: userData.email || "",
                 phone: userData.phone || "",
                 address: userData.address || "",
-                avt: userData.avt || "https://via.placeholder.com/150"
+                avt: userData.avt || "https://scontent.fsgn2-4.fna.fbcdn.net/v/t1.6435-9/116264906_340041997020888_6356968955999431305_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=-bk-vg8BuC4Q7kNvgFO_9Vs&_nc_oc=AdhboWzyeCj-pmhrZntyQpuL3tdSQmvmpDACuHGOpVKFaNEglcGb0wTwniKvWeoAz0M&_nc_zt=23&_nc_ht=scontent.fsgn2-4.fna&_nc_gid=A15lNN-JjrqQ2aWCfHw-xws&oh=00_AYCbTGVGdxBkP4STT670BXAtdOYytzo61DvLINEeWA-epA&oe=67EB930F"
             });
         }
     }, [userData]);
@@ -64,6 +64,7 @@ const UserInfo = () => {
             toast.success("Cập nhật thông tin thành công! ✅");
         } catch (error) {
             toast.error(`Lỗi: ${error}`);
+            console.error("Lỗi cập nhật thông tin:", error);
         } finally {
             setSaving(false);
         }
@@ -72,11 +73,11 @@ const UserInfo = () => {
     // Hủy chỉnh sửa (reset về dữ liệu gốc)
     const handleCancel = () => {
         setEditedData({
-            full_name: userData?.full_name || "",
+            full_name: userData?.full_name || "Vui lòng cập nhật tên",
             email: userData?.email || "",
-            phone: userData?.phone || "",
-            address: userData?.address || "",
-            avt: userData?.avt || "https://via.placeholder.com/150"
+            phone: userData?.phone || "Vui lòng cập nhật số điện thoại",
+            address: userData?.address || "Vui lòng cập nhật địa chỉ",
+            avt: userData?.avt || "https://scontent.fsgn2-4.fna.fbcdn.net/v/t1.6435-9/116264906_340041997020888_6356968955999431305_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=-bk-vg8BuC4Q7kNvgFO_9Vs&_nc_oc=AdhboWzyeCj-pmhrZntyQpuL3tdSQmvmpDACuHGOpVKFaNEglcGb0wTwniKvWeoAz0M&_nc_zt=23&_nc_ht=scontent.fsgn2-4.fna&_nc_gid=A15lNN-JjrqQ2aWCfHw-xws&oh=00_AYCbTGVGdxBkP4STT670BXAtdOYytzo61DvLINEeWA-epA&oe=67EB930F"
         });
         setIsEditing(false);
     };
@@ -91,7 +92,7 @@ const UserInfo = () => {
                     <img
                         src={editedData.avt}
                         alt="User Avatar"
-                        className="rounded-circle"
+                        className="rounded-circle border border-3 border-success"
                         width="150"
                         height="150"
                     />
