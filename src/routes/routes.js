@@ -20,7 +20,7 @@ const publicRoutes = [
 
 // Các route dành cho customer
 const customerRoutes = [
-  { path: "/user/:userId", page: Account },
+  { path: "/user/*", page: Account },
 ];
 
 // Các route dành cho sale staff

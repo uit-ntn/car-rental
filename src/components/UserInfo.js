@@ -1,14 +1,14 @@
 import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { updateUser } from "../services/userService"; // Import hàm updateUser từ API
+import { updateUser } from "../services/userService"; // Import API updateUser
+import { ToastContainer, toast } from "react-toastify"; // Import Toastify
+import "react-toastify/dist/ReactToastify.css"; // Import CSS mặc định của Toastify
 
 const UserInfo = () => {
     const { userData, loading, user_id, setUserData } = useContext(AuthContext); // Lấy dữ liệu từ context
 
-    // Trạng thái chỉnh sửa
     const [isEditing, setIsEditing] = useState(false);
-    const [saving, setSaving] = useState(false); // Trạng thái lưu dữ liệu
-    const [message, setMessage] = useState(""); // Hiển thị thông báo
+    const [saving, setSaving] = useState(false);
 
     const [editedData, setEditedData] = useState({
         full_name: "",
@@ -51,21 +51,19 @@ const UserInfo = () => {
     // Bật chế độ chỉnh sửa
     const handleEdit = () => {
         setIsEditing(true);
-        setMessage(""); // Xóa thông báo cũ
     };
 
     // Lưu thay đổi vào server
     const handleSave = async () => {
         setSaving(true);
-        setMessage(""); // Reset message
 
         try {
             const updatedUser = await updateUser(user_id, editedData);
             setUserData(updatedUser); // Cập nhật dữ liệu trong context
             setIsEditing(false);
-            setMessage("Cập nhật thành công! ✅");
+            toast.success("Cập nhật thông tin thành công! ✅");
         } catch (error) {
-            setMessage(`Lỗi: ${error}`);
+            toast.error(`Lỗi: ${error}`);
         } finally {
             setSaving(false);
         }
@@ -81,11 +79,12 @@ const UserInfo = () => {
             avt: userData?.avt || "https://via.placeholder.com/150"
         });
         setIsEditing(false);
-        setMessage(""); // Xóa thông báo
     };
 
     return (
         <div className="row">
+            <ToastContainer position="top-right" autoClose={3000} /> {/* Hiển thị toast */}
+
             {/* Phần avatar & thông tin cơ bản */}
             <div className="col-md-4">
                 <div className="d-flex justify-content-center">
@@ -104,7 +103,6 @@ const UserInfo = () => {
             {/* Form chỉnh sửa thông tin */}
             <div className="col-md-8">
                 <h3>Thông tin cá nhân</h3>
-                {message && <p className={message.includes("Lỗi") ? "text-danger" : "text-success"}>{message}</p>}
                 <form>
                     <div className="mb-3">
                         <label htmlFor="full_name" className="form-label">Họ và Tên</label>
