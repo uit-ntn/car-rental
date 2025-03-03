@@ -19,12 +19,9 @@ const CarInfoSection = ({ car, onOpenBooking }) => {
           { label: "Năm sản xuất", value: car.year },
           { label: "Biển số", value: car.license_plate },
           { label: "Trạng thái", value: car.status === "available" ? "Chưa có chuyến" : car.status === "rented" ? "Đã có chuyến" : "Đang bảo dưỡng" },
+          { label: "Hộp số", value: car.transmission === "Automatic" ? "Tự động" : "Số sàn" },
           { label: "Vị trí", value: car.location },
           { label: "Giá thuê", value: `${car.price / 1000}K/ngày` },
-          { label: "Hộp số", value: car.transmission === "Automatic" ? "Tự động" : "Số sàn" },
-          { label: "Công ty bảo hiểm", value: car.insurance_info.company },
-          { label: "Mã hợp đồng", value: car.insurance_info.policy_number },
-          { label: "Ngày hết hạn bảo hiểm", value: new Date(car.insurance_info.expiration_date).toLocaleDateString() },
         ].map((item, index) => (
           <div key={index} className="d-flex justify-content-between mb-3">
             <strong>{item.label}:</strong>

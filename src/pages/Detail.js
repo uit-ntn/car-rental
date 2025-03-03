@@ -5,6 +5,7 @@ import Layout from "../layouts/Layout";
 import CarImageSection from "../components/CarImageSection";
 import CarInfoSection from "../components/CarInfoSection";
 import BookingModal from "../components/BookingModal";
+import CommentList from "../components/CommentList";
 import { toast } from "react-toastify";
 
 const Detail = () => {
@@ -68,7 +69,10 @@ const Detail = () => {
             onClose={handleCloseModal}  // Truyền hàm đóng modal
           />
         )}
+        
+        <CommentList car_id={id} />
       </div>
+
     </Layout>
   );
 };

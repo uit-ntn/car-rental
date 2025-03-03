@@ -1,11 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { updateUser } from "../services/userService"; // Import API updateUser
-import { ToastContainer, toast } from "react-toastify"; // Import Toastify
-import "react-toastify/dist/ReactToastify.css"; // Import CSS mặc định của Toastify
+import { updateUser } from "../services/userService"; 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UserInfo = () => {
-    const { userData, loading, user_id, setUserData } = useContext(AuthContext); // Lấy dữ liệu từ context
+    const { userData, loading, user_id, setUserData } = useContext(AuthContext);
 
     const [isEditing, setIsEditing] = useState(false);
     const [saving, setSaving] = useState(false);
@@ -26,7 +26,7 @@ const UserInfo = () => {
                 email: userData.email || "",
                 phone: userData.phone || "",
                 address: userData.address || "",
-                avt: userData.avt || "https://scontent.fsgn2-4.fna.fbcdn.net/v/t1.6435-9/116264906_340041997020888_6356968955999431305_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=-bk-vg8BuC4Q7kNvgFO_9Vs&_nc_oc=AdhboWzyeCj-pmhrZntyQpuL3tdSQmvmpDACuHGOpVKFaNEglcGb0wTwniKvWeoAz0M&_nc_zt=23&_nc_ht=scontent.fsgn2-4.fna&_nc_gid=A15lNN-JjrqQ2aWCfHw-xws&oh=00_AYCbTGVGdxBkP4STT670BXAtdOYytzo61DvLINEeWA-epA&oe=67EB930F"
+                avt: userData.avt || "https://via.placeholder.com/150"
             });
         }
     }, [userData]);
@@ -43,7 +43,7 @@ const UserInfo = () => {
         );
     }
 
-    // Hàm xử lý thay đổi input
+    // Xử lý thay đổi input
     const handleChange = (e) => {
         setEditedData({ ...editedData, [e.target.name]: e.target.value });
     };
@@ -59,11 +59,11 @@ const UserInfo = () => {
 
         try {
             const updatedUser = await updateUser(user_id, editedData);
-            setUserData(updatedUser); // Cập nhật dữ liệu trong context
+            setUserData(updatedUser);  // Cập nhật dữ liệu mới vào AuthContext
             setIsEditing(false);
             toast.success("Cập nhật thông tin thành công! ✅");
         } catch (error) {
-            toast.error(`Lỗi: ${error}`);
+            toast.error("Lỗi khi cập nhật thông tin ❌");
             console.error("Lỗi cập nhật thông tin:", error);
         } finally {
             setSaving(false);
@@ -73,20 +73,18 @@ const UserInfo = () => {
     // Hủy chỉnh sửa (reset về dữ liệu gốc)
     const handleCancel = () => {
         setEditedData({
-            full_name: userData?.full_name || "Vui lòng cập nhật tên",
+            full_name: userData?.full_name || "",
             email: userData?.email || "",
-            phone: userData?.phone || "Vui lòng cập nhật số điện thoại",
-            address: userData?.address || "Vui lòng cập nhật địa chỉ",
-            avt: userData?.avt || "https://scontent.fsgn2-4.fna.fbcdn.net/v/t1.6435-9/116264906_340041997020888_6356968955999431305_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=-bk-vg8BuC4Q7kNvgFO_9Vs&_nc_oc=AdhboWzyeCj-pmhrZntyQpuL3tdSQmvmpDACuHGOpVKFaNEglcGb0wTwniKvWeoAz0M&_nc_zt=23&_nc_ht=scontent.fsgn2-4.fna&_nc_gid=A15lNN-JjrqQ2aWCfHw-xws&oh=00_AYCbTGVGdxBkP4STT670BXAtdOYytzo61DvLINEeWA-epA&oe=67EB930F"
+            phone: userData?.phone || "",
+            address: userData?.address || "",
+            avt: userData?.avt || "https://via.placeholder.com/150"
         });
         setIsEditing(false);
     };
 
     return (
         <div className="row">
-            <ToastContainer position="top-right" autoClose={3000} /> {/* Hiển thị toast */}
-
-            {/* Phần avatar & thông tin cơ bản */}
+            <ToastContainer position="top-right" autoClose={3000} />
             <div className="col-md-4">
                 <div className="d-flex justify-content-center">
                     <img
@@ -101,7 +99,6 @@ const UserInfo = () => {
                 <p className="text-center">📍 {editedData.address}</p>
             </div>
 
-            {/* Form chỉnh sửa thông tin */}
             <div className="col-md-8">
                 <h3>Thông tin cá nhân</h3>
                 <form>
@@ -154,7 +151,6 @@ const UserInfo = () => {
                         />
                     </div>
 
-                    {/* Nút chức năng */}
                     {!isEditing ? (
                         <button type="button" className="btn btn-warning" onClick={handleEdit}>Chỉnh sửa</button>
                     ) : (
