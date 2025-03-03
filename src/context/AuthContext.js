@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider value={{
       user_id,
       userData,
-      setUserData, // 🔥 Thêm setUserData vào context để các component có thể sử dụng
+      setUserData,
       token,
       loading,
       loginHandler: async (email, password) => {

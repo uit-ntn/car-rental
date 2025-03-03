@@ -40,5 +40,19 @@ const resetPassword = async (token, newPassword) => {
   }
 };
 
+const updatePassword = async (oldPassword, newPassword, token) => {
+  try {
+    const response = await api.post(
+      "/api/auth/update-password",
+      { oldPassword, newPassword },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response?.data?.message || "Lỗi khi đổi mật khẩu";
+  }
+};
 
-export { signup, login, forgotPassword, resetPassword };
+export { signup, login, forgotPassword, resetPassword, updatePassword };

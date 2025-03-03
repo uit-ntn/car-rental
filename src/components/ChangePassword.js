@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { resetPassword } from "../services/authService"; // Import API đổi mật khẩu
-import { ToastContainer, toast } from "react-toastify"; // Import Toast
-import "react-toastify/dist/ReactToastify.css"; // Import CSS mặc định của Toastify
+import { updatePassword } from "../services/authService";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ChangePassword = () => {
     const { token } = useContext(AuthContext); // Lấy token từ context
@@ -22,36 +22,43 @@ const ChangePassword = () => {
     // Xử lý đổi mật khẩu
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         if (!oldPassword || !newPassword || !confirmPassword) {
             toast.error("Vui lòng nhập đầy đủ thông tin.");
             return;
         }
-        
+
         if (newPassword.length < 6) {
             toast.error("Mật khẩu mới phải có ít nhất 6 ký tự.");
             return;
         }
-        
+
         if (newPassword !== confirmPassword) {
             toast.error("Mật khẩu mới không khớp.");
             return;
         }
 
         setLoading(true);
-        
+
         try {
-            await resetPassword(token, newPassword);
+            console.log("🔄 Đang gửi request đổi mật khẩu...");
+            console.log("Token:", token);
+            console.log("Dữ liệu gửi:", { oldPassword, newPassword });
+
+            await updatePassword(oldPassword, newPassword, token);
+
             toast.success("Đổi mật khẩu thành công! ✅");
             setOldPassword("");
             setNewPassword("");
             setConfirmPassword("");
         } catch (error) {
+            console.error("❌ Lỗi đổi mật khẩu:", error);
             toast.error(`Lỗi: ${error}`);
         } finally {
             setLoading(false);
         }
     };
+
 
     return (
         <div className="container">
@@ -94,7 +101,8 @@ const ChangePassword = () => {
                         required
                     />
                 </div>
-                <button type="submit" className="btn btn-primary" disabled={loading}>
+                <button className="btn btn-primary" disabled={loading}
+                    onClick={handleSubmit}>
                     {loading ? "Đang đổi mật khẩu..." : "Đổi mật khẩu"}
                 </button>
             </form>
