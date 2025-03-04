@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaBell, FaUserCircle, FaCog } from "react-icons/fa"; // Importing Font Awesome Icons
+import { AuthContext } from "../context/AuthContext";
 
 const AdminHeader = () => {
+  const { logout } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    logout();
+    // Redirect to login page
+    window.location.href = "/auth/login";
+  };
+
   return (
     <header
       className="border-bottom text-white p-3"
@@ -59,7 +68,7 @@ const AdminHeader = () => {
                 <hr className="dropdown-divider" />
               </li>
               <li>
-                <a className="dropdown-item" href="#!">Logout</a>
+                <a className="dropdown-item" href="#!" onClick={handleLogout}>Logout</a>
               </li>
             </ul>
           </div>

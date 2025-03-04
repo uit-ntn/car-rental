@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { useSpring, animated } from 'react-spring'; // React Spring for animations
 import { FaHome, FaUsers, FaCar, FaFileContract, FaChartBar, FaCog, FaSignOutAlt } from 'react-icons/fa'; // Importing Font Awesome Icons for better appearance
+import { AuthContext } from "../context/AuthContext";
 
 const AdminSidebar = () => {
   const [hovered, setHovered] = useState(null);
+  const { logout } = useContext(AuthContext);
 
   const slideIn = useSpring({
     from: { transform: 'translateX(-100%)' },
@@ -180,6 +182,7 @@ const AdminSidebar = () => {
             }}
             onMouseEnter={() => setHovered(6)}
             onMouseLeave={() => setHovered(null)}
+            onClick={logout}
           >
             <FaSignOutAlt className="me-3" style={{ fontSize: '1.5rem', color: '#ecf0f1' }} /> Logout
           </NavLink>

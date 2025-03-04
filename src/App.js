@@ -1,89 +1,82 @@
 import React, { useContext } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { publicRoutes, customerRoutes, saleStaffRoutes, warehouseStaffRoute, adminRoutes } from "./routes/routes";
 import NotFound from "./pages/NotFound";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "./context/AuthContext";
 import DashboardLayout from "./layouts/DashboardLayout";
-import Dashboard from "./pages/Dashboard"; // import the Dashboard page
-
-
-import "./App.css";
+import Dashboard from "./pages/Dashboard";
 import User from "./pages/User";
 import Car from "./pages/Car";
 import Rental from "./pages/Rental";
+import "./App.css";
 
-// ProtectedRoute Component : Protect route with role
+/**
+ * Component bảo vệ route dựa trên vai trò người dùng.
+ * @param {Object} props - Props của component.
+ * @param {React.Element} props.element - Component con cần render.
+ * @param {Array<string>} props.allowedRoles - Danh sách vai trò được phép truy cập.
+ * @returns {React.Element} - Trả về component hoặc điều hướng nếu không đủ quyền.
+ */
 const ProtectedRoute = ({ element, allowedRoles }) => {
-  const { userData } = useContext(AuthContext); // Lấy thông tin người dùng từ AuthContext
-  const role = userData ? userData.role : null; // Lấy vai trò của người dùng
+  const { userData, loading } = useContext(AuthContext);
 
-  return element; // Nếu vai trò hợp lệ, hiển thị trang
+  if (loading) {
+    return <div>Loading...</div>; // Hiển thị khi đang load dữ liệu
+  }
+
+  const role = userData?.role?.toLowerCase() || null;
+
+  console.log("User Role:", role);
+  console.log("Allowed Roles:", allowedRoles);
+
+  if (!role || !allowedRoles.includes(role)) {
+    return <Navigate replace to="/not-found" />;
+  }
+  return element;
 };
 
 function App() {
+  const { userData, loading } = useContext(AuthContext);
+  const role = userData?.role?.toLowerCase() || null;
+
+
+
   return (
     <Router>
       <div className="App">
         <Routes>
-          {/* Các route công cộng */}
-          {publicRoutes.map((route, index) => {
-            const Page = route.page;
-            return (
-              <Route
-                key={index}
-                path={route.path}
-                element={<Page />}
-              />
-            );
-          })}
+          {role === 'admin' && <Route path="*" element={<Navigate to="/dashboard" />} />}
+          {/* Public routes */}
+          {publicRoutes.map((route, index) => (
+            <Route key={index} path={route.path} element={<route.page />} />
+          ))}
 
-          {/* Các route dành cho customer */}
-          {customerRoutes.map((route, index) => {
-            const Page = route.page;
-            return (
-              <Route
-                key={index}
-                path={route.path}
-                element={<ProtectedRoute element={<Page />} allowedRoles={['customer']} />}
-              />
-            );
-          })}
+          {/* Customer routes */}
+          {customerRoutes.map((route, index) => (
+            <Route key={index} path={route.path} element={<ProtectedRoute element={<route.page />} allowedRoles={['customer']} />} />
+          ))}
 
-          {/* Các route dành cho sales staff */}
-          {saleStaffRoutes.map((route, index) => {
-            const Page = route.page;
-            return (
-              <Route
-                key={index}
-                path={route.path}
-                element={<ProtectedRoute element={<Page />} allowedRoles={['saleStaff']} />}
-              />
-            );
-          })}
+          {/* Sales staff routes */}
+          {saleStaffRoutes.map((route, index) => (
+            <Route key={index} path={route.path} element={<ProtectedRoute element={<route.page />} allowedRoles={['salestaff']} />} />
+          ))}
 
-          {/* Các route dành cho warehouse staff */}
-          {warehouseStaffRoute.map((route, index) => {
-            const Page = route.page;
-            return (
-              <Route
-                key={index}
-                path={route.path}
-                element={<ProtectedRoute element={<Page />} allowedRoles={['warehouseStaff']} />}
-              />
-            );
-          })}
+          {/* Warehouse staff routes */}
+          {warehouseStaffRoute.map((route, index) => (
+            <Route key={index} path={route.path} element={<ProtectedRoute element={<route.page />} allowedRoles={['warehousestaff']} />} />
+          ))}
 
-          <Route element={<DashboardLayout />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/dashboard/users" element={<User/>} />
-            <Route path="/dashboard/cars" element={<Car/>} />
-            <Route path="/dashboard/contracts" element={<Rental/>} />
+          {/* Admin routes với DashboardLayout */}
+          <Route path="/dashboard" element={<ProtectedRoute element={<DashboardLayout />} allowedRoles={['admin']} />}>
+            <Route index element={<Dashboard />} />
+            <Route path="users" element={<User />} />
+            <Route path="cars" element={<Car />} />
+            <Route path="contracts" element={<Rental />} />
           </Route>
 
-
-          {/* Route cho trang NotFound */}
+          {/* Route cho NotFound */}
           <Route path="*" element={<NotFound />} />
         </Routes>
 

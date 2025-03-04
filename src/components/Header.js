@@ -72,16 +72,26 @@ const Header = () => {
                   <i className="fas fa-user me-2"></i> Xin chào, {userData.full_name} {/* Display user's name */}
                 </button>
                 <ul className="dropdown-menu" aria-labelledby="userMenu">
-                  <li>
-                    <Link className="dropdown-item" to="/user/profile">
-                      <i className="fas fa-user me-2 text-dark"></i>Profile
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/user/cart">
-                      <i className="fas fa-shopping-cart me-2 text-secondary"></i>Cart
-                    </Link>
-                  </li>
+                  {userData.role === 'admin' ? (
+                    <li>
+                      <Link className="dropdown-item" to="/admin/dashboard">
+                        <i className="fas fa-tachometer-alt me-2 text-dark"></i>Dashboard
+                      </Link>
+                    </li>
+                  ) : (
+                    <>
+                      <li>
+                        <Link className="dropdown-item" to="/user/profile">
+                          <i className="fas fa-user me-2 text-dark"></i>Profile
+                        </Link>
+                      </li>
+                      <li>
+                        <Link className="dropdown-item" to="/user/cart">
+                          <i className="fas fa-shopping-cart me-2 text-secondary"></i>Cart
+                        </Link>
+                      </li>
+                    </>
+                  )}
                   <li>
                     <hr className="dropdown-divider" />
                   </li>
