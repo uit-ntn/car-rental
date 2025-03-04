@@ -73,7 +73,7 @@ const CommentList = ({ car_id }) => {
             ) : currentComments.length === 0 ? (
                 <p className="text-muted text-center my-5">Không có bình luận nào.</p>
             ) : (
-                <ul className="list-unstyled">
+                <ul className="list-unstyled mt-3">
                     {currentComments.map((comment) => (
                         <CommentItem
                             key={comment._id}
